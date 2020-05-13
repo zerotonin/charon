@@ -1,5 +1,8 @@
-import xml.etree.ElementTree as ET
 import os
+from tqdm import tqdm
+import xml.etree.ElementTree as ET
+from PIL import Image
+
 
 class training_utils:
     def __init__(self,WORK_DIR='/media/dataSSD/trainingData/haemoTrain'):
@@ -124,7 +127,7 @@ class training_utils:
         trainCounter = 0
         fileI = 0
         #run through all files
-        for cand in self.candidates:
+        for cand in tqdm(self.candidates,desc='transfering'):
             # get the candidate
             
             # source and traget filenames
@@ -150,6 +153,8 @@ class training_utils:
             fileI +=1
 
             #copy and transcode image
+            im = Image.open(imgSourcePos)
+            im.save(imgTargetPos)
 
             # copy xml file
             # change path
