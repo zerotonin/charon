@@ -8,6 +8,11 @@ x.runExperimentAnalysis("/media/gwdg-backup/BackUp/Debbie/cellAna_new/2020-05-11
 end = time.time()
 print(end - start)
 start = time.time()
+
+reload(training_utils)
+
+t = training_utils.training_utils()
+t.chooseCandidateFiles()
 x.runExperimentAnalysis("/media/dataSSD/cellDetector/analysing/2020-05-06_Lm-neuron-TRB#1.zip")
 end = time.time()
 print(end - start)
@@ -42,7 +47,7 @@ x.analyseMovie("/media/bgeurten/HSMovieKrissy/Group of flies(around 30)/30_09_19
 reload(training_utils)
 
 t = training_utils.training_utils()
-t.getFileCandidates()
-t.shortenCandidatesByName()
-t.analyseCandidateObjects()
-
+t.chooseCandidateFiles()
+# t.renameLabels() or set dictionary
+t.labelChanger = {'deadw': 'dead', 'Live': 'alive', 'lve': 'alive', 'live': 'alive', 'Dead': 'dead', 'livw': 'alive', 'alive': 'alive', 'dead': 'dead'}
+t.transfer_trainingData()
