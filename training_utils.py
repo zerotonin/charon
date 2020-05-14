@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 from PIL import Image
 
 
-class training_utils:
+class trainDataCuration:
     def __init__(self,WORK_DIR='/media/dataSSD/trainingData/haemoTrain'):
 
         self.WORK_DIR    = WORK_DIR
@@ -146,28 +146,36 @@ class training_utils:
                 xmlTargetPos =os.path.join(self.TRAIN_DIR,'Image_' + str(trainCounter).zfill(4) + '.xml')
                 trainCounter += 1
 
-            
+            fileI +=1
+            # GET parent folder name and filename separately for xml update
             imageName = os.path.basename(imgTargetPos)
             imgFolder = os.path.basename(os.path.dirname(imgTargetPos))
-            fileI +=1
+         
 
-            #copy and transcode image
-            im = Image.open(imgSourcePos)
-            im.save(imgTargetPos)
+            # copy and update xml file
 
-            # copy xml file
-
+            #read in file
             tree = ET.parse(xmlSourcePos)
+            # get start of file
             root = tree.getroot() 
+            #update image position values
             path = root.find('path')
             path.text = imgTargetPos
             folder = root.find('folder')
             folder.text = imgFolder
             filename = root.find('filename')
             filename.text = imageName
-            for objAnno in root.findall('object'):
+            # now update the object labels/names
+            for objAnno in root.findall('object'): # find all objects
+                # get the name field
                 name = objAnno.find('name')
+                # extract former name field content as key value for the label changer dict
                 oldName = name.text
+                #update with new label from labelChanger dict
                 name.text = self.labelChanger[oldName]
+            #write the updated xml values to target position
             tree.write(xmlTargetPos)
 
+            #copy and transcode image
+            im = Image.open(imgSourcePos)
+            im.save(imgTargetPos)
