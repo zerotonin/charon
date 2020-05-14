@@ -146,10 +146,9 @@ class training_utils:
                 xmlTargetPos =os.path.join(self.TRAIN_DIR,'Image_' + str(trainCounter).zfill(4) + '.xml')
                 trainCounter += 1
 
-            print(imgSourcePos)
-            print(imgTargetPos)
-            print(xmlSourcePos)
-            print(xmlTargetPos)
+            
+            imageName = os.path.basename(imgTargetPos)
+            imgFolder = os.path.basename(os.path.dirname(imgTargetPos))
             fileI +=1
 
             #copy and transcode image
@@ -157,5 +156,18 @@ class training_utils:
             im.save(imgTargetPos)
 
             # copy xml file
-            # change path
-            # update labels
+
+            tree = ET.parse(xmlSourcePos)
+            root = tree.getroot() 
+            path = root.find('path')
+            path.text = imgTargetPos
+            folder = root.find('folder')
+            folder.text = imgFolder
+            filename = root.find('filename')
+            filename.text = imageName
+            for objAnno in root.findall('object'):
+                name = objAnno.find('name')
+                oldName = name.text
+                name.text = self.labelChanger[oldName]
+            tree.write(xmlTargetPos)
+
