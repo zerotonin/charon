@@ -337,7 +337,7 @@ class adaptTFconfigFile:
 
     def updateTestImageNum(self):
         # find all test images
-        fList = trainDataCuration.getFilePos_search(self.testImgDir,'png')
+        fList = trainDataCuration.getFilePos_search(self,self.testImgDir,'png')
 
         self.config[129] = '  num_examples: '+ str(len(fList)) +'\n'
     
