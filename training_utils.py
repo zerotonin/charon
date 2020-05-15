@@ -309,5 +309,10 @@ class adaptTFconfigFile:
         self.targetConfigFile = '/media/dataSSD/trainingData/Cell/faster_rcnn_inception_v2_' + tag + '.config'
         self.labels = labels
         self.tag = tag
-    
+
+    def readConfig(self):
+        with open(self.originalConfigFile, 'r') as file:
+            # read a list of lines into data
+            config = file.readlines()
+
     
