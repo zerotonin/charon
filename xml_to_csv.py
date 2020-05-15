@@ -27,7 +27,7 @@ def xml_to_csv(path):
 
 def main(image_path,outputCSV):
     xml_df = xml_to_csv(image_path)
-    xml_df.to_csv(outputCSV), index=None)
+    xml_df.to_csv(outputCSV, index=None)
     print('Successfully converted xml to csv. Results: '+ outputCSV)
 
 
