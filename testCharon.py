@@ -1,5 +1,5 @@
 from importlib import reload
-import charon, time, training_utils
+import charon, time,  training_utils
 #standard zipped experiment
 reload(charon)
 x = charon.charon(OUTPUT_DIR='/media/gwdg-backup/BackUp/Debbie/analysed')
@@ -49,8 +49,13 @@ x.analyseMovie("/media/bgeurten/HSMovieKrissy/Group of flies(around 30)/30_09_19
 
 reload(training_utils)
 
-t = training_utils.training_utils()
+t = training_utils.trainDataCuration()
 t.chooseCandidateFiles()
 # t.renameLabels() or set dictionary
 t.labelChanger = {'deadw': 'dead', 'Live': 'alive', 'lve': 'alive', 'live': 'alive', 'Dead': 'dead', 'livw': 'alive', 'alive': 'alive', 'dead': 'dead'}
 t.transfer_trainingData()
+
+
+reload(training_utils)
+g = training_utils.runTrainingGenScripts()
+g.run()

@@ -1,4 +1,4 @@
-import os, generate_tfrecord
+import os, generate_tfrecord, subprocess,xml_to_csv
 from tqdm import tqdm
 import xml.etree.ElementTree as ET
 from PIL import Image
@@ -181,7 +181,7 @@ class trainDataCuration:
             #save image as png
             im.save(imgTargetPos)
 
-class runTrainingGenScripts(self):
+class runTrainingGenScripts:
     def __init__(self,
                  train_csv_path = '/media/dataSSD/trainingData/Cell/train',
                  train_img_path = '/media/dataSSD/trainingData/Cell/train',
@@ -215,4 +215,15 @@ class runTrainingGenScripts(self):
     def run(self):
 
         if self.warn():
-            generate_tfrecord.tf.app.run()
+
+            xml_to_csv.main(self.output_path)
+            
+            #bashCD       = "cd "+self.output_path
+            #bashXML2CSV  = "python xml_to_csv.py"
+            bashComTest  = "python generate_tfrecord.py --csv_input=" + self.test_csv_path + " --image_dir=" + self. test_img_path + "  --output_path=" + os.path.join(self.output_path + "test.record")
+            bashComTrain = "python generate_tfrecord.py --csv_input=" + self.train_csv_path + " --image_dir=" + self. train_img_path + "  --output_path=" + os.path.join(self.output_path + "train.record")
+            
+            bashCommands =bashComTest + '; ' +bashComTrain
+            print(bashCommands)
+            process = subprocess.Popen(bashComTest.split(), stdout=subprocess.PIPE)
+            output, error = process.communicate()
