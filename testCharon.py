@@ -65,3 +65,8 @@ reload(training_utils)
 lm = training_utils.makelabelMapFile(ids=[1,2],names=['alive','dead'])
 lm.printNameIDs()   
 lm.writeFile()
+
+
+reload(training_utils)
+cf = training_utils.adaptTFconfigFile()
+cf.run()

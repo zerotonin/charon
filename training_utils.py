@@ -351,6 +351,7 @@ class adaptTFconfigFile:
 
         with open(self.targetConfigFile, 'w') as file:
             file.writelines( self.config )
+        print('Wrote updated config file to ' + self.targetConfigFile,)
 
     
 
