@@ -308,6 +308,9 @@ class adaptTFconfigFile:
         self.originalConfigFile = '/home/bgeurten/tensorFlowModels/research/object_detection/samples/configs/faster_rcnn_inception_v2_pets.config'
         self.path2model         = '/home/bgeurten/tensorFlowModels/research/object_detection/faster_rcnn_inception_v2_coco_2018_01_28'
         self.targetConfigFile   = '/media/dataSSD/trainingData/Cell/faster_rcnn_inception_v2_' + tag + '.config'
+        self.testRecord         = '/media/dataSSD/trainingData/Cell/test.record'
+        self.trainRecord        = '/media/dataSSD/trainingData/Cell/train.record'
+        self.pbTXTPos           = '/media/dataSSD/trainingData/Cell/labelmap.pbtxt'
         self.labels = labels
         self.tag = tag
 
@@ -324,6 +327,13 @@ class adaptTFconfigFile:
     def updateCheckPoint(self):
 
         self.config[105] = '  fine_tune_checkpoint: "'+ self.path2model +'/'+ self.tag + '_model.ckpt"\n'
+    
+    def updateRecordPosition(self):
+        self.config[122] = '    input_path: "'+ self.trainRecord +'"\n'
+        self.config[124] = '  label_map_path: "'+ self.pbTXTPos +'"\n'
+        self.config[134] = '    input_path: "'+ self.testRecord +'"\n'
+        self.config[136] = self.config[124] # this is two times the same pbtxt file
+
     
 
     
