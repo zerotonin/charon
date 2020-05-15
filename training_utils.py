@@ -221,3 +221,82 @@ class runTrainingGenScripts:
             generate_tfrecord.main(os.path.join(self.output_path + "test.record"),self.test_img_path,self.test_csv_file)
             generate_tfrecord.main(os.path.join(self.output_path + "train.record"),self.train_img_path,self.train_csv_file)
   
+class makelabelMapFile:
+    def __init__(self,names = [], ids = []):
+        self.names = names
+        self.ids  = ids
+        self.outputPath = '/media/dataSSD/trainingData/Cell/'
+        self.outputFile = 'labelmap.pbtxt'
+    
+    def printNameIDs(self):
+        if self.checkNameID():
+            for x,y in zip(self.ids,self.names):
+                print(x,y)
+        
+
+    def checkNameID(self):
+        if len(self.ids) == 0 or len(self.names) == 0:
+            print("IDs or names are empty!")
+            return False
+        if len(self.ids) != len(self.names):
+            print("IDs and names have different lengths")
+            return False
+        return True
+    
+    def answerCorrectDlg(self,answer):
+
+        correct =input ('You entered ' + answer + '. Is this correct?  [y/n]')
+        while (correct != 'y') and (correct != 'n'):
+            print('Did not recognise answer')
+            correct =input ('You entered ' + answer + '. Is this correct?  [y/n]')
+        
+        if correct =='y':
+            return True
+        else:
+            return False
+
+    def getLabelsVerbose(self):
+
+        self.names = []
+        self.ids   = []
+        moreLabelsAns = input('Do you want to add another label, if you answer y old labels are deleted [y/n]')
+        while (moreLabelsAns != 'y') and (moreLabelsAns != 'n'):
+            print('Did not recognise answer')
+            moreLabelsAns = input('Do you want to add another label? [y/n]')
+        
+        while (moreLabelsAns == 'y'):
+
+            print('===================================================================')
+            labelName = input('Enter label name:')
+            labelCorrect = self.answerCorrectDlg(labelName)
+            while labelCorrect == False:
+                labelName = input('Enter label name:')  
+                labelCorrect = self.answerCorrectDlg(labelName)
+            
+            self.names.append(labelName)
+    
+            idNum = input('Enter id number:')
+            idCorrect = self.answerCorrectDlg(idNum)
+            while idCorrect == False:
+                idNum = input('Enter id number:')
+                idCorrect = self.answerCorrectDlg(idNum)
+            
+            self.ids.append(idNum)
+
+
+            moreLabelsAns = input('Do you want to add another label, if you answer y old labels are deleted [y/n]')
+            while (moreLabelsAns != 'y') and (moreLabelsAns != 'n'):
+                print('Did not recognise answer')
+                moreLabelsAns = input('Do you want to add another label? [y/n]')
+        
+    def writeFile(self):
+        if self.checkNameID:
+            outF = open(os.path.join(self.outputPath,self.outputFile), "w")
+            for idNum,nameStr in zip(self.ids,self.names):
+              # write line to output file
+              outF.write("\n")
+              outF.write("item {")
+              outF.write("  id: " +idNum)
+              outF.write("  name: '" + name +"'")
+              outF.write("}")
+            outF.close()
