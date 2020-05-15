@@ -183,14 +183,14 @@ class trainDataCuration:
 
 class runTrainingGenScripts:
     def __init__(self,
-                 train_csv_path = '/media/dataSSD/trainingData/Cell/train',
+                 train_csv_file = '/media/dataSSD/trainingData/Cell/train_labels.csv',
                  train_img_path = '/media/dataSSD/trainingData/Cell/train',
-                 test_csv_path  = '/media/dataSSD/trainingData/Cell/test',
+                 test_csv_file  = '/media/dataSSD/trainingData/Cell/test_labels.csv',
                  test_img_path  = '/media/dataSSD/trainingData/Cell/test',
                  output_path    = '/media/dataSSD/trainingData/Cell/'):
-        self.train_csv_path = train_csv_path
+        self.train_csv_file = train_csv_file
         self.train_img_path = train_img_path
-        self.test_csv_path  = test_csv_path
+        self.test_csv_file  = test_csv_file
         self.test_img_path  = test_img_path
         self.output_path    = output_path
     
@@ -217,13 +217,14 @@ class runTrainingGenScripts:
         if self.warn():
 
             xml_to_csv.main(self.output_path)
-            
+            generate_tfrecord.main(os.path.join(self.output_path + "test.record"),self.test_img_path,self.test_csv_file)
+            generate_tfrecord.main(os.path.join(self.output_path + "train.record"),self.train_img_path,self.train_csv_file)
             #bashCD       = "cd "+self.output_path
             #bashXML2CSV  = "python xml_to_csv.py"
-            bashComTest  = "python generate_tfrecord.py --csv_input=" + self.test_csv_path + " --image_dir=" + self. test_img_path + "  --output_path=" + os.path.join(self.output_path + "test.record")
-            bashComTrain = "python generate_tfrecord.py --csv_input=" + self.train_csv_path + " --image_dir=" + self. train_img_path + "  --output_path=" + os.path.join(self.output_path + "train.record")
-            
-            bashCommands =bashComTest + '; ' +bashComTrain
-            print(bashCommands)
-            process = subprocess.Popen(bashComTest.split(), stdout=subprocess.PIPE)
-            output, error = process.communicate()
+            #bashComTest  = "python generate_tfrecord.py --csv_input=" + self.test_csv_path + " --image_dir=" + self. test_img_path + "  --output_path=" + os.path.join(self.output_path + "test.record")
+            #bashComTrain = "python generate_tfrecord.py --csv_input=" + self.train_csv_path + " --image_dir=" + self. train_img_path + "  --output_path=" + os.path.join(self.output_path + "train.record")
+            #
+            #bashCommands =bashComTest + '; ' +bashComTrain
+            #print(bashCommands)
+            #process = subprocess.Popen(bashComTest.split(), stdout=subprocess.PIPE)
+            #output, error = process.communicate()
