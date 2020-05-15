@@ -306,7 +306,8 @@ class makelabelMapFile:
 class adaptTFconfigFile:
     def __init__(self,tag='cells',labels= ['alive','dead']):
         self.originalConfigFile = '/home/bgeurten/tensorFlowModels/research/object_detection/samples/configs/faster_rcnn_inception_v2_pets.config'
-        self.targetConfigFile = '/media/dataSSD/trainingData/Cell/faster_rcnn_inception_v2_' + tag + '.config'
+        self.path2model         = '/home/bgeurten/tensorFlowModels/research/object_detection/faster_rcnn_inception_v2_coco_2018_01_28'
+        self.targetConfigFile   = '/media/dataSSD/trainingData/Cell/faster_rcnn_inception_v2_' + tag + '.config'
         self.labels = labels
         self.tag = tag
 
@@ -319,5 +320,10 @@ class adaptTFconfigFile:
     def updateLabelNum(self):
 
         self.config[8] = '    num_classes: '+ str(len(self.labels)) +'\n'
+
+    def updateCheckPoint(self):
+
+        self.config[105] = '  fine_tune_checkpoint: "'+ self.path2model +'/'+ self.tag + '_model.ckpt"\n'
+    
 
     
