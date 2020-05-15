@@ -180,3 +180,29 @@ class trainDataCuration:
             im = Image.open(imgSourcePos)
             #save image as png
             im.save(imgTargetPos)
+
+class runTrainingGenScripts(self):
+    def __init__(self):
+        self.train_csv_path = 
+        self.train_img_path = 
+        self.test_csv_path = 
+        self.test_img_path = 
+        self.output_path =
+    
+    def warn(self):
+        print("-------------------------------------------------------------------")
+        print("| Before you can run this function and create the training files, |")
+        print("| you have to CHANGE the FUNCTION class_text_to_int in the FILE   |")
+        print("| generate_tfrecord.py !                                          |")
+        print("-------------------------------------------------------------------")
+        print(" ")
+        
+        correct = input('Did you do so? [y/n]')
+        while (correct != 'y') and (correct != 'n'):
+            print('Did not recognise answer')
+            correct = input('Did you do so? [y/n]')
+
+        if correct == 'n':
+            return false
+        else:
+            return true
