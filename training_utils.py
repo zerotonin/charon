@@ -311,6 +311,7 @@ class adaptTFconfigFile:
         self.testRecord         = '/media/dataSSD/trainingData/Cell/test.record'
         self.trainRecord        = '/media/dataSSD/trainingData/Cell/train.record'
         self.pbTXTPos           = '/media/dataSSD/trainingData/Cell/labelmap.pbtxt'
+        self.testImgDir         = '/media/dataSSD/trainingData/Cell/test'
         self.labels = labels
         self.tag = tag
 
@@ -333,6 +334,13 @@ class adaptTFconfigFile:
         self.config[124] = '  label_map_path: "'+ self.pbTXTPos +'"\n'
         self.config[134] = '    input_path: "'+ self.testRecord +'"\n'
         self.config[136] = self.config[124] # this is two times the same pbtxt file
+
+    def updateTestImageNum(self):
+        # find all test images
+        fList = trainDataCuration.getFilePos_search(self.testImgDir,'png')
+
+        self.config[129] = '  num_examples: '+ str(len(fList)) +'\n'
+
 
     
 
