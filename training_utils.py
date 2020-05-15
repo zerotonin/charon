@@ -328,7 +328,7 @@ class adaptTFconfigFile:
 
     def updateCheckPoint(self):
 
-        self.config[105] = '  fine_tune_checkpoint: "'+ self.path2model +'/'+ self.tag + '_model.ckpt"\n'
+        self.config[105] = '  fine_tune_checkpoint: "'+ self.path2model +'/model.ckpt"\n'
     
     def updateRecordPosition(self):
         self.config[122] = '    input_path: "'+ self.trainRecord +'"\n'
