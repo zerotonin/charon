@@ -182,12 +182,12 @@ class trainDataCuration:
             im.save(imgTargetPos)
 
 class runTrainingGenScripts(self):
-    def __init__(self):
-                            train_csv_path = '/media/dataSSD/trainingData/Cell/train',
-                            train_img_path = '/media/dataSSD/trainingData/Cell/train',
-                            test_csv_path  = '/media/dataSSD/trainingData/Cell/test',
-                            test_img_path  = '/media/dataSSD/trainingData/Cell/test',
-                            output_path    = '/media/dataSSD/trainingData/Cell/'):
+    def __init__(self,
+                 train_csv_path = '/media/dataSSD/trainingData/Cell/train',
+                 train_img_path = '/media/dataSSD/trainingData/Cell/train',
+                 test_csv_path  = '/media/dataSSD/trainingData/Cell/test',
+                 test_img_path  = '/media/dataSSD/trainingData/Cell/test',
+                 output_path    = '/media/dataSSD/trainingData/Cell/'):
         self.train_csv_path = train_csv_path
         self.train_img_path = train_img_path
         self.test_csv_path  = test_csv_path
