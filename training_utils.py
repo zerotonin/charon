@@ -297,7 +297,7 @@ class makelabelMapFile:
               outF.write("\n")
               outF.write("item {\n")
               outF.write("  id: " + str(idNum) +"\n")
-              outF.write("  name: '" + name +"'\n")
+              outF.write("  name: '" + nameStr +"'\n")
               outF.write("}\n")
             outF.close()
             print('File writen at ' + os.path.join(self.outputPath,self.outputFile))

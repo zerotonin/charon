@@ -59,3 +59,9 @@ t.transfer_trainingData()
 reload(training_utils)
 g = training_utils.runTrainingGenScripts()
 g.run()
+
+
+reload(training_utils)
+lm = training_utils.makelabelMapFile(ids=[1,2],names=['alive','dead'])
+lm.printNameIDs()   
+lm.writeFile()
