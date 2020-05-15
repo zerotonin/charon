@@ -4,10 +4,13 @@ import charon, time, training_utils
 reload(charon)
 x = charon.charon(OUTPUT_DIR='/media/gwdg-backup/BackUp/Debbie/analysed')
 start = time.time()
-x.runExperimentAnalysis("/media/gwdg-backup/BackUp/Debbie/cellAna_new/2020-05-11_Lm-neuron-TRB-#2.zip")
+x.runExperimentAnalysis("/media/gwdg-backup/BackUp/Debbie/cellAna_new/2020-05-06_Lm-neuron-TRB#1.zip")
 end = time.time()
 print(end - start)
 start = time.time()
+x.runExperimentAnalysis("/media/gwdg-backup/BackUp/Debbie/cellAna_new/Neuron Test #1.zip")
+end = time.time()
+print(end - start)
 
 reload(training_utils)
 
