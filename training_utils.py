@@ -216,7 +216,8 @@ class runTrainingGenScripts:
 
         if self.warn():
 
-            xml_to_csv.main(self.output_path)
+            xml_to_csv.main(self.test_img_path,self.test_csv_file)
+            xml_to_csv.main(self.train_img_path,self.traincsv_file)
             generate_tfrecord.main(os.path.join(self.output_path + "test.record"),self.test_img_path,self.test_csv_file)
             generate_tfrecord.main(os.path.join(self.output_path + "train.record"),self.train_img_path,self.train_csv_file)
   
