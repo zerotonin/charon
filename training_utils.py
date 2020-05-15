@@ -295,8 +295,9 @@ class makelabelMapFile:
             for idNum,nameStr in zip(self.ids,self.names):
               # write line to output file
               outF.write("\n")
-              outF.write("item {")
-              outF.write("  id: " +idNum)
-              outF.write("  name: '" + name +"'")
-              outF.write("}")
+              outF.write("item {\n")
+              outF.write("  id: " + str(idNum) +"\n")
+              outF.write("  name: '" + name +"'\n")
+              outF.write("}\n")
             outF.close()
+            print('File writen at ' + os.path.join(self.outputPath,self.outputFile))
