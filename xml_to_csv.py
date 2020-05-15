@@ -26,9 +26,15 @@ def xml_to_csv(path):
 
 
 def main(path):
-    image_path = os.path.join(path, 'annotations')
+    print(path)
+    image_path = os.path.join(path, 'test')
     xml_df = xml_to_csv(image_path)
-    xml_df.to_csv('raccoon_labels.csv', index=None)
+    xml_df.to_csv(os.path.join(path,'test_labels.csv'), index=None)
+
+
+    image_path = os.path.join(path, 'train')
+    xml_df = xml_to_csv(image_path)
+    xml_df.to_csv(os.path.join(path,'train_labels.csv'), index=None)
     print('Successfully converted xml to csv.')
 
 
