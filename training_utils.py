@@ -315,5 +315,9 @@ class adaptTFconfigFile:
             # read a list of lines into data
             config = file.readlines()
         self.config = config
+    
+    def updateLabelNum(self):
+
+        self.config[8] = '    num_classes: '+ str(len(self.labels)) +'\n'
 
     
