@@ -301,3 +301,9 @@ class makelabelMapFile:
               outF.write("}\n")
             outF.close()
             print('File writen at ' + os.path.join(self.outputPath,self.outputFile))
+
+
+class adaptTFconfigFile:
+    def __init__(self,tag):
+        self.originalConfigFile = '/home/bgeurten/tensorFlowModels/research/object_detection/samples/configs/faster_rcnn_inception_v2_pets.config'
+        self.targetConfigFile = '/media/dataSSD/trainingData/Cell/faster_rcnn_inception_v2_' + tag + '.config'
