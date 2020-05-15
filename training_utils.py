@@ -181,13 +181,19 @@ class trainDataCuration:
             #save image as png
             im.save(imgTargetPos)
 
-class runTrainingGenScripts(self):
+class runTrainingGenScripts(self, 
+                            train_csv_path = '',
+                            train_img_path = '',
+                            test_csv_path  = '',
+                            test_img_path  = '',
+                            output_path    = '',
+                            ):
     def __init__(self):
-        self.train_csv_path = 
-        self.train_img_path = 
-        self.test_csv_path = 
-        self.test_img_path = 
-        self.output_path =
+        self.train_csv_path = train_csv_path
+        self.train_img_path = train_img_path
+        self.test_csv_path  = test_csv_path
+        self.test_img_path  = test_img_path
+        self.output_path    = output_path
     
     def warn(self):
         print("-------------------------------------------------------------------")
@@ -203,6 +209,11 @@ class runTrainingGenScripts(self):
             correct = input('Did you do so? [y/n]')
 
         if correct == 'n':
-            return false
+            return False
         else:
-            return true
+            return True
+
+    def run(self):
+
+        if self.warn():
+            pass
