@@ -312,6 +312,7 @@ class adaptTFconfigFile:
         self.trainRecord        = '/media/dataSSD/trainingData/Cell/train.record'
         self.pbTXTPos           = '/media/dataSSD/trainingData/Cell/labelmap.pbtxt'
         self.testImgDir         = '/media/dataSSD/trainingData/Cell/test'
+        self.trainDir           = '/media/dataSSD/trainingData/Cell'
         self.labels = labels
         self.tag = tag
 
@@ -351,7 +352,10 @@ class adaptTFconfigFile:
 
         with open(self.targetConfigFile, 'w') as file:
             file.writelines( self.config )
-        print('Wrote updated config file to ' + self.targetConfigFile,)
+        print('Wrote updated config file to ' + self.targetConfigFile)
+        print("\n")
+        print("Train with following command:")
+        print("python /home/bgeurten/tensorFlowModels/research/object_detection/train.py --logtostderr --train_dir="+ self.trainDir +" --pipeline_config_path="+ self.targetConfigFile +"")
 
     
 
