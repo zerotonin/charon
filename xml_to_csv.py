@@ -25,17 +25,10 @@ def xml_to_csv(path):
     return xml_df
 
 
-def main(path):
-    print(path)
-    image_path = os.path.join(path, 'test')
+def main(image_path,outputCSV):
     xml_df = xml_to_csv(image_path)
-    xml_df.to_csv(os.path.join(path,'test_labels.csv'), index=None)
-
-
-    image_path = os.path.join(path, 'train')
-    xml_df = xml_to_csv(image_path)
-    xml_df.to_csv(os.path.join(path,'train_labels.csv'), index=None)
-    print('Successfully converted xml to csv.')
+    xml_df.to_csv(outputCSV), index=None)
+    print('Successfully converted xml to csv. Results: '+ outputCSV)
 
 
 #main() 
