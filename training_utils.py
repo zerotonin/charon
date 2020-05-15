@@ -340,7 +340,17 @@ class adaptTFconfigFile:
         fList = trainDataCuration.getFilePos_search(self.testImgDir,'png')
 
         self.config[129] = '  num_examples: '+ str(len(fList)) +'\n'
+    
+    def run(self):
 
+        self.readConfig()
+        self.updateLabelNum()
+        self.updateCheckPoint()
+        self.updateRecordPosition()
+        self.updateTestImageNum()
+
+        with open(self.targetConfigFile, 'w') as file:
+            file.writelines( self.config )
 
     
 
