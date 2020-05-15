@@ -314,5 +314,6 @@ class adaptTFconfigFile:
         with open(self.originalConfigFile, 'r') as file:
             # read a list of lines into data
             config = file.readlines()
+        self.config = config
 
     
