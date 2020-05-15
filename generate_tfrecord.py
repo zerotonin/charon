@@ -20,11 +20,11 @@ from PIL import Image
 from object_detection.utils import dataset_util
 from collections import namedtuple, OrderedDict
 
-flags = tf.app.flags
-flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
-flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
-flags.DEFINE_string('image_dir', '', 'Path to images')
-FLAGS = flags.FLAGS
+#flags = tf.app.flags
+#flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
+#flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
+#flags.DEFINE_string('image_dir', '', 'Path to images')
+#FLAGS = flags.FLAGS
 
 
 # TO-DO replace this with label map
@@ -94,8 +94,7 @@ def main(outputPath,imageDir,csvInput):
         writer.write(tf_example.SerializeToString())
 
     writer.close()
-    output_path = os.path.join(os.getcwd(), FLAGS.output_path)
-    print('Successfully created the TFRecords: {}'.format(output_path))
+    print('Successfully created the TFRecords: {}'.format(outputPath))
 
 
 #if __name__ == '__main__':
