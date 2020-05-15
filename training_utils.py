@@ -178,4 +178,5 @@ class trainDataCuration:
 
             #copy and transcode image
             im = Image.open(imgSourcePos)
+            #save image as png
             im.save(imgTargetPos)
