@@ -356,7 +356,6 @@ class adaptTFconfigFile:
         print("\n")
         print("Train with following command:")
         print("python /home/bgeurten/tensorFlowModels/research/object_detection/train.py --logtostderr --train_dir="+ self.trainDir +" --pipeline_config_path="+ self.targetConfigFile +"")
-
-    
-
-    
+        print("Export graph:")
+        print('python /home/bgeurten/tensorFlowModels/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path /media/dataSSD/trainingData/Cell/faster_rcnn_inception_v2_cells.config --trained_checkpoint_prefix /media/dataSSD/trainingData/Cell/model.ckpt-200000 --output_directory inference_graph
+            
