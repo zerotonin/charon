@@ -78,14 +78,14 @@ class charon:
         if cellType == 'locustNeuron':
             self.initModel()
         elif cellType == 'locustHaemo':
-            self.initModel(NUM_CLASSES      = 2, 
-                           MODEL_NAME       = 'haemoCellGraph',
-                           DETECTION_THRESH = 0.75,
-                           OBJECT_DET_DIR   = '/home/bgeurten/tensorFlowModels/research/object_detection',
-                           OUTPUT_DIR       = '/media/dataSSD/cellDetector/done',
-                           ZIP_DIR          = '/media/dataSSD/cellDetector/zips',
-                           WORK_DIR         = '/media/dataSSD/cellDetector/analysing',
-                           PATH_TO_LABELS   = '/home/bgeurten/tensorFlowModels/research/object_detection/haemoCellGraph')
+            self.initModel(2, #NUM_CLASSES     
+                          'haemoCellGraph',#MODEL_NAME      
+                          0.75,#DETECTION_THRESH
+                          '/home/bgeurten/tensorFlowModels/research/object_detection',#OBJECT_DET_DIR  
+                          '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
+                          '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
+                          '/media/dataSSD/cellDetector/analysing',#WORK_DIR        
+                          '/home/bgeurten/tensorFlowModels/research/object_detection/haemoCellGraph'#PATH_TO_LABELS  
         else:
             print('There is no model for celltype: ' +str(cellType))
 
