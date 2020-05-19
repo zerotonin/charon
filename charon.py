@@ -72,7 +72,7 @@ class charon:
 
     def setCellTypeAI(self,cellType):
 
-        if celltype == 'locustNeuron':
+        if cellType == 'locustNeuron':
             self.initModel()
         elif cellType == 'locustHaemo':
             self.initModel(NUM_CLASSES = 2, MODEL_NAME = 'haemoCellGraph',
