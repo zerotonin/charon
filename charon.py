@@ -54,7 +54,7 @@ class charon:
         self.PATH_TO_CKPT = os.path.join(self.OBJECT_DET_DIR,MODEL_NAME,'frozen_inference_graph.pb')
 
         # Path to label map file
-        self.PATH_TO_LABELS = os.path.join(self.PATH_TO_LABELS,'labelmap.pbtxt')
+        self.PATH_TO_LABELS = os.path.join(PATH_TO_LABELS,'labelmap.pbtxt')
 
 
         # Number of classes the object detector can identify
