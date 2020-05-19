@@ -30,13 +30,9 @@ from PIL import Image
 
 
 class charon:
-    def __init__(self,NUM_CLASSES = 2, MODEL_NAME = 'interference_graph3',
-                 DETECTION_THRESH = 0.75,OBJECT_DET_DIR= '/home/bgeurten/tensorFlowModels/research/object_detection',
-                 OUTPUT_DIR='/media/dataSSD/cellDetector/done',ZIP_DIR='/media/dataSSD/cellDetector/zips',
-                 WORK_DIR='/media/dataSSD/cellDetector/analysing'):
+    def __init__(self,cellType='locustNeuron'):
 
-        self.initModel(NUM_CLASSES, MODEL_NAME,DETECTION_THRESH,OBJECT_DET_DIR,OUTPUT_DIR,ZIP_DIR,WORK_DIR)
-
+        self.setCellTypeAI(cellType)
 
 
     def initModel(NUM_CLASSES = 2, MODEL_NAME = 'interference_graph3',
