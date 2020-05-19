@@ -380,6 +380,10 @@ class charon:
         tifList = self.getImagePos_search(self.EXP_DIR,'.tif')
         for tif in tqdm(tifList,desc='tif->png'):
             png = tif[0:-3]+'png'
-            im = Image.open(tif)
-            im.save(png)
-            os.remove(tif)
+            try:
+                im = Image.open(tif)
+                im.save(png)
+                os.remove(tif)
+            except:
+                 os.remove(tif)
+                 print(tif + ' not found!')
