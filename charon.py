@@ -86,7 +86,7 @@ class charon:
                           '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing',#WORK_DIR        
                           '/home/bgeurten/tensorFlowModels/research/object_detection/haemoCellGraph'#PATH_TO_LABELS  
-        else:
+        else
             print('There is no model for celltype: ' +str(cellType))
 
         
