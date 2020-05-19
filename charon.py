@@ -35,6 +35,14 @@ class charon:
                  OUTPUT_DIR='/media/dataSSD/cellDetector/done',ZIP_DIR='/media/dataSSD/cellDetector/zips',
                  WORK_DIR='/media/dataSSD/cellDetector/analysing'):
 
+        self.initModel(NUM_CLASSES, MODEL_NAME,DETECTION_THRESH,OBJECT_DET_DIR,OUTPUT_DIR,ZIP_DIR,WORK_DIR)
+
+
+
+    def initModel(NUM_CLASSES = 2, MODEL_NAME = 'interference_graph3',
+                 DETECTION_THRESH = 0.75,OBJECT_DET_DIR= '/home/bgeurten/tensorFlowModels/research/object_detection',
+                 OUTPUT_DIR='/media/dataSSD/cellDetector/done',ZIP_DIR='/media/dataSSD/cellDetector/zips',
+                 WORK_DIR='/media/dataSSD/cellDetector/analysing'):
         # Name of the directory containing the object detection module we're using
         self.MODEL_NAME       = MODEL_NAME
         self.DETECTION_THRESH = DETECTION_THRESH
@@ -65,6 +73,19 @@ class charon:
         self.WORK_DIR = WORK_DIR
         self.sess = None
 
+    def setCellTypeAI(self,cellType):
+
+        if celltype == 'locustNeuron':
+            self.initModel()
+        elif cellType == 'locustHaemo':
+            self.initModel(NUM_CLASSES = 2, MODEL_NAME = 'haemoCellGraph',
+                 DETECTION_THRESH = 0.75,OBJECT_DET_DIR= '/home/bgeurten/tensorFlowModels/research/object_detection',
+                 OUTPUT_DIR='/media/dataSSD/cellDetector/done',ZIP_DIR='/media/dataSSD/cellDetector/zips',
+                 WORK_DIR='/media/dataSSD/cellDetector/analysing')
+        else:
+            print('There is no model for celltype: ' +str(cellType))
+
+        
 
     def getImagePos_search(self,path,ext):
         
