@@ -36,7 +36,7 @@ class charon:
 
 
     def initModel(self,
-                 NUM_CLASSES     = 2, 
+                 NUM_CLASSES      = 2, 
                  MODEL_NAME       = 'interference_graph3',
                  DETECTION_THRESH = 0.75,
                  OBJECT_DET_DIR   = '/home/bgeurten/tensorFlowModels/research/object_detection',
