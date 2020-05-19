@@ -9,7 +9,7 @@ x.runExperimentAnalysis("/media/gwdg-backup/BackUp/Debbie/cellAna_new/2019-11-25
 end = time.time()
 print(end - start)
 start = time.time()
-x.runExperimentAnalysis("/media/gwdg-backup/BackUp/Debbie/cellAna_new/2020-03-12_dHl-hemocytes#4.zip")
+x.runExperimentAnalysis("/media/gwdg-backup/BackUp/Debbie/cellAna_new/2020-05-12_LM-hemocytes-EpoC#7.zip")
 end = time.time()
 print(end - start)
 
