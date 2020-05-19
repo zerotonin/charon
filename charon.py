@@ -35,7 +35,8 @@ class charon:
         self.setCellTypeAI(cellType)
 
 
-    def initModel(NUM_CLASSES     = 2, 
+    def initModel(self,
+                 NUM_CLASSES     = 2, 
                  MODEL_NAME       = 'interference_graph3',
                  DETECTION_THRESH = 0.75,
                  OBJECT_DET_DIR   = '/home/bgeurten/tensorFlowModels/research/object_detection',
