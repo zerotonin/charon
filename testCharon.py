@@ -3,9 +3,9 @@ import charon, time,  training_utils
 
 #Neuron zipped experiment
 reload(charon)
-x = charon.charon('locustNeurom')
+x = charon.charon('locustNeuron')
 start = time.time()
-x.runExperimentAnalysis("/media/dataSSD/cellDetector/zips/ApopotosisInduction#1.zip")
+x.runExperimentAnalysis("/media/dataSSD/cellDetector/zips/LuizaLocustaNeuron.zip")
 end = time.time()
 print(end - start)
 
