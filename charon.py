@@ -392,4 +392,7 @@ class charon:
         
         if len(unUseableFiles) != 0:
             outF = open(os.path.join(self.EXP_DIR,'unreadableImages.txt'), "w")
-            outF.writelines(L) for L = unUseableFiles
+            for L in unUseableFiles:
+                outF.writeline(L)
+            outF.close()
+
