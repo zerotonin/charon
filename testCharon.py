@@ -1,12 +1,18 @@
 from importlib import reload
 import charon, time,  training_utils
-#standard zipped experiment
+
+#Neuron zipped experiment
 reload(charon)
-x = charon.charon(OUTPUT_DIR='/media/gwdg-backup/BackUp/Debbie/analysed')
+x = charon.charon('locustNeurom')
 start = time.time()
-x.runExperimentAnalysis("/media/gwdg-backup/BackUp/Debbie/cellAna_new/2020-05-06_Lm-neuron-TRB#1.zip")
+x.runExperimentAnalysis("/media/dataSSD/cellDetector/zips/ApopotosisInduction#1.zip")
 end = time.time()
 print(end - start)
+
+
+#Haemo zipped experiment
+reload(charon)
+x = charon.charon('locustHaemo')
 start = time.time()
 x.runExperimentAnalysis("/media/gwdg-backup/BackUp/Debbie/cellAna_new/Neuron Test #1.zip")
 end = time.time()
@@ -34,7 +40,13 @@ x.EXP_DIR = "/media/dataSSD/trainingData/topFly/out (copy)"
 x.convertTIF2PNG()
 x.imgList = x.getImagePos_search(x.EXP_DIR,'png')
 
-
+#multiple files
+reload(charon)
+x = charon.charon('locustHaemo')
+x.OUTPUT_DIR='/media/gwdg-backup/BackUp/Debbie/analysed'
+fList = x.getImagePos_search(x.ZIP_DIR,'zip')
+for file in fList:
+    x.runExperimentAnalysis(file)
 
 
 reload(charon)

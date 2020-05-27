@@ -378,6 +378,7 @@ class charon:
 
     def convertTIF2PNG(self):
         tifList = self.getImagePos_search(self.EXP_DIR,'.tif')
+        unUseableFiles = list()
         for tif in tqdm(tifList,desc='tif->png'):
             png = tif[0:-3]+'png'
             try:
@@ -387,3 +388,8 @@ class charon:
             except:
                  os.remove(tif)
                  print(tif + ' not found!')
+                 unUseableFiles.append(tif)
+        
+        if len(unUseableFiles) != 0:
+            outF = open(os.path.join(self.EXP_DIR,'unreadableImages.txt'), "w")
+            outF.writelines(L) for L = unUseableFiles
