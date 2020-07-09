@@ -74,6 +74,14 @@ To facilitate usage with researchers that have limited background in computer sc
     jupyter notebook models/research/object_detection/colab_tutorials/object_detection_tutorial.ipynb 
   ```
 
+* Get the pretrained model from http://download.tensorflow.org/models/object_detection/   faster_rcnn_inception_v2_coco_2018_01_28.tar.gz and unpack it in/ path/to/models/research/object_detection
 
+* Check the methods in adaptTFconfigFile of training_utils.py
+  Because newer versions of the model zoo update there config files you have to check if the line numbers
+  in the following functions are still correct:
+ * updateLabelNum()
+ * updateCheckPoint()
+ * updateRecordPosition()
+ * updateTestImageNum()
 
 
