@@ -63,7 +63,7 @@ To facilitate usage with researchers that have limited background in computer sc
   * Testing with another model
     If you want to be sure that your installation was complete you can test it with a pre made
     model. By using this notebook and directly jumping to the cell with imports! If you run the full
-    label IT WILL START IN models/research/object_detection/colab_tutorials/ and therefore it CANNOT load the data. Hence you need to add a os.chdir('/path/to/model') to load example data.
+    label IT WILL START IN models/research/object_detection/colab_tutorials/ and therefore it CANNOT load the data. Hence you need to add a os.chdir('/path/to/model') to load example data and import pathlib.  Or you run the third cell!
   ```
     jupyter notebook models/research/object_detection/colab_tutorials/object_detection_tutorial.ipynb 
   ```
