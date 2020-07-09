@@ -7,9 +7,10 @@ from PIL import Image
 class trainDataCuration:
     def __init__(self,WORK_DIR='/media/dataSSD/trainingData/haemoTrain'):
 
-        self.WORK_DIR    = WORK_DIR
-        self.TEST_DIR    = '/media/dataSSD/trainingData/Cell/test'
-        self.TRAIN_DIR   = '/media/dataSSD/trainingData/Cell/train'
+        self.WORK_DIR      = WORK_DIR
+        self.TEST_DIR      = '/media/dataSSD/trainingData/Cell/test'
+        self.TRAIN_DIR     = '/media/dataSSD/trainingData/Cell/train'
+        self.sourceImgType ='png'
 
     
     def getLabelsFromXML(self, file):
@@ -33,7 +34,7 @@ class trainDataCuration:
     def getFileCandidates(self):
 
         xmlList = self.getFilePos_search(self.WORK_DIR,'xml')
-        imgList = self.getFilePos_search(self.WORK_DIR,'tif')
+        imgList = self.getFilePos_search(self.WORK_DIR,self.sourceImgType )
         self.sourceData = (xmlList,imgList)
     
     def shortenCandidatesByName(self):
@@ -131,7 +132,7 @@ class trainDataCuration:
             # get the candidate
             
             # source and traget filenames
-            imgSourcePos = cand+'.tif'
+            imgSourcePos = cand+'.'+self.sourceImgType 
             xmlSourcePos = cand+'.xml'
 
             # 20% of the training data goes to testing
