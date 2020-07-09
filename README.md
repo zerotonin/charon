@@ -55,15 +55,19 @@ To facilitate usage with researchers that have limited background in computer sc
   ```
   * Now its time to build protobufs and install the models
   ```
-      $ cd /path/to/models/research
-      $ protoc --python_out=. .\object_detection\protos\anchor_generator.proto .\object_detection\protos\argmax_matcher.proto .\object_detection\protos\bipartite_matcher.proto .\object_detection\protos\box_coder.proto .\object_detection\protos\box_predictor.proto .\object_detection\protos\eval.proto .\object_detection\protos\faster_rcnn.proto .\object_detection\protos\faster_rcnn_box_coder.proto .\object_detection\protos\grid_anchor_generator.proto .\object_detection\protos\hyperparams.proto .\object_detection\protos\image_resizer.proto .\object_detection\protos\input_reader.proto .\object_detection\protos\losses.proto .\object_detection\protos\matcher.proto .\object_detection\protos\mean_stddev_box_coder.proto .\object_detection\protos\model.proto .\object_detection\protos\optimizer.proto .\object_detection\protos\pipeline.proto .\object_detection\protos\post_processing.proto .\object_detection\protos\preprocessor.proto .\object_detection\protos\region_similarity_calculator.proto .\object_detection\protos\square_box_coder.proto .\object_detection\protos\ssd.proto .\object_detection\protos\ssd_anchor_generator.proto .\object_detection\protos\string_int_label_map.proto .\object_detection\protos\train.proto .\object_detection\protos\keypoint_box_coder.proto .\object_detection\protos\multiscale_anchor_generator.proto .\object_detection\protos\graph_rewriter.proto .\object_detection\protos\calibration.proto .\object_detection\protos\flexible_grid_anchor_generator.proto
-      $ python setup.py build
-      $ python setup.py install
+    $ cd /path/to/models/research
+    $ protoc object_detection/protos/*.proto --python_out=.
+    $ pip install .
 
   ```
+  * Testing with another model
+    If you want to be sure that your installation was complete you can test it with a pre made
+    model. By using this notebook and directly jumping to the cell with imports! If you run the full
+    label IT WILL START IN models/research/object_detection/colab_tutorials/ and therefore it CANNOT load the data. Hence you need to add a os.chdir('/path/to/model') to load example data.
+  ```
+    jupyter notebook models/research/object_detection/colab_tutorials/object_detection_tutorial.ipynb 
+  ```
 
-
-jupyter notebook object_detection/colab_tutorials/object_detection_tutorial.ipynb 
 
 
 
