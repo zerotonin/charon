@@ -183,7 +183,7 @@ class trainDataCuration:
             im.save(imgTargetPos)
 
 class runTrainingGenScripts:
-    def __init__(self,transferObj):
+    def __init__(self,transferObj,tag):
 
         self.train_csv_file = transferObj.TRAIN_DIR+'_labels.csv'
         self.train_img_path = transferObj.TRAIN_DIR
@@ -192,6 +192,7 @@ class runTrainingGenScripts:
         self.output_path    = os.path.abspath(os.path.join(transferObj.TEST_DIR, os.pardir))
         labelList           = set(list(transferObj.labelChanger.values())) 
         self.labelDict      = dict(zip(labelList,range(0,len(labelList)))) 
+        self.tag            = tag
 
     
     def run(self):
@@ -200,9 +201,11 @@ class runTrainingGenScripts:
         xml_to_csv.main(self.train_img_path,self.train_csv_file)
         generate_tfrecord.main(os.path.join(self.output_path + "test.record"),self.test_img_path,self.test_csv_file,self.labelDict)
         generate_tfrecord.main(os.path.join(self.output_path + "train.record"),self.train_img_path,self.train_csv_file,self.labelDict)
-        lm = makelabelMapFile(self,ids=list(self.labelDict.values())  ,names=list(self.labelDict.keys()))   
-        lm.printNameIDs()   
-        lm.writeFile()
+        self.lm = makelabelMapFile(self,ids=list(self.labelDict.values())  ,names=list(self.labelDict.keys()))   
+        self.lm.printNameIDs()   
+        self.lm.writeFile()
+        self.cf = adaptTFconfigFile(self,self.tag)
+        self.cf.run()
 class makelabelMapFile:
     def __init__(self,scriptObj,names = [], ids = []):
         self.names = names
@@ -286,16 +289,16 @@ class makelabelMapFile:
 
 
 class adaptTFconfigFile:
-    def __init__(self,tag='cells',labels= ['alive','dead']):
-        self.originalConfigFile = '/home/bgeurten/tensorFlowModels/research/object_detection/samples/configs/faster_rcnn_inception_v2_pets.config'
-        self.path2model         = '/home/bgeurten/tensorFlowModels/research/object_detection/faster_rcnn_inception_v2_coco_2018_01_28'
-        self.targetConfigFile   = '/media/dataSSD/trainingData/Cell/faster_rcnn_inception_v2_' + tag + '.config'
-        self.testRecord         = '/media/dataSSD/trainingData/Cell/test.record'
-        self.trainRecord        = '/media/dataSSD/trainingData/Cell/train.record'
-        self.pbTXTPos           = '/media/dataSSD/trainingData/Cell/labelmap.pbtxt'
-        self.testImgDir         = '/media/dataSSD/trainingData/Cell/test'
-        self.trainDir           = '/media/dataSSD/trainingData/Cell'
-        self.labels = labels
+    def __init__(self,scriptObj,tag='cells'):
+        self.originalConfigFile = '/home/bgeurten/models/research/object_detection/samples/configs/faster_rcnn_inception_v2_pets.config'
+        self.path2model         = '/home/bgeurten/models/research/object_detection/faster_rcnn_inception_v2_coco_2018_01_28'
+        self.targetConfigFile   = scriptObj.output_path + '/faster_rcnn_inception_v2_' + tag + '.config'
+        self.testRecord         = scriptObj.output_path + '/test.record'
+        self.trainRecord        = scriptObj.output_path + '/train.record'
+        self.pbTXTPos           = scriptObj.lm.outputFile
+        self.testImgDir         = scriptObj.test_img_path
+        self.trainDir           = scriptObj.output_path
+        self.labels             = scriptObj.lm.names
         self.tag = tag
 
     def readConfig(self):
