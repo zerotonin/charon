@@ -17,6 +17,7 @@ dependencies:
   - opencv
   - numpy
   - scipy
+  - tqdm
   - protobuf
   - pip:
       - pillow
