@@ -19,7 +19,4 @@ g = training_utils.runTrainingGenScripts(t,'flyCourtBehav')
 g.run()
 
 
-
-reload(training_utils)
-cf = training_utils.adaptTFconfigFile()
-cf.run()
+ python /home/bgeurten/models/research/object_detection/legacy/train.py --logtostderr --train_dir=/media/dataSSD/trainingData/flyBehav --pipeline_config_path=/media/dataSSD/trainingData/flyBehav/faster_rcnn_inception_v2_flyCourtBehav.config

@@ -191,7 +191,7 @@ class runTrainingGenScripts:
         self.test_img_path  = transferObj.TEST_DIR
         self.output_path    = os.path.abspath(os.path.join(transferObj.TEST_DIR, os.pardir))
         labelList           = set(list(transferObj.labelChanger.values())) 
-        self.labelDict      = dict(zip(labelList,range(0,len(labelList)))) 
+        self.labelDict      = dict(zip(labelList,range(1,len(labelList)+1))) 
         self.tag            = tag
 
     
