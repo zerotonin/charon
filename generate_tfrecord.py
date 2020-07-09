@@ -36,6 +36,9 @@ def class_text_to_int(row_label):
     else:
         None
 
+def class_text_to_int_dict(rowlabel,labelDict):
+
+    return labelDict[rowlabel]
 
 def split(df, group):
     data = namedtuple('data', ['filename', 'object'])
@@ -43,7 +46,7 @@ def split(df, group):
     return [data(filename, gb.get_group(x)) for filename, x in zip(gb.groups.keys(), gb.groups)]
 
 
-def create_tf_example(group, path):
+def create_tf_example(group, path,labelDict):
     with tf.gfile.GFile(os.path.join(path, '{}'.format(group.filename)), 'rb') as fid:
         encoded_jpg = fid.read()
     encoded_jpg_io = io.BytesIO(encoded_jpg)
@@ -65,7 +68,7 @@ def create_tf_example(group, path):
         ymins.append(row['ymin'] / height)
         ymaxs.append(row['ymax'] / height)
         classes_text.append(row['class'].encode('utf8'))
-        classes.append(class_text_to_int(row['class']))
+        classes.append(class_text_to_int_dict(row['class']),labelDict)
 
     tf_example = tf.train.Example(features=tf.train.Features(feature={
         'image/height': dataset_util.int64_feature(height),
@@ -84,13 +87,13 @@ def create_tf_example(group, path):
     return tf_example
 
 
-def main(outputPath,imageDir,csvInput):
-    writer = tf.python_io.TFRecordWriter(outputPath)
+def main(outputPath,imageDir,csvInput,labelDict):
+    writer = tf.io.TFRecordWriter(outputPath)
     path = os.path.join(imageDir)
     examples = pd.read_csv(csvInput)
     grouped = split(examples, 'filename')
     for group in grouped:
-        tf_example = create_tf_example(group, path)
+        tf_example = create_tf_example(group, path,labelDict)
         writer.write(tf_example.SerializeToString())
 
     writer.close()
