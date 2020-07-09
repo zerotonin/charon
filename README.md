@@ -46,12 +46,12 @@ To facilitate usage with researchers that have limited background in computer sc
     import tensorflow as tf    
     tf.__version__  
   ```
-  output should be something like '2.1.0'
+  output should be something like '1.15.0'
 
 
   * Get tensorflow model zoo from https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/installation.md using this command:
   ```
-    $ git clone https://github.com/tensorflow/models.git
+    $ git clone --single-branch --branch r1.13.0 git@github.com:tensorflow/models.git
   ```
   * Now its time to build protobufs and install the models
   ```
@@ -65,8 +65,10 @@ To facilitate usage with researchers that have limited background in computer sc
     $ ipython
     import sys 
     sys.path.append('/path/to/models/research/object_detection')    
+
+* Get the pretrained model from http://download.tensorflow.org/models/object_detection/faster_rcnn_inception_v2_coco_2018_01_28.tar.gz and unpack it in/ path/to/models/research/object_detection
   ```
-  * Testing with another model
+* Testing with another model
     If you want to be sure that your installation was complete you can test it with a pre made
     model. By using this notebook and directly jumping to the cell with imports! If you run the full
     label IT WILL START IN models/research/object_detection/colab_tutorials/ and therefore it CANNOT load the data. Hence you need to add a os.chdir('/path/to/model') to load example data and import pathlib.  Or you run the third cell!
@@ -74,14 +76,22 @@ To facilitate usage with researchers that have limited background in computer sc
     jupyter notebook models/research/object_detection/colab_tutorials/object_detection_tutorial.ipynb 
   ```
 
-* Get the pretrained model from http://download.tensorflow.org/models/object_detection/   faster_rcnn_inception_v2_coco_2018_01_28.tar.gz and unpack it in/ path/to/models/research/object_detection
+* open .bashrc and add following line
+  ```
+    $ cd  ~
+    $ nano .bashrc
+  ```
+    in file add:
+  ```
+    export PYTHONPATH="$PYTHONPATH:/home/${YOUR_USERNAME}/models/research/slim"
+  ```
 
 * Check the methods in adaptTFconfigFile of training_utils.py
   Because newer versions of the model zoo update there config files you have to check if the line numbers
   in the following functions are still correct:
- * updateLabelNum()
- * updateCheckPoint()
- * updateRecordPosition()
- * updateTestImageNum()
+  * updateLabelNum()
+  * updateCheckPoint()
+  * updateRecordPosition()
+  * updateTestImageNum()
 
 

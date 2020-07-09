@@ -6,7 +6,7 @@ name: charon
 dependencies:
   - python=3.7
   - pip
-  - tensorflow-gpu
+  - tensorflow-gpu=1.*
   - cudnn=7
   - wxpython
   - jupyter
@@ -29,4 +29,3 @@ dependencies:
       - opencv-python
       - pycocotools
       - tf_slim
-      - model-zoo
