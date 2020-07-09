@@ -194,6 +194,14 @@ class runTrainingGenScripts:
         self.test_csv_file  = test_csv_file
         self.test_img_path  = test_img_path
         self.output_path    = output_path
+
+    def setPathByTransfer(self,transferObj):
+
+        self.train_csv_file = transferObj.TRAIN_DIR+'_labels.csv''
+        self.train_img_path = transferObj.TRAIN_DIR
+        self.test_csv_file  = transferObj.TEST_DIR+'_labels.csv''
+        self.test_img_path  = transferObj.TEST_DIR
+        self.output_path    = os.path.abspath(os.path.join(transferObj.TEST_DIR, os.pardir))
     
     def warn(self):
         print("-------------------------------------------------------------------")
@@ -219,8 +227,8 @@ class runTrainingGenScripts:
 
             xml_to_csv.main(self.test_img_path,self.test_csv_file)
             xml_to_csv.main(self.train_img_path,self.train_csv_file)
-            generate_tfrecord.main(os.path.join(self.output_path + "test.record"),self.test_img_path,self.test_csv_file)
-            generate_tfrecord.main(os.path.join(self.output_path + "train.record"),self.train_img_path,self.train_csv_file)
+            generate_tfrecord.main(os.path.join(self.output_path + "test.record"),self.test_img_path,self.test_csv_file,self.labelDict)
+            generate_tfrecord.main(os.path.join(self.output_path + "train.record"),self.train_img_path,self.train_csv_file,self.labelDict)
   
 class makelabelMapFile:
     def __init__(self,names = [], ids = []):
