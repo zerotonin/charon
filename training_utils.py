@@ -199,8 +199,8 @@ class runTrainingGenScripts:
 
         xml_to_csv.main(self.test_img_path,self.test_csv_file)
         xml_to_csv.main(self.train_img_path,self.train_csv_file)
-        generate_tfrecord.main(os.path.join(self.output_path + "test.record"),self.test_img_path,self.test_csv_file,self.labelDict)
-        generate_tfrecord.main(os.path.join(self.output_path + "train.record"),self.train_img_path,self.train_csv_file,self.labelDict)
+        generate_tfrecord.main(os.path.join(self.output_path , "test.record"),self.test_img_path,self.test_csv_file,self.labelDict)
+        generate_tfrecord.main(os.path.join(self.output_path , "train.record"),self.train_img_path,self.train_csv_file,self.labelDict)
         self.lm = makelabelMapFile(self,ids=list(self.labelDict.values())  ,names=list(self.labelDict.keys()))   
         self.lm.printNameIDs()   
         self.lm.writeFile()
@@ -293,8 +293,8 @@ class adaptTFconfigFile:
         self.originalConfigFile = '/home/bgeurten/models/research/object_detection/samples/configs/faster_rcnn_inception_v2_pets.config'
         self.path2model         = '/home/bgeurten/models/research/object_detection/faster_rcnn_inception_v2_coco_2018_01_28'
         self.targetConfigFile   = scriptObj.output_path + '/faster_rcnn_inception_v2_' + tag + '.config'
-        self.testRecord         = scriptObj.output_path + '/test.record'
-        self.trainRecord        = scriptObj.output_path + '/train.record'
+        self.testRecord         = os.path.join(scriptObj.output_path, 'test.record')
+        self.trainRecord        = os.path.join(scriptObj.output_path, 'train.record')
         self.pbTXTPos           = scriptObj.lm.outputFile
         self.testImgDir         = scriptObj.test_img_path
         self.trainDir           = scriptObj.output_path
