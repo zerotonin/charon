@@ -183,25 +183,16 @@ class trainDataCuration:
             im.save(imgTargetPos)
 
 class runTrainingGenScripts:
-    def __init__(self,
-                 train_csv_file = '/media/dataSSD/trainingData/Cell/train_labels.csv',
-                 train_img_path = '/media/dataSSD/trainingData/Cell/train',
-                 test_csv_file  = '/media/dataSSD/trainingData/Cell/test_labels.csv',
-                 test_img_path  = '/media/dataSSD/trainingData/Cell/test',
-                 output_path    = '/media/dataSSD/trainingData/Cell/'):
-        self.train_csv_file = train_csv_file
-        self.train_img_path = train_img_path
-        self.test_csv_file  = test_csv_file
-        self.test_img_path  = test_img_path
-        self.output_path    = output_path
+    def __init__(self,transferObj):
 
-    def setPathByTransfer(self,transferObj):
-
-        self.train_csv_file = transferObj.TRAIN_DIR+'_labels.csv''
+        self.train_csv_file = transferObj.TRAIN_DIR+'_labels.csv'
         self.train_img_path = transferObj.TRAIN_DIR
-        self.test_csv_file  = transferObj.TEST_DIR+'_labels.csv''
+        self.test_csv_file  = transferObj.TEST_DIR+'_labels.csv'
         self.test_img_path  = transferObj.TEST_DIR
         self.output_path    = os.path.abspath(os.path.join(transferObj.TEST_DIR, os.pardir))
+        labelList           = set(list(transferObj.labelChanger.values())) 
+        self.labelDict      = dict(zip(labelList,range(0,len(labelList)))) 
+
     
     def warn(self):
         print("-------------------------------------------------------------------")
