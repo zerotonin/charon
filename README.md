@@ -36,37 +36,19 @@ To facilitate usage with researchers that have limited background in computer sc
   ```
 * Create new environment and activate it
   ```
-    $ conda create --name tf python=3.7
-    $ conda activate tf
+    $ conda env create -f charon/charon.yaml 
+    $ conda activate charon   
   ```
-* Installing conda packages 
+* Testing the installation
+  * Test Tensorflow
   ```
-    $ conda update -n base -c defaults conda
-    $ conda install ipython
-    $ conda install pandas
-    $ conda install -c conda-forge opencv
-    $ conda install numpy
-    $ conda install scipy
-    $ conda install tensorflow-gpu
-    $ conda install -c anaconda protobuf
+    $ ipython
+    import tensorflow as tf    
+    tf.__version__  
+  ```
+  output should be something like '2.1.0'
 
-  ```
-* Installing/Updating pip
-  ```
-    $ python -m pip install --upgrade pip
-  ```
-* Installing Pip packages 
-  ```
-    $ pip install pillow
-    $ pip install lxml
-    $ pip install contextlib2
-    $ pip install jupyter
-    $ pip install matplotlib
-    $ pip install pandas
-    $ pip install opencv-python
-    $ pip install --user pycocotools
-    ???? pip3 install model-zoo
-  ```
+
   * Get tensorflow model zoo from https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/installation.md using this command:
   ```
     $ git clone https://github.com/tensorflow/models.git
@@ -81,6 +63,7 @@ To facilitate usage with researchers that have limited background in computer sc
   ```
 
 
+jupyter notebook object_detection/colab_tutorials/object_detection_tutorial.ipynb 
 
 
 
