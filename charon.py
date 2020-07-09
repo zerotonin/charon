@@ -24,8 +24,8 @@ from zipfile import ZipFile, ZIP_DEFLATED
 sys.path.append("/home/bgeurten/tensorFlowModels/research/object_detection")
 
 # Import utilites
-from utils import label_map_util
-from utils import visualization_utils as vis_util
+from object_detection.utils import label_map_util
+from object_detection.utils import visualization_utils as vis_util
 from PIL import Image
 
 
@@ -37,13 +37,13 @@ class charon:
 
     def initModel(self,
                  NUM_CLASSES      = 2, 
-                 MODEL_NAME       = 'interference_graph3',
+                 MODEL_NAME       = 'locustNeuron',
                  DETECTION_THRESH = 0.75,
-                 OBJECT_DET_DIR   = '/home/bgeurten/tensorFlowModels/research/object_detection',
+                 OBJECT_DET_DIR   = '/home/bgeurten/models/research/object_detection',
                  OUTPUT_DIR       = '/media/dataSSD/cellDetector/done',
                  ZIP_DIR          = '/media/dataSSD/cellDetector/zips',
                  WORK_DIR         = '/media/dataSSD/cellDetector/analysing',
-                 PATH_TO_LABELS   = '/home/bgeurten/tensorFlowModels/research/object_detection/training_cellDetectorv02/'):
+                 PATH_TO_LABELS   = '/home/bgeurten/models/research/object_detection/locustNeuron/'):
         # Name of the directory containing the object detection module we're using
         self.MODEL_NAME       = MODEL_NAME
         self.DETECTION_THRESH = DETECTION_THRESH
@@ -82,11 +82,11 @@ class charon:
             self.initModel(2, #NUM_CLASSES     
                           'haemoCellGraph',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
-                          '/home/bgeurten/tensorFlowModels/research/object_detection',#OBJECT_DET_DIR  
+                          '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
                           '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
                           '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing',#WORK_DIR        
-                          '/home/bgeurten/tensorFlowModels/research/object_detection/haemoCellGraph')#PATH_TO_LABELS  
+                          '/home/bgeurten/models/research/object_detection/locustHaemoInference')#PATH_TO_LABELS  
         else:
             print('There is no model for celltype: ' +str(cellType))
 
