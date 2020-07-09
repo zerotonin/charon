@@ -200,12 +200,14 @@ class runTrainingGenScripts:
         xml_to_csv.main(self.train_img_path,self.train_csv_file)
         generate_tfrecord.main(os.path.join(self.output_path + "test.record"),self.test_img_path,self.test_csv_file,self.labelDict)
         generate_tfrecord.main(os.path.join(self.output_path + "train.record"),self.train_img_path,self.train_csv_file,self.labelDict)
-  
+        lm = makelabelMapFile(self,ids=list(self.labelDict.values())  ,names=list(self.labelDict.keys()))   
+        lm.printNameIDs()   
+        lm.writeFile()
 class makelabelMapFile:
-    def __init__(self,names = [], ids = []):
+    def __init__(self,scriptObj,names = [], ids = []):
         self.names = names
         self.ids  = ids
-        self.outputPath = '/media/dataSSD/trainingData/Cell/'
+        self.outputPath = scriptObj.output_path
         self.outputFile = 'labelmap.pbtxt'
     
     def printNameIDs(self):
