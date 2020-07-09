@@ -295,7 +295,7 @@ class adaptTFconfigFile:
         self.targetConfigFile   = scriptObj.output_path + '/faster_rcnn_inception_v2_' + tag + '.config'
         self.testRecord         = os.path.join(scriptObj.output_path, 'test.record')
         self.trainRecord        = os.path.join(scriptObj.output_path, 'train.record')
-        self.pbTXTPos           = scriptObj.lm.outputFile
+        self.pbTXTPos           = os.path.join(scriptObj.lm.outputPath, scriptObj.lm.outputFile)
         self.testImgDir         = scriptObj.test_img_path
         self.trainDir           = scriptObj.output_path
         self.labels             = scriptObj.lm.names
@@ -340,7 +340,7 @@ class adaptTFconfigFile:
         print('Wrote updated config file to ' + self.targetConfigFile)
         print("\n")
         print("Train with following command:")
-        print("python /home/bgeurten/tensorFlowModels/research/object_detection/train.py --logtostderr --train_dir="+ self.trainDir +" --pipeline_config_path="+ self.targetConfigFile +"")
+        print("python /home/bgeurten/models/research/object_detection/model_main.py --logtostderr --train_dir="+ self.trainDir +" --pipeline_config_path="+ self.targetConfigFile +"")
         print("Export graph:")
         print('python /home/bgeurten/tensorFlowModels/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path /media/dataSSD/trainingData/Cell/faster_rcnn_inception_v2_cells.config --trained_checkpoint_prefix /media/dataSSD/trainingData/Cell/model.ckpt-200000 --output_directory inference_graph')
             
