@@ -194,32 +194,12 @@ class runTrainingGenScripts:
         self.labelDict      = dict(zip(labelList,range(0,len(labelList)))) 
 
     
-    def warn(self):
-        print("-------------------------------------------------------------------")
-        print("| Before you can run this function and create the training files, |")
-        print("| you have to CHANGE the FUNCTION class_text_to_int in the FILE   |")
-        print("| generate_tfrecord.py !                                          |")
-        print("-------------------------------------------------------------------")
-        print(" ")
-        
-        correct = input('Did you do so? [y/n]')
-        while (correct != 'y') and (correct != 'n'):
-            print('Did not recognise answer')
-            correct = input('Did you do so? [y/n]')
-
-        if correct == 'n':
-            return False
-        else:
-            return True
-
     def run(self):
 
-        if self.warn():
-
-            xml_to_csv.main(self.test_img_path,self.test_csv_file)
-            xml_to_csv.main(self.train_img_path,self.train_csv_file)
-            generate_tfrecord.main(os.path.join(self.output_path + "test.record"),self.test_img_path,self.test_csv_file,self.labelDict)
-            generate_tfrecord.main(os.path.join(self.output_path + "train.record"),self.train_img_path,self.train_csv_file,self.labelDict)
+        xml_to_csv.main(self.test_img_path,self.test_csv_file)
+        xml_to_csv.main(self.train_img_path,self.train_csv_file)
+        generate_tfrecord.main(os.path.join(self.output_path + "test.record"),self.test_img_path,self.test_csv_file,self.labelDict)
+        generate_tfrecord.main(os.path.join(self.output_path + "train.record"),self.train_img_path,self.train_csv_file,self.labelDict)
   
 class makelabelMapFile:
     def __init__(self,names = [], ids = []):
