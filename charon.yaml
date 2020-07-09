@@ -27,4 +27,5 @@ dependencies:
       - pandas
       - opencv-python
       - pycocotools
+      - tf_slim
       - model-zoo
