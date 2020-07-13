@@ -87,6 +87,16 @@ class charon:
                           '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing',#WORK_DIR        
                           '/home/bgeurten/models/research/object_detection/locustHaemoInference')#PATH_TO_LABELS  
+elif cellType == 'drosoSocial':
+            self.initModel(2, #NUM_CLASSES     
+                          'haemoCellGraph',#MODEL_NAME      
+                          0.75,#DETECTION_THRESH
+                          '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
+                          '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
+                          '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
+                          '/media/dataSSD/cellDetector/analysing',#WORK_DIR        
+                          '/home/bgeurten/models/research/object_detection/locustHaemoInference')#PATH_TO_LABELS  
+
         else:
             print('There is no model for celltype: ' +str(cellType))
 
