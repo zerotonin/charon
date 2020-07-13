@@ -29,16 +29,17 @@ print(end - start)
 #read file list trace
 reload(charon)
 x = charon.charon()
-x.getImagePos_readTXT('/media/dataSSD/cellDetector/test1.txt')   
+x.getImagePos_readTXT('/media/dataSSD/cellDetector/test1.txt') 
 x.runTreatmentAnalysis("/media/dataSSD/cellDetector/PHL neurons #1","test.xls")
 
 
 # do everything by hand
 reload(charon)
-x = charon.charon()
-x.EXP_DIR = "/media/dataSSD/trainingData/topFly/out (copy)"
-x.convertTIF2PNG()
+x = charon.charon("drosoSocial")
+x.EXP_DIR = "/media/dataSSD/trainingData/flyBehav/origData/test4AI"
+#x.convertTIF2PNG()
 x.imgList = x.getImagePos_search(x.EXP_DIR,'png')
+x.runTreatmentAnalysis("/media/dataSSD/trainingData/flyBehav/origData/test4AI","test.xls")    
 
 #multiple files
 reload(charon)
