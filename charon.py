@@ -36,25 +36,25 @@ class charon:
 
 
     def initModel(self,
-                 NUM_CLASSES      = 2, 
-                 MODEL_NAME       = 'locustNeuron',
-                 DETECTION_THRESH = 0.75,
-                 OBJECT_DET_DIR   = '/home/bgeurten/models/research/object_detection',
-                 OUTPUT_DIR       = '/media/dataSSD/cellDetector/done',
-                 ZIP_DIR          = '/media/dataSSD/cellDetector/zips',
-                 WORK_DIR         = '/media/dataSSD/cellDetector/analysing',
-                 PATH_TO_LABELS   = '/home/bgeurten/models/research/object_detection/locustNeuron/'):
+                 NUM_CLASSES         = 2, 
+                 MODEL_NAME          = 'locustNeuron',
+                 DETECTION_THRESH    = 0.75,
+                 OBJECT_DET_DIR      = '/home/bgeurten/models/research/object_detection',
+                 INFERENCE_GRAPH_DIR = '/media/dataSSD/inferenceGraphs/flyBehav'
+                 OUTPUT_DIR          = '/media/dataSSD/cellDetector/done',
+                 ZIP_DIR             = '/media/dataSSD/cellDetector/zips',
+                 WORK_DIR            = '/media/dataSSD/cellDetector/analysing'):
         # Name of the directory containing the object detection module we're using
-        self.MODEL_NAME       = MODEL_NAME
-        self.DETECTION_THRESH = DETECTION_THRESH
-        self.OBJECT_DET_DIR   = OBJECT_DET_DIR
-
+        self.MODEL_NAME          = MODEL_NAME
+        self.DETECTION_THRESH    = DETECTION_THRESH
+        self.OBJECT_DET_DIR      = OBJECT_DET_DIR
+        self.INFERENCE_GRAPH_DIR = INFERENCE_GRAPH_DIR
         # Path to frozen detection graph .pb file, which contains the model that is used
         # for object detection.
-        self.PATH_TO_CKPT = os.path.join(self.OBJECT_DET_DIR,MODEL_NAME,'frozen_inference_graph.pb')
+        self.PATH_TO_CKPT = os.path.join(INFERENCE_GRAPH_DIR,'frozen_inference_graph.pb')
 
         # Path to label map file
-        self.PATH_TO_LABELS = os.path.join(PATH_TO_LABELS,'labelmap.pbtxt')
+        self.PATH_TO_LABELS = os.path.join(INFERENCE_GRAPH_DIR,'labelmap.pbtxt')
 
 
         # Number of classes the object detector can identify
@@ -87,15 +87,15 @@ class charon:
                           '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing',#WORK_DIR        
                           '/home/bgeurten/models/research/object_detection/locustHaemoInference')#PATH_TO_LABELS  
-elif cellType == 'drosoSocial':
-            self.initModel(2, #NUM_CLASSES     
-                          'haemoCellGraph',#MODEL_NAME      
+        elif cellType == 'drosoSocial':
+            self.initModel(6, #NUM_CLASSES     
+                          'drosoSocialGraph',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
                           '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
                           '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing',#WORK_DIR        
-                          '/home/bgeurten/models/research/object_detection/locustHaemoInference')#PATH_TO_LABELS  
+                          'media/dataSSD/inferenceGraphs/flyBehav')#PATH_TO_LABELS  
 
         else:
             print('There is no model for celltype: ' +str(cellType))
