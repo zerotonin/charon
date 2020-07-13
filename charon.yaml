@@ -19,6 +19,7 @@ dependencies:
   - scipy
   - tqdm
   - protobuf
+  - xlsxwriter
   - pip:
       - pillow
       - lxml
