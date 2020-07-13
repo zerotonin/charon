@@ -40,7 +40,7 @@ class charon:
                  MODEL_NAME          = 'locustNeuron',
                  DETECTION_THRESH    = 0.75,
                  OBJECT_DET_DIR      = '/home/bgeurten/models/research/object_detection',
-                 INFERENCE_GRAPH_DIR = '/media/dataSSD/inferenceGraphs/flyBehav',
+                 INFERENCE_GRAPH_DIR = '/media/dataSSD/inferenceGraphs/locustNeuron',
                  OUTPUT_DIR          = '/media/dataSSD/cellDetector/done',
                  ZIP_DIR             = '/media/dataSSD/cellDetector/zips',
                  WORK_DIR            = '/media/dataSSD/cellDetector/analysing'):
@@ -83,20 +83,20 @@ class charon:
                           'haemoCellGraph',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
+                          '/media/dataSSD/inferenceGraphs/locustHaemoInference', #INFERENCE_GRAPH_DIR
                           '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
                           '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
-                          '/media/dataSSD/cellDetector/analysing',#WORK_DIR        
-                          '/home/bgeurten/models/research/object_detection/locustHaemoInference')#PATH_TO_LABELS  
+                          '/media/dataSSD/cellDetector/analysing'),#WORK_DIR        
+                  
         elif cellType == 'drosoSocial':
             self.initModel(6, #NUM_CLASSES     
                           'drosoSocialGraph',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
+                          '/media/dataSSD/inferenceGraphs/flyBehav', #INFERENCE_GRAPH_DIR
                           '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
                           '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
-                          '/media/dataSSD/cellDetector/analysing',#WORK_DIR        
-                          'media/dataSSD/inferenceGraphs/flyBehav')#PATH_TO_LABELS  
-
+                          '/media/dataSSD/cellDetector/analysing')#WORK_DIR        
         else:
             print('There is no model for celltype: ' +str(cellType))
 
