@@ -342,5 +342,5 @@ class adaptTFconfigFile:
         print("Train with following command:")
         print("python /home/bgeurten/models/research/object_detection/model_main.py --logtostderr --train_dir="+ self.trainDir +" --pipeline_config_path="+ self.targetConfigFile +"")
         print("Export graph:")
-        print("python /home/bgeurten/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path" + self.targetConfigFile + " --trained_checkpoint_prefix " + self.trainDir + " --output_directory /media/dataSSD/inferenceGraphs/flyBehav")
+        print("python /home/bgeurten/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path" + self.targetConfigFile + " --trained_checkpoint_prefix " + self.trainDir + " --output_directory /media/dataSSD/inferenceGraphs/"+ self.tag)
         
