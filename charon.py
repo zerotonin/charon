@@ -163,7 +163,7 @@ class charon:
         self.setUp_XLSwriter(os.path.dirname(xlsFilename),os.path.basename(xlsFilename))
 
         # video reader enabled
-        cap = cv2.VideoCapture("/media/bgeurten/HSMovieKrissy/Group of flies(around 30)/30_09_19/2019-09-30__16_55_47.avi")
+        cap = cv2.VideoCapture(moviePos)
         #fps 
         fps = round(cap.get(cv2.CAP_PROP_FPS))
         # read fideo frame 
