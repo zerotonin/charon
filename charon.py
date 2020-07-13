@@ -207,7 +207,7 @@ class charon:
                 use_normalized_coordinates=True,
                 line_thickness=4,
                 min_score_thresh=self.DETECTION_THRESH,
-                track_ids=np.array(range(len(scores[0])),dtype=int),
+                #track_ids=np.array(range(len(scores[0])),dtype=int),
                 max_boxes_to_draw= 500)
             # write out image
             out.write(image)
