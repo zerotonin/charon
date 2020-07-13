@@ -49,37 +49,12 @@ fList = x.getImagePos_search(x.ZIP_DIR,'zip')
 for file in fList:
     x.runExperimentAnalysis(file)
 
-
+#analyse movie
 reload(charon)
-x = charon.charon()
-x.DETECTION_THRESH =0.33
-x.MODEL_NAME='topFly_graph'     
-x.analyseMovie("/media/bgeurten/HSMovieKrissy/Group of flies(around 30)/30_09_19/2019-09-30__16_55_47.avi",
-            "/media/bgeurten/HSMovieKrissy/Group of flies(around 30)/30_09_19/2019-09-30__16_55_47_ana.avi",
-            "/media/bgeurten/HSMovieKrissy/Group of flies(around 30)/30_09_19/2019-09-30__16_55_47.xlsx")
+x = charon.charon('drosoSocial')
+x.DETECTION_THRESH =0.95  
+x.analyseMovie("/home/bgeurten/Aitest/2018_11_22_mix_dark_5min.mkv", #moviePos
+            "/home/bgeurten/Aitest/ana/", #anaPath out
+            "/home/bgeurten/Aitest/test.xlsx") # xlsx file
 
 
-
-reload(training_utils)
-
-t = training_utils.trainDataCuration()
-t.chooseCandidateFiles()
-# t.renameLabels() or set dictionary
-t.labelChanger = {'deadw': 'dead', 'Live': 'alive', 'lve': 'alive', 'live': 'alive', 'Dead': 'dead', 'livw': 'alive', 'alive': 'alive', 'dead': 'dead'}
-t.transfer_trainingData()
-
-
-reload(training_utils)
-g = training_utils.runTrainingGenScripts()
-g.run()
-
-
-reload(training_utils)
-lm = training_utils.makelabelMapFile(ids=[1,2],names=['alive','dead'])
-lm.printNameIDs()   
-lm.writeFile()
-
-
-reload(training_utils)
-cf = training_utils.adaptTFconfigFile()
-cf.run()
