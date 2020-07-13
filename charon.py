@@ -40,7 +40,7 @@ class charon:
                  MODEL_NAME          = 'locustNeuron',
                  DETECTION_THRESH    = 0.75,
                  OBJECT_DET_DIR      = '/home/bgeurten/models/research/object_detection',
-                 INFERENCE_GRAPH_DIR = '/media/dataSSD/inferenceGraphs/flyBehav'
+                 INFERENCE_GRAPH_DIR = '/media/dataSSD/inferenceGraphs/flyBehav',
                  OUTPUT_DIR          = '/media/dataSSD/cellDetector/done',
                  ZIP_DIR             = '/media/dataSSD/cellDetector/zips',
                  WORK_DIR            = '/media/dataSSD/cellDetector/analysing'):
