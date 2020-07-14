@@ -52,9 +52,9 @@ for file in fList:
 #analyse movie
 reload(charon)
 x = charon.charon('drosoSocial')
-x.DETECTION_THRESH =0.95  
+x.DETECTION_THRESH =0.75  
 x.analyseMovie("/home/bgeurten/Aitest/2018_11_22_mix_dark_5min.mkv", #moviePos
-            "/home/bgeurten/Aitest/ana/", #anaPath out
-            "/home/bgeurten/Aitest/test.xlsx") # xlsx file
+            "/home/bgeurten/Aitest/ana/test.avi", #anaPath out
+            "/home/bgeurten/Aitest/ana/test.xlsx") # xlsx file
 
 
