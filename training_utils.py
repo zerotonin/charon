@@ -299,7 +299,7 @@ class adaptTFconfigFile:
         self.testImgDir         = scriptObj.test_img_path
         self.trainDir           = scriptObj.output_path
         self.labels             = scriptObj.lm.names
-        self.tag = tag
+        self.tag                = tag
 
     def readConfig(self):
         with open(self.originalConfigFile, 'r') as file:
