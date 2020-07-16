@@ -300,6 +300,7 @@ class adaptTFconfigFile:
         self.trainDir           = scriptObj.output_path
         self.labels             = scriptObj.lm.names
         self.tag                = tag
+        self.bashScriptPos      = os.path.join(scriptObj.output_path, 'train_and_getInfGraph.sh')
 
     def readConfig(self):
         with open(self.originalConfigFile, 'r') as file:
