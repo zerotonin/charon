@@ -15,6 +15,6 @@ t.transfer_trainingData()
 
 
 reload(training_utils)
-g = training_utils.runTrainingGenScripts(t,'flyCourtBehav')
+g = training_utils.runTrainingGenScripts(t,'flyBehav')
 g.run()
 

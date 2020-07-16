@@ -338,10 +338,29 @@ class adaptTFconfigFile:
 
         with open(self.targetConfigFile, 'w') as file:
             file.writelines( self.config )
+
+        trainCommandStr = "python /home/bgeurten/models/research/object_detection/model_main.py --logtostderr --train_dir="+ self.trainDir +" --pipeline_config_path="+ self.targetConfigFile +""
+        extractInfGraphCommandStr = "python /home/bgeurten/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path" + self.targetConfigFile + " --trained_checkpoint_prefix " + self.trainDir + " --output_directory /media/dataSSD/inferenceGraphs/"+ self.tag + "/"
+        copyMapCommandStr = "cp " + self.pbTXTPos + " /media/dataSSD/inferenceGraphs/"+ self.tag + "/"
+        
+        bashF = open(self.bashScriptPos,'w')
+        bashF.write('#!\n')
+        bashF.write('\n')
+        bashF.write('# Train with following command\n')
+        bashF.write(trainCommandStr+'\n')
+        bashF.write('# Export graph\n')
+        bashF.write(extractInfGraphCommandStr+'\n')
+        bashF.write('#Copy label map \n')
+        bashF.write(copyMapCommandStr+'\n')
+
+
         print('Wrote updated config file to ' + self.targetConfigFile)
+        print('Wrote commands to train the network derive the inference graph and copy the labelmap to ' +self.bashScriptPos)
         print("\n")
         print("Train with following command:")
-        print("python /home/bgeurten/models/research/object_detection/model_main.py --logtostderr --train_dir="+ self.trainDir +" --pipeline_config_path="+ self.targetConfigFile +"")
+        print(trainCommandStr)
         print("Export graph:")
-        print("python /home/bgeurten/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path" + self.targetConfigFile + " --trained_checkpoint_prefix " + self.trainDir + " --output_directory /media/dataSSD/inferenceGraphs/"+ self.tag)
+        print(extractInfGraphCommandStr)
+        print("Copy label map:")
+        print(copyMapCommandStr)
         
