@@ -188,7 +188,7 @@ class trainDataCuration:
             im.save(imgTargetPos)
 
 class runTrainingGenScripts:
-    def __init__(self,transferObj,tag):
+    def __init__(self,transferObj):
 
         self.train_csv_file = transferObj.TRAIN_DIR+'_labels.csv'
         self.train_img_path = transferObj.TRAIN_DIR
@@ -197,7 +197,7 @@ class runTrainingGenScripts:
         self.output_path    = os.path.abspath(os.path.join(transferObj.TEST_DIR, os.pardir))
         labelList           = set(list(transferObj.labelChanger.values())) 
         self.labelDict      = dict(zip(labelList,range(1,len(labelList)+1))) 
-        self.tag            = tag
+        self.tag            = transferObj.tag
 
     
     def run(self):
