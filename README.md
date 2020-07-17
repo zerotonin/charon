@@ -23,6 +23,9 @@ To facilitate usage with researchers that have limited background in computer sc
 5.  train
 6.  use
 
+## Known Issues
+ * Folder Structure should be automated in training UtilS
+
 ## Server Usage
  ???
 
