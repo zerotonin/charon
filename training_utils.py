@@ -2,16 +2,21 @@ import os, generate_tfrecord,xml_to_csv
 from tqdm import tqdm
 import xml.etree.ElementTree as ET
 from PIL import Image
-
+from pathlib import Path
 
 class trainDataCuration:
-    def __init__(self,WORK_DIR='/media/dataSSD/trainingData/haemoTrain'):
+    def __init__(self,tag,IMG_DIR,WORK_DIR='/media/dataSSD/trainingData/',sourceImgType ='tif'):
 
-        self.WORK_DIR      = WORK_DIR
-        self.TEST_DIR      = '/media/dataSSD/trainingData/Cell/test'
-        self.TRAIN_DIR     = '/media/dataSSD/trainingData/Cell/train'
-        self.sourceImgType ='png'
+        self.IMG_DIR       = IMG_DIR # where the original image data is
+        self.WORK_DIR      = os.path.join(WORK_DIR,tag) # where you usually train path/to/where/you/train/yourTAG/
+        self.TEST_DIR      = os.path.join(self.WORK_DIR,'test') # path/to/where/the/test/images/are/going/to/be
+        self.TRAIN_DIR     = os.path.join(self.WORK_DIR,'train')# path/to/where/the/train/images/are/going/to/be
+        self.sourceImgType = sourceImgType # image type png,tif,jpg
+        self.tag           = tag # tags: like locustNeuron, flyBehaviour etc
 
+    def makeTrainDirs(self):
+        Path(self.TEST_DIR).mkdir(parents=True, exist_ok=True)
+        Path(self.TRAIN_DIR).mkdir(parents=True, exist_ok=True)
     
     def getLabelsFromXML(self, file):
         nameList = list()
@@ -33,8 +38,8 @@ class trainDataCuration:
 
     def getFileCandidates(self):
 
-        xmlList = self.getFilePos_search(self.WORK_DIR,'xml')
-        imgList = self.getFilePos_search(self.WORK_DIR,self.sourceImgType )
+        xmlList = self.getFilePos_search(self.IMG_DIR,'xml')
+        imgList = self.getFilePos_search(self.IMG_DIR,self.sourceImgType )
         self.sourceData = (xmlList,imgList)
     
     def shortenCandidatesByName(self):
