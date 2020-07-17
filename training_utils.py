@@ -1,4 +1,4 @@
-import os, generate_tfrecord,xml_to_csv
+import os, generate_tfrecord,xml_to_csv,shutil
 from tqdm import tqdm
 import xml.etree.ElementTree as ET
 from PIL import Image
@@ -194,10 +194,11 @@ class runTrainingGenScripts:
         self.train_img_path = transferObj.TRAIN_DIR
         self.test_csv_file  = transferObj.TEST_DIR+'_labels.csv'
         self.test_img_path  = transferObj.TEST_DIR
-        self.output_path    = os.path.abspath(os.path.join(transferObj.TEST_DIR, os.pardir))
+        self.output_path    = transferObj.WORK_DIR
         labelList           = set(list(transferObj.labelChanger.values())) 
         self.labelDict      = dict(zip(labelList,range(1,len(labelList)+1))) 
         self.tag            = transferObj.tag
+        self.inferencePath  = os.path.join("/media/dataSSD/inferenceGraphs/",self.tag )
 
     
     def run(self):
@@ -294,7 +295,7 @@ class makelabelMapFile:
 
 
 class adaptTFconfigFile:
-    def __init__(self,scriptObj,tag='cells'):
+    def __init__(self,scriptObj,tag):
         self.originalConfigFile = '/home/bgeurten/models/research/object_detection/samples/configs/faster_rcnn_inception_v2_pets.config'
         self.path2model         = '/home/bgeurten/models/research/object_detection/faster_rcnn_inception_v2_coco_2018_01_28'
         self.targetConfigFile   = scriptObj.output_path + '/faster_rcnn_inception_v2_' + tag + '.config'
@@ -306,6 +307,7 @@ class adaptTFconfigFile:
         self.labels             = scriptObj.lm.names
         self.tag                = tag
         self.bashScriptPos      = os.path.join(scriptObj.output_path, 'train_and_getInfGraph.sh')
+        self.inferencePath      = scriptObj.inferencePath
 
     def readConfig(self):
         with open(self.originalConfigFile, 'r') as file:
@@ -346,7 +348,9 @@ class adaptTFconfigFile:
 
         trainCommandStr = "python /home/bgeurten/models/research/object_detection/legacy/train.py --logtostderr --train_dir="+ self.trainDir +" --pipeline_config_path="+ self.targetConfigFile +""
         extractInfGraphCommandStr = "python /home/bgeurten/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path " + self.targetConfigFile + " --trained_checkpoint_prefix " + self.trainDir+"/model.ckpt-XXXXXXXX --output_directory /media/dataSSD/inferenceGraphs/" + self.tag + "/"
-        copyMapCommandStr = "cp " + self.pbTXTPos + " /media/dataSSD/inferenceGraphs/"+ self.tag + "/"
+        
+        Path(self.inferencePath).mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(self.pbTXTPos, os.path.join(self.inferencePath,'labelmap.pbtxt'))
         
         bashF = open(self.bashScriptPos,'w')
         bashF.write('#!\n')
@@ -355,8 +359,7 @@ class adaptTFconfigFile:
         bashF.write(trainCommandStr+'\n')
         bashF.write('# Export graph XXXXXXXX need to be swapped for highest model version\n')
         bashF.write(extractInfGraphCommandStr+'\n')
-        bashF.write('#Copy label map \n')
-        bashF.write(copyMapCommandStr+'\n')
+
 
 
         print('Wrote updated config file to ' + self.targetConfigFile)
@@ -366,6 +369,4 @@ class adaptTFconfigFile:
         print(trainCommandStr)
         print("Export graph XXXXXXXX need to be swapped for highest model version:")
         print(extractInfGraphCommandStr)
-        print("Copy label map:")
-        print(copyMapCommandStr)
-        
+ 
