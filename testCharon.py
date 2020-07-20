@@ -43,8 +43,8 @@ x.runTreatmentAnalysis("/media/dataSSD/trainingData/flyBehav/origData/test4AI","
 
 #multiple files
 reload(charon)
-x = charon.charon('locustHaemo')
-x.OUTPUT_DIR='/media/gwdg-backup/BackUp/Debbie/analysed'
+x = charon.charon('triboliumNeuron')
+#x.OUTPUT_DIR='/media/gwdg-backup/BackUp/Debbie/analysed'
 fList = x.getImagePos_search(x.ZIP_DIR,'zip')
 for file in fList:
     x.runExperimentAnalysis(file)
