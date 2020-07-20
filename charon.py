@@ -97,7 +97,16 @@ class charon:
                           '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
                           '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR        
-        else:
+        elif cellType == 'drosoSocial':
+            self.initModel(2, #NUM_CLASSES     
+                          'triboliumNeuron',#MODEL_NAME      
+                          0.75,#DETECTION_THRESH
+                          '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
+                          '/media/dataSSD/inferenceGraphs/triboliumNeuron', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
+                          '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
+                          '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
+        else:  
             print('There is no model for celltype: ' +str(cellType))
 
         
