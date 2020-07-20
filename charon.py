@@ -97,7 +97,8 @@ class charon:
                           '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
                           '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR        
-        elif cellType == 'drosoSocial':
+                          
+        elif cellType == 'triboliumNeuron':
             self.initModel(2, #NUM_CLASSES     
                           'triboliumNeuron',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
