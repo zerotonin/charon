@@ -54,6 +54,13 @@ class folderAutomaton:
     def delteExpiredOutouts(self):
         pass
 
+    def run(self)
+        i =1
+        while i ==1:
+            self.checkFolders4NewObjects()
+            for dataObj in self.dataObjList:
+                print(dataObj.fPos,dataObj.sizeConsistentFlag)
+            print('===========================================')
 
                 
 
