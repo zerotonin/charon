@@ -17,10 +17,7 @@ To facilitate usage with researchers that have limited background in computer sc
 
 ## To do
 
-* inference graph to cloud
-* all standard paths to cloud 
-* read me file with infos
- 
+counter that counts images, cells etc since started
 
 ## Server Usage
  We implement a simple trick by using owncloud. 
