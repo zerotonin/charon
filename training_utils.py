@@ -198,7 +198,7 @@ class runTrainingGenScripts:
         labelList           = set(list(transferObj.labelChanger.values())) 
         self.labelDict      = dict(zip(labelList,range(1,len(labelList)+1))) 
         self.tag            = transferObj.tag
-        self.inferencePath  = os.path.join("/media/dataSSD/inferenceGraphs/",self.tag )
+        self.inferencePath  = os.path.join("/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/",self.tag )
 
     
     def run(self):
