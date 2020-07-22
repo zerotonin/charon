@@ -16,15 +16,20 @@ class charonData:
 class folderAutomaton:
     def __init__(self):
         #              tag : (INFERENCE_GRAPH_DIR, OUTPUT_DIR, INPUT_DIR)
-        self.AIdict= {'locustNeuron'   :('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/locustNeuron'        ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/locustNeuron'     ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuron'),
-                      'locustHaemo'    :('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/locustHaemoInference','/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/locustNeuronHaemo','/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuronHaemo'),
-                      'flyBehav'       :('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/flyBehav'            ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/flyBehav'         ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/flyBehav'),
-                      'triboliumNeuron':('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/triboliumNeuron'     ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/triboliumNeuron'  ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/triboliumNeuron')}
-        self.dataObjListFpos = '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/charonObjList.dat'
+        self.sharePath = '/media/dataSSD/ownCloudDrosoVis'
+        self.inferencePath = os.path.join(self.sharePath,'inferenceGraphs')
+        self.uploadPath    = os.path.join(self.sharePath,'cellDetector_charon/upload')
+        self.downloadPath  = os.path.join(self.sharePath,'cellDetector_charon/download')
+        self.AIdict= {'locustNeuron'   :(os.path.join(self.inferencePath,'locustNeuron'        ),os.path.join(self.downloadPath,'locustNeuron'     ),os.path.join(self.uploadPath,'locustNeuron')),
+                      'locustHaemo'    :(os.path.join(self.inferencePath,'locustHaemoInference'),os.path.join(self.downloadPath,'locustNeuronHaemo'),os.path.join(self.uploadPath,'locustNeuronHaemo')),
+                      'flyBehav'       :(os.path.join(self.inferencePath,'flyBehav'            ),os.path.join(self.downloadPath,'flyBehav'         ),os.path.join(self.uploadPath,'flyBehav')),
+                      'triboliumNeuron':(os.path.join(self.inferencePath,'triboliumNeuron'     ),os.path.join(self.downloadPath,'triboliumNeuron'  ),os.path.join(self.uploadPath,'triboliumNeuron'))}
+        self.dataObjListFpos = os.path.join(self.inferencePath,'charonObjList.dat')
         self.dataObjList     = list()
 
     def checkFolders4NewObjects(self):
         for AItag, AIpaths in self.AIdict.items():
+            print(AIpaths[2])
             for path in Path(AIpaths[2]).rglob('*.zip'):    
                 # check if there is already a data object with this file position
                 newObj= True
@@ -42,11 +47,10 @@ class folderAutomaton:
                 # if after checking all previous data objects newObj is still true we have 
                 # to add it to the list
                 if newObj:
-                    print(path)
                     if path.name == 'ping.zip':
                         self.pingAnswer(path)
-                        print('saw the ping')
-                    self.dataObjList.append(charonData(path,os.path.getsize(path),AItag))
+                    else:
+                        self.dataObjList.append(charonData(path,os.path.getsize(path),AItag))
     
     def analyseZips(self):
         for dataObj in self.dataObjList:
@@ -97,7 +101,8 @@ class folderAutomaton:
                 
 
     def pingAnswer(self,path):
-        shutil.move(path,os.path.join(os.path.join('/media/dataSSD/ownCloudDrosoVis/cellDetector/download',path.parent.name),'pong.zip'))
+        print('saw a ping @ ', path)
+        shutil.move(path,os.path.join(os.path.join(self.downloadPath,path.parent.name),'pong.zip'))
     
     def loadCharonObjList(self):       
         try:
