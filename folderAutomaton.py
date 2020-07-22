@@ -1,4 +1,4 @@
-import os, shutil,glob
+import os, shutil,glob,charon
 from pathlib import Path
 
 
@@ -54,7 +54,7 @@ class folderAutomaton:
     def delteExpiredOutouts(self):
         pass
 
-    def run(self)
+    def run(self):
         i =1
         while i ==1:
             self.checkFolders4NewObjects()
