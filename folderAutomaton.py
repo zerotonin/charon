@@ -110,9 +110,26 @@ class folderAutomaton:
         with open(self.dataObjListFpos, "wb") as f:
             pickle.dump(self.dataObjList, f)
 
+    def startUpDlg(self):
+
+        answer = input('Do I need to load old charon objects? [y/n]: ')
+        while answer != 'y' and answer != 'n':
+            answer = input('Do I need to load old charon objects? [y/n]: ')
         
 
+        if answer == 'y':
+            try:
+                self.loadCharonObjList()
+                print('Charon object list loaded!')
+            except:
+                print('Charon object list NOT loaded! Starting fresh!')
+        else:
+            print('Starting fresh!')
+        
+        print('Only in death duty ends!')
+
     def run(self):
+        self.startUpDlg()
         c=0
         while True:
             if c==1000:
