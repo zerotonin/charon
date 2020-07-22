@@ -5,29 +5,25 @@ The general idea is that experts classify viability of single cells in images of
 
 To facilitate usage with researchers that have limited background in computer science charon offers the possibility to rrun it through a web-server system.
 
-## Installation
-
-1.  CUDA 
-2.  cudNN 
-3.  tensorFlow 
-4.  tensorFlowModels
-5.  labelImg
-6.  nginx
 
 
 ## Process
 1.  label Images
-2.  Pick suitable interference graph / network
+2.  Pick suitable inference graph / network
 3.  train
 4.  refine
 5.  train
 6.  use
 
-## Known Issues
- * Folder Structure should be automated in training UtilS
+## To do
+
+* inference graph to cloud
+* all standard paths to cloud 
+* read me file with infos
+ 
 
 ## Server Usage
- ???
+ We implement a simple trick by using owncloud. 
 
 ## Install on Ubuntu 20.04
 
