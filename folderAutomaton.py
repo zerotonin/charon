@@ -1,4 +1,4 @@
-import os, shutil,glob,charon,datetime,time
+import os, shutil,glob,charon,datetime,time, pickle
 from pathlib import Path
 
 
@@ -21,9 +21,8 @@ class folderAutomaton:
                       'locustHaemo'    :('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/locustHaemoInference','/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/locustNeuronHaemo','/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuronHaemo'),
                       'flyBehav'       :('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/flyBehav','/media/dataSSD/ownCloudDrosoVis/cellDetector/download/flyBehav','/media/dataSSD/ownCloudDrosoVis/cellDetector/upload/flyBehav'),
                       'triboliumNeuron':('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/triboliumNeuron', '/media/dataSSD/ownCloudDrosoVis/cellDetector/download/triboliumNeuron','/media/dataSSD/ownCloudDrosoVis/cellDetector/upload/triboliumNeuron')}
-
-        self.dataObjList  = list()
-        self.fileSchedule = list()
+        self.dataObjListFpos = '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/charonObjList.dat'
+        self.dataObjList     = list()
 
     def checkFolders4NewObjects(self):
         for AItag, AIpaths in self.AIdict.items():
@@ -44,6 +43,7 @@ class folderAutomaton:
                 # if after checking all previous data objects newObj is still true we have 
                 # to add it to the list
                 if newObj:
+
                     self.dataObjList.append(charonData(path,os.path.getsize(path),AItag))
     
     def analyseZips(self):
@@ -69,28 +69,61 @@ class folderAutomaton:
             append_write = 'a' # append if already exists
         else:
             append_write = 'w' # make a new file if not
+
         errorFile = open(filename,append_write)
         errorFile.write(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")+" : Could not analyse " + dataObj.fPos + '\n')
         errorFile.close()
 
 
 
-    def delteExpiredOutouts(self):
+    def delteExpiredOutputs(self):
         now = datetime.datetime.now()
+        c = 0
+        delMeList = list()
         for dataObj in self.dataObjList:
             elapsedTime = dataObj.expirationDate -now
             if elapsedTime.total_seconds() < 0:
-                try
+                try:
+                    os.remove(dataObj.resultPos)
+                except:
+                    print(dataObj.resultPos ' was allready deleted')
+                delMeList.append(c)
+        
+        for deletedIndex in delMeList:
+            del self.dataObjList[deletedIndex]
+                
+
+    def pingAnswer(self):
+        pass
+    
+    def loadCharonObjList(self):       
+        try:
+            with open(self.dataObjListFpos) as f:
+                objList = pickle.load(f)
+        except:
+           objList = []
+
+        self.dataObjList = objList
+
+    def saveCharonObjList(self):
+        with open(self.dataObjListFpos, "wb") as f:
+            pickle.dump(self.dataObjList, f)
+
         
 
     def run(self):
-        i =1
-        while i ==1:
+        c=0
+        while True:
+            if c==1000:
+                self.saveCharonObjList()
+                c = 0
+
             self.checkFolders4NewObjects()
             for dataObj in self.dataObjList:
                 print(dataObj.fPos,dataObj.sizeConsistentFlag)
             print('===========================================')
             self.analyseZips()
+            c+=1
             time.sleep(5) 
 
                 
