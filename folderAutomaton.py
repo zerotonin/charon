@@ -42,7 +42,8 @@ class folderAutomaton:
                 # if after checking all previous data objects newObj is still true we have 
                 # to add it to the list
                 if newObj:
-
+                    if path.name == 'ping.zip':
+                        self.pingAnswer(path)
                     self.dataObjList.append(charonData(path,os.path.getsize(path),AItag))
     
     def analyseZips(self):
@@ -93,8 +94,8 @@ class folderAutomaton:
             del self.dataObjList[deletedIndex]
                 
 
-    def pingAnswer(self):
-        pass
+    def pingAnswer(self,path):
+        shutil.move(path,os.path.join(os.path.join('/media/dataSSD/ownCloudDrosoVis/cellDetector/download',path.parent.name),'pong.zip'))
     
     def loadCharonObjList(self):       
         try:
