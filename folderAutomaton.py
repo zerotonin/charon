@@ -6,7 +6,7 @@ class charonData:
         self.fPos               = fPos
         self.size               = size
         self.AItag              = AItag
-        self.expirationDate     = 0
+        self.expirationDate     = datetime.datetime.now()+datetime.timedelta(days=4)    
         self.newFlag            = True
         self.sizeConsistentFlag = False
         self.analyseFlag        = False
@@ -88,12 +88,12 @@ class folderAutomaton:
         c = 0
         delMeList = list()
         for dataObj in self.dataObjList:
-            elapsedTime = dataObj.expirationDate -now
+            elapsedTime = dataObj.expirationDate - now
             if elapsedTime.total_seconds() < 0:
                 try:
                     os.remove(dataObj.resultPos)
                 except:
-                    print(dataObj.resultPos, ' was allready deleted')
+                    #print(dataObj.resultPos, ' was allready deleted')
                 delMeList.append(c)
         
         for deletedIndex in delMeList:
@@ -101,7 +101,7 @@ class folderAutomaton:
                 
 
     def pingAnswer(self,path):
-        print('saw a ping @ ', path)
+        #print('saw a ping @ ', path)
         shutil.move(path,os.path.join(os.path.join(self.downloadPath,path.parent.name),'pong.zip'))
     
     def loadCharonObjList(self):       
