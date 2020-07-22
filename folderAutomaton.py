@@ -1,4 +1,4 @@
-import os, shutil,glob,charon
+import os, shutil,glob,charon,datetime,time
 from pathlib import Path
 
 
@@ -9,10 +9,10 @@ class charonData:
         self.AItag              = AItag
         self.expirationDate     = 0
         self.newFlag            = True
-        self.analysedFlag       = False
         self.sizeConsistentFlag = False
-        self.writeOutputFlag    = False
-        self.deleteOutputFlag   = False
+        self.analyseFlag        = False
+        self.success            = False
+        self.resultPos          = ''
 
 class folderAutomaton:
     def __init__(self):
@@ -47,12 +47,41 @@ class folderAutomaton:
                     self.dataObjList.append(charonData(path,os.path.getsize(path),AItag))
     
     def analyseZips(self):
-        pass
-    
-    def writeNegativeOutput(self):
-        pass
+        for dataObj in self.dataObjList:
+            if dataObj.sizeConsistentFlag == True and dataObj.analyseFlag == False:
+                dataObj.analyseFlag = True
+                try:
+                    x = charon.charon(dataObj.AItag)
+                    x.runExperimentAnalysis(dataObj.fPos)
+                    dataObj.writeOutputFlag = True
+                    dataObj.expirationDate  = datetime.datetime.now()+datetime.timedelta(days=4)    
+                    dataObj.success         = True
+                    dataObj.resultPos       = x.resultZipPos
+                except:
+                    dataObj.success         = False
+                    self.writeNegativeOutput()
+
+
+    def writeNegativeOutput(self,AItag):
+        filename = os.path.join(self.AIdict[AItag][1],'errors.txt')
+
+        if os.path.exists(filename):
+            append_write = 'a' # append if already exists
+        else:
+            append_write = 'w' # make a new file if not
+        errorFile = open(filename,append_write)
+        errorFile.write(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")+" : Could not analyse " + dataObj.fPos + '\n')
+        errorFile.close()
+
+
+
     def delteExpiredOutouts(self):
-        pass
+        now = datetime.datetime.now()
+        for dataObj in self.dataObjList:
+            elapsedTime = dataObj.expirationDate -now
+            if elapsedTime.total_seconds() < 0:
+                try
+        
 
     def run(self):
         i =1
@@ -61,6 +90,8 @@ class folderAutomaton:
             for dataObj in self.dataObjList:
                 print(dataObj.fPos,dataObj.sizeConsistentFlag)
             print('===========================================')
+            self.analyseZips()
+            time.sleep(5) 
 
                 
 
