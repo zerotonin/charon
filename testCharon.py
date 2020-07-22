@@ -58,3 +58,13 @@ x.analyseMovie("/home/bgeurten/Aitest/2018_11_22_mix_dark_5min.mkv", #moviePos
             "/home/bgeurten/Aitest/ana/test.xlsx") # xlsx file
 
 
+#analyse multiple movie
+reload(charon)
+x = charon.charon('flyBehav')
+x.DETECTION_THRESH =0.75  
+
+fList = x.getImagePos_search('/media/gwdg-backup/BackUp/DNB_2020/DarkFlySingle','avi')
+for file in fList:
+    x.analyseMovie(file, #moviePos
+            file[0:-4]+'_ana.mp4', #anaPath out
+            file[0:-3]+'xlsx') # xlsx file
