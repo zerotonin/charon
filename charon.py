@@ -40,9 +40,9 @@ class charon:
                  MODEL_NAME          = 'locustNeuron',
                  DETECTION_THRESH    = 0.75,
                  OBJECT_DET_DIR      = '/home/bgeurten/models/research/object_detection',
-                 INFERENCE_GRAPH_DIR = '/media/dataSSD/inferenceGraphs/locustNeuron',
-                 OUTPUT_DIR          = '/media/dataSSD/cellDetector/done',
-                 ZIP_DIR             = '/media/dataSSD/cellDetector/zips',
+                 INFERENCE_GRAPH_DIR = '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/locustNeuron',
+                 OUTPUT_DIR          = '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/locustNeuron',
+                 ZIP_DIR             = '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuron'',
                  WORK_DIR            = '/media/dataSSD/cellDetector/analysing'):
         # Name of the directory containing the object detection module we're using
         self.MODEL_NAME          = MODEL_NAME
@@ -83,9 +83,9 @@ class charon:
                           'haemoCellGraph',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
-                          '/media/dataSSD/inferenceGraphs/locustHaemoInference', #INFERENCE_GRAPH_DIR
-                          '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
-                          '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/locustHaemoInference', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/locustNeuron',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuron',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing'),#WORK_DIR        
                   
         elif cellType == 'flyBehav':
@@ -93,9 +93,9 @@ class charon:
                           'flyBehav',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
-                          '/media/dataSSD/inferenceGraphs/flyBehav', #INFERENCE_GRAPH_DIR
-                          '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
-                          '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/flyBehav', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector/download/flyBehav',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector/upload/flyBehav',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR        
 
         elif cellType == 'triboliumNeuron':
@@ -103,9 +103,9 @@ class charon:
                           'triboliumNeuron',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
-                          '/media/dataSSD/inferenceGraphs/triboliumNeuron', #INFERENCE_GRAPH_DIR
-                          '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
-                          '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/triboliumNeuron', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector/download/triboliumNeuron',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector/upload/triboliumNeuron',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
         else:  
             print('There is no model for celltype: ' +str(cellType))
