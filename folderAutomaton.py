@@ -1,5 +1,5 @@
-import os, shutil,glob,charon,datetime,time, pickle,gc
-
+import os,shutil,glob,charon,datetime,time, pickle,gc
+from pathlib import Path
 
 class charonData:
     def __init__(self,fPos,size,AItag):
@@ -112,7 +112,7 @@ class folderAutomaton:
 
         
 
-    def main(self):
+    def run(self):
         c=0
         while True:
             if c==1000:
@@ -127,5 +127,6 @@ class folderAutomaton:
 
 
 if __name__ == "__main__":
-    main()                
+    automaton = folderAutomaton()   
+    automaton.run()             
 
