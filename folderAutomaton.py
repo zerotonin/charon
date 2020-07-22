@@ -29,7 +29,7 @@ class folderAutomaton:
 
     def checkFolders4NewObjects(self):
         for AItag, AIpaths in self.AIdict.items():
-            print(AIpaths[2])
+            #print(AIpaths[2])
             for path in Path(AIpaths[2]).rglob('*.zip'):    
                 # check if there is already a data object with this file position
                 newObj= True
@@ -117,11 +117,10 @@ class folderAutomaton:
         with open(self.dataObjListFpos, "wb") as f:
             pickle.dump(self.dataObjList, f)
 
-    def startUpDlg(self):
-
-        answer = input('Do I need to load old charon objects? [y/n]: ')
-        while answer != 'y' and answer != 'n':
-            answer = input('Do I need to load old charon objects? [y/n]: ')
+    def startUpDlg(self,answer='u'):
+        if answer != 'y' and answer != 'n':
+            while answer != 'y' and answer != 'n':
+                answer = input('Do I need to load old charon objects? [y/n]: ')
         
 
         if answer == 'y':
