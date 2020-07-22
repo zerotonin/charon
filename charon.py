@@ -42,7 +42,7 @@ class charon:
                  OBJECT_DET_DIR      = '/home/bgeurten/models/research/object_detection',
                  INFERENCE_GRAPH_DIR = '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/locustNeuron',
                  OUTPUT_DIR          = '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/locustNeuron',
-                 ZIP_DIR             = '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuron'',
+                 ZIP_DIR             = '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuron',
                  WORK_DIR            = '/media/dataSSD/cellDetector/analysing'):
         # Name of the directory containing the object detection module we're using
         self.MODEL_NAME          = MODEL_NAME
@@ -84,8 +84,8 @@ class charon:
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
                           '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/locustHaemoInference', #INFERENCE_GRAPH_DIR
-                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/locustNeuron',#OUTPUT_DIR      
-                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuron',#ZIP_DIR         
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/locustNeuronHaemo',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuronHaemo',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing'),#WORK_DIR        
                   
         elif cellType == 'flyBehav':
