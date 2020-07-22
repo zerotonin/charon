@@ -88,16 +88,16 @@ class charon:
                           '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing'),#WORK_DIR        
                   
-        elif cellType == 'drosoSocial':
+        elif cellType == 'flyBehav':
             self.initModel(6, #NUM_CLASSES     
-                          'drosoSocialGraph',#MODEL_NAME      
+                          'flyBehav',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
                           '/media/dataSSD/inferenceGraphs/flyBehav', #INFERENCE_GRAPH_DIR
                           '/media/dataSSD/cellDetector/done',#OUTPUT_DIR      
                           '/media/dataSSD/cellDetector/zips',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR        
-                          
+
         elif cellType == 'triboliumNeuron':
             self.initModel(2, #NUM_CLASSES     
                           'triboliumNeuron',#MODEL_NAME      
