@@ -87,7 +87,7 @@ class folderAutomaton:
                 try:
                     os.remove(dataObj.resultPos)
                 except:
-                    print(dataObj.resultPos ' was allready deleted')
+                    print(dataObj.resultPos, ' was allready deleted')
                 delMeList.append(c)
         
         for deletedIndex in delMeList:

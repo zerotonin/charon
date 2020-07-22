@@ -371,8 +371,8 @@ class charon:
     def zipResults(self):
         (outPath,fileName) = os.path.split(self.EXP_DIR)
         prefixLen = len(self.EXP_DIR)
-        self.resultZipPos = os.path.join(self.OUTPUT_DIR,fileName+'_ana.zip'
-        zipf = ZipFile(self.resultZipPos), 'w', ZIP_DEFLATED)
+        self.resultZipPos = os.path.join(self.OUTPUT_DIR,fileName+'_ana.zip')
+        zipf = ZipFile(self.resultZipPos, 'w', ZIP_DEFLATED)
         
         # ziph is zipfile handle
         for root, dirs, files in os.walk(self.EXP_DIR):
