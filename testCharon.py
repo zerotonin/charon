@@ -18,14 +18,6 @@ x.runExperimentAnalysis("/media/gwdg-backup/BackUp/Debbie/cellAna_new/Neuron Tes
 end = time.time()
 print(end - start)
 
-reload(training_utils)
-
-t = training_utils.training_utils()
-t.chooseCandidateFiles()
-x.runExperimentAnalysis("/media/dataSSD/cellDetector/analysing/2020-05-06_Lm-neuron-TRB#1.zip")
-end = time.time()
-print(end - start)
-
 #read file list trace
 reload(charon)
 x = charon.charon()
