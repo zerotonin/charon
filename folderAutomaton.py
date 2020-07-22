@@ -1,5 +1,4 @@
-import os, shutil,glob,charon,datetime,time, pickle
-from pathlib import Path
+import os, shutil,glob,charon,datetime,time, pickle,gc
 
 
 class charonData:
@@ -57,6 +56,7 @@ class folderAutomaton:
                     dataObj.expirationDate  = datetime.datetime.now()+datetime.timedelta(days=4)    
                     dataObj.success         = True
                     dataObj.resultPos       = x.resultZipPos
+                    del x
                 except:
                     dataObj.success         = False
                     self.writeNegativeOutput()
@@ -111,20 +111,20 @@ class folderAutomaton:
 
         
 
-    def run(self):
+    def main(self):
         c=0
         while True:
             if c==1000:
                 self.saveCharonObjList()
                 c = 0
-
             self.checkFolders4NewObjects()
-            for dataObj in self.dataObjList:
-                print(dataObj.fPos,dataObj.sizeConsistentFlag)
-            print('===========================================')
             self.analyseZips()
+            self.delteExpiredOutputs()
             c+=1
+            gc.collect()
             time.sleep(5) 
 
-                
+
+if __name__ == "__main__":
+    main()                
 
