@@ -16,10 +16,10 @@ class charonData:
 class folderAutomaton:
     def __init__(self):
         #              tag : (INFERENCE_GRAPH_DIR, OUTPUT_DIR, INPUT_DIR)
-        self.AIdict= {'locustNeuron'   :('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/locustNeuron','/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/locustNeuron','/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuron'),
+        self.AIdict= {'locustNeuron'   :('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/locustNeuron'        ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/locustNeuron'     ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuron'),
                       'locustHaemo'    :('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/locustHaemoInference','/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/locustNeuronHaemo','/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuronHaemo'),
-                      'flyBehav'       :('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/flyBehav','/media/dataSSD/ownCloudDrosoVis/cellDetector/download/flyBehav','/media/dataSSD/ownCloudDrosoVis/cellDetector/upload/flyBehav'),
-                      'triboliumNeuron':('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/triboliumNeuron', '/media/dataSSD/ownCloudDrosoVis/cellDetector/download/triboliumNeuron','/media/dataSSD/ownCloudDrosoVis/cellDetector/upload/triboliumNeuron')}
+                      'flyBehav'       :('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/flyBehav'            ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/flyBehav'         ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/flyBehav'),
+                      'triboliumNeuron':('/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/triboliumNeuron'     ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/triboliumNeuron'  ,'/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/triboliumNeuron')}
         self.dataObjListFpos = '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/charonObjList.dat'
         self.dataObjList     = list()
 
@@ -42,8 +42,10 @@ class folderAutomaton:
                 # if after checking all previous data objects newObj is still true we have 
                 # to add it to the list
                 if newObj:
+                    print(path)
                     if path.name == 'ping.zip':
                         self.pingAnswer(path)
+                        print('saw the ping')
                     self.dataObjList.append(charonData(path,os.path.getsize(path),AItag))
     
     def analyseZips(self):
