@@ -94,7 +94,7 @@ class folderAutomaton:
                     os.remove(dataObj.resultPos)
                 except:
                     #print(dataObj.resultPos, ' was allready deleted')
-                delMeList.append(c)
+                    delMeList.append(c)
         
         for deletedIndex in delMeList:
             del self.dataObjList[deletedIndex]
@@ -106,7 +106,7 @@ class folderAutomaton:
     
     def loadCharonObjList(self):       
         try:
-            with open(self.dataObjListFpos) as f:
+            with open(self.dataObjListFpos,'rb') as f:
                 objList = pickle.load(f)
         except:
            objList = []
