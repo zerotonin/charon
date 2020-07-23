@@ -1,4 +1,4 @@
-import os,shutil,glob,charon,datetime,time, pickle,gc
+import os,shutil,glob,charon,datetime,time, pickle,gc,charonData
 from pathlib import Path
 
 class charonData:
@@ -14,6 +14,7 @@ class charonData:
         self.resultPos          = ''
 
 class folderAutomaton:
+    import charonData
     def __init__(self):
         #              tag : (INFERENCE_GRAPH_DIR, OUTPUT_DIR, INPUT_DIR)
         self.sharePath = '/media/dataSSD/ownCloudDrosoVis'
@@ -134,8 +135,18 @@ class folderAutomaton:
         
         print('Only in death duty ends!')
 
-    def run(self):
-        self.startUpDlg()
+    def run(self,loadCharonFlag = 'load'):
+        if loadCharonFlag == 'verbose':
+            self.startUpDlg()
+        elif loadCharonFlag == 'load':
+            try:
+                self.loadCharonObjList()
+                print('Charon object list loaded!')
+            except:
+                print('Charon object list NOT loaded! Starting fresh! \n Only in death duty ends!\n\n')
+        elif loadCharonFlag == 'fresh':
+            self.startUpDlg()
+            print('Starting fresh!\n Only in death duty ends!\n\n')
         c=0
         while True:
             if c==1000:
