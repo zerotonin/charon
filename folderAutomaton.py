@@ -1,4 +1,4 @@
-import os,shutil,glob,charon,datetime,time, pickle,gc,charonData
+import os,shutil,glob,charon,datetime,time, pickle,gc
 from pathlib import Path
 
 class charonData:
