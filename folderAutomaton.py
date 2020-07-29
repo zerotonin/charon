@@ -56,7 +56,7 @@ class folderAutomaton:
                     del x
                 except:
                     dataObj.success         = False
-                    self.writeNegativeOutput()
+                    self.writeNegativeOutput(dataObj.AItag)
 
 
     def writeNegativeOutput(self,AItag):
