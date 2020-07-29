@@ -1,4 +1,5 @@
-import os,shutil,glob,charon,datetime,time, pickle,gc,charon
+import os,shutil,glob,charon,datetime,time, pickle,gc
+import charon, charonData
 from pathlib import Path
 
 
@@ -39,7 +40,7 @@ class folderAutomaton:
                     if path.name == 'ping.zip':
                         self.pingAnswer(path)
                     else:
-                        self.dataObjList.append(charonData(path,os.path.getsize(path),AItag))
+                        self.dataObjList.append(charonData.charonData(path,os.path.getsize(path),AItag))
     
     def analyseZips(self):
         for dataObj in self.dataObjList:
