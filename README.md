@@ -19,6 +19,8 @@ To facilitate usage with researchers that have limited background in computer sc
 
 counter that counts images, cells etc since started
 
+function that allows to add more files and prolong training
+
 ## Server Usage
  We implement a simple trick by using owncloud. 
 

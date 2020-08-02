@@ -103,7 +103,7 @@ class charon:
                           'triboliumNeuron',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
-                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/triboliumNeuron', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/triboliumNeuron2', #INFERENCE_GRAPH_DIR
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/triboliumNeuron',#OUTPUT_DIR      
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/triboliumNeuron',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
