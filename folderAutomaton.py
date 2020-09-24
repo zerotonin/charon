@@ -71,7 +71,14 @@ class folderAutomaton:
         errorFile.write(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")+" : Could not analyse " + dataObj.fPos + '\n')
         errorFile.close()
 
+    def removeTakenOutputs(self):
+        delMeList = list()
+        for c in range(len(self.dataObjList)):
+            if self.dataObjList[c].success and os.path.exists(self.dataObjList[c].resultPos) == False:
+                delMeList.append(c)
 
+        for deletedIndex in delMeList:
+            del self.dataObjList[deletedIndex]
 
     def delteExpiredOutputs(self):
         now = datetime.datetime.now()
@@ -85,6 +92,7 @@ class folderAutomaton:
                 except:
                     #print(dataObj.resultPos, ' was allready deleted')
                     delMeList.append(c)
+            c+=1
         
         for deletedIndex in delMeList:
             del self.dataObjList[deletedIndex]
@@ -143,6 +151,7 @@ class folderAutomaton:
                 c = 0
             self.checkFolders4NewObjects()
             self.analyseZips()
+            self.removeTakenOutputs()
             self.delteExpiredOutputs()
             c+=1
             gc.collect()
