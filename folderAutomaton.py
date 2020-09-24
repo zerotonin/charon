@@ -71,31 +71,28 @@ class folderAutomaton:
         errorFile.write(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")+" : Could not analyse " + dataObj.fPos + '\n')
         errorFile.close()
 
-    def removeTakenOutputs(self):
+    def clearObjectList(self):
         delMeList = list()
         for c in range(len(self.dataObjList)):
-            if self.dataObjList[c].success and os.path.exists(self.dataObjList[c].resultPos) == False:
+            if self.dataObjList[c].success == True:
                 delMeList.append(c)
 
         for deletedIndex in delMeList:
             del self.dataObjList[deletedIndex]
 
     def delteExpiredOutputs(self):
-        now = datetime.datetime.now()
-        c = 0
-        delMeList = list()
-        for dataObj in self.dataObjList:
-            elapsedTime = dataObj.expirationDate - now
-            if elapsedTime.total_seconds() < 0:
-                try:
-                    os.remove(dataObj.resultPos)
-                except:
-                    #print(dataObj.resultPos, ' was allready deleted')
-                    delMeList.append(c)
-            c+=1
+        now               = datetime.datetime.now()
+        nowInSeconds      = now.timestamp()
+        fiveDaysInSeconds = 5*24*60*60      
+
+        for root, dirs, files in os.walk(path):
+            for file in files:
+		        if(file.endswith(".zip")):
+		            fPos = os.path.join(root,file)
+                    fileAgeInSeconds = os.path.getmtime(fPos)
+                    if fileAgeInSeconds-nowInSeconds > fiveDaysInSeconds:
+                        os.remove(fPos)
         
-        for deletedIndex in delMeList:
-            del self.dataObjList[deletedIndex]
                 
 
     def pingAnswer(self,path):
@@ -151,8 +148,8 @@ class folderAutomaton:
                 c = 0
             self.checkFolders4NewObjects()
             self.analyseZips()
-            self.removeTakenOutputs()
             self.delteExpiredOutputs()
+            self.clearObjectList()
             c+=1
             gc.collect()
             time.sleep(5) 
