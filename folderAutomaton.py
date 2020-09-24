@@ -85,15 +85,15 @@ class folderAutomaton:
         nowInSeconds      = now.timestamp()
         fiveDaysInSeconds = 5*24*60*60      
 
-        for root, dirs, files in os.walk(path):
+        for root, dirs, files in os.walk(self.uploadPath):
             for file in files:
-		        if(file.endswith(".zip")):
-		            fPos = os.path.join(root,file)
+                if(file.endswith(".zip")):
+                    fPos = os.path.join(root,file)
                     fileAgeInSeconds = os.path.getmtime(fPos)
                     if fileAgeInSeconds-nowInSeconds > fiveDaysInSeconds:
                         os.remove(fPos)
-        
-                
+
+
 
     def pingAnswer(self,path):
         #print('saw a ping @ ', path)
