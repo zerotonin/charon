@@ -27,11 +27,11 @@ x.runTreatmentAnalysis("/media/dataSSD/cellDetector/PHL neurons #1","test.xls")
 
 # do everything by hand
 reload(charon)
-x = charon.charon("drosoSocial")
-x.EXP_DIR = "/media/dataSSD/trainingData/flyBehav/origData/test4AI"
+x = charon.charon("drosoCellCounting")
+x.EXP_DIR = "/home/bgeurten/Downloads/Test-pictures"
 #x.convertTIF2PNG()
-x.imgList = x.getImagePos_search(x.EXP_DIR,'png')
-x.runTreatmentAnalysis("/media/dataSSD/trainingData/flyBehav/origData/test4AI","test.xls")    
+x.imgList = x.getImagePos_search(x.EXP_DIR,'tif')
+x.runTreatmentAnalysis("/home/bgeurten/Downloads/Test-pictures","test.xls")    
 
 #multiple files
 reload(charon)
