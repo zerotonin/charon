@@ -1,0 +1,1 @@
+python /home/bgeurten/models/research/object_detection/legacy/train.py --logtostderr --train_dir=/media/dataSSD/trainingData/mosquitoDetector --pipeline_config_path=/media/dataSSD/trainingData/mosquitoDetector/faster_rcnn_inception_v2_mosquitoDetector.config
