@@ -10,10 +10,12 @@ class folderAutomaton:
         self.inferencePath = os.path.join(self.sharePath,'inferenceGraphs')
         self.uploadPath    = os.path.join(self.sharePath,'cellDetector_charon/upload')
         self.downloadPath  = os.path.join(self.sharePath,'cellDetector_charon/download')
-        self.AIdict= {'locustNeuron'   :(os.path.join(self.inferencePath,'locustNeuron'        ),os.path.join(self.downloadPath,'locustNeuron'     ),os.path.join(self.uploadPath,'locustNeuron')),
-                      'locustHaemo'    :(os.path.join(self.inferencePath,'locustHaemoInference'),os.path.join(self.downloadPath,'locustNeuronHaemo'),os.path.join(self.uploadPath,'locustNeuronHaemo')),
-                      'flyBehav'       :(os.path.join(self.inferencePath,'flyBehav'            ),os.path.join(self.downloadPath,'flyBehav'         ),os.path.join(self.uploadPath,'flyBehav')),
-                      'triboliumNeuron':(os.path.join(self.inferencePath,'triboliumNeuron'     ),os.path.join(self.downloadPath,'triboliumNeuron'  ),os.path.join(self.uploadPath,'triboliumNeuron'))}
+        self.AIdict= {'locustNeuron'   :(os.path.join(self.inferencePath,'locustNeuron'        ),os.path.join(self.downloadPath,'locustNeuron'       ),os.path.join(self.uploadPath,'locustNeuron')),
+                      'locustHaemo'    :(os.path.join(self.inferencePath,'locustHaemoInference'),os.path.join(self.downloadPath,'locustNeuronHaemo'  ),os.path.join(self.uploadPath,'locustNeuronHaemo')),
+                      'flyBehav'       :(os.path.join(self.inferencePath,'flyBehav'            ),os.path.join(self.downloadPath,'flyBehav'           ),os.path.join(self.uploadPath,'flyBehav')),
+                      'mosquitoDetector'   :(os.path.join(self.inferencePath,'mosquitoDetector'),os.path.join(self.downloadPath,'mosquitoDetector'   ),os.path.join(self.uploadPath,'mosquitoDetector')),
+                      'drosoNucleus'   :(os.path.join(self.inferencePath,'drosoCellCounting'   ),os.path.join(self.downloadPath,'drosoNucleusCounter'),os.path.join(self.uploadPath,'drosoNucleusCounter')),
+                      'triboliumNeuron':(os.path.join(self.inferencePath,'triboliumNeuron'     ),os.path.join(self.downloadPath,'triboliumNeuron'    ),os.path.join(self.uploadPath,'triboliumNeuron'))}
         self.dataObjListFpos = os.path.join(self.inferencePath,'charonObjList.dat')
         self.dataObjList     = list()
 
@@ -56,11 +58,11 @@ class folderAutomaton:
                     del x
                 except:
                     dataObj.success         = False
-                    self.writeNegativeOutput(dataObj.AItag)
+                    self.writeNegativeOutput(dataObj)
 
 
-    def writeNegativeOutput(self,AItag):
-        filename = os.path.join(self.AIdict[AItag][1],'errors.txt')
+    def writeNegativeOutput(self,dataObj):
+        filename = os.path.join(self.AIdict[dataObj.AItag][1],'errors.txt')
 
         if os.path.exists(filename):
             append_write = 'a' # append if already exists
@@ -68,7 +70,7 @@ class folderAutomaton:
             append_write = 'w' # make a new file if not
 
         errorFile = open(filename,append_write)
-        errorFile.write(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")+" : Could not analyse " + dataObj.fPos + '\n')
+        errorFile.write(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")+" : Could not analyse " + str(dataObj.fPos) + '\n')
         errorFile.close()
 
     def clearObjectList(self):
@@ -149,7 +151,7 @@ class folderAutomaton:
             self.checkFolders4NewObjects()
             self.analyseZips()
             self.delteExpiredOutputs()
-            self.clearObjectList()
+            #self.clearObjectList()
             c+=1
             gc.collect()
             time.sleep(5) 
