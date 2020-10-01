@@ -107,6 +107,24 @@ class charon:
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/triboliumNeuron',#OUTPUT_DIR      
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/triboliumNeuron',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
+        elif cellType == 'drosoNucleus':
+            self.initModel(1, #NUM_CLASSES     
+                          'drosoCellCounting',#MODEL_NAME      
+                          0.75,#DETECTION_THRESH
+                          '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/drosoCellCounting', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/drosoNucleusCounter',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/drosoNucleusCounter',#ZIP_DIR         
+                          '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
+        elif cellType == 'mosquitoDetector':
+            self.initModel(3, #NUM_CLASSES     
+                          'mosquitoDetector',#MODEL_NAME      
+                          0.75,#DETECTION_THRESH
+                          '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/mosquitoDetector', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/mosquitoDetector',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/mosquitoDetector',#ZIP_DIR         
+                          '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
         else:  
             print('There is no model for celltype: ' +str(cellType))
 
