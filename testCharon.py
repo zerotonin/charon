@@ -43,11 +43,12 @@ for file in fList:
 
 #analyse movie
 reload(charon)
-x = charon.charon('drosoSocial')
+x = charon.charon('mosquitoDetector')
 x.DETECTION_THRESH =0.75  
-x.analyseMovie("/home/bgeurten/Aitest/2018_11_22_mix_dark_5min.mkv", #moviePos
-            "/home/bgeurten/Aitest/ana/test.avi", #anaPath out
-            "/home/bgeurten/Aitest/ana/test.xlsx") # xlsx file
+x.analyseMovie("/home/bgeurten/ownCloud/DiegoAIdata/test.mp4", #moviePos
+            "/home/bgeurten/ownCloud/DiegoAIdata/test_tracked.avi", #anaPath out
+            "/home/bgeurten/ownCloud/DiegoAIdata/test.xlsx") # xlsx file
+start = 2020-10-01 17:28:10.578095
 
 
 #analyse multiple movie
