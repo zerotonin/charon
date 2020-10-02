@@ -48,7 +48,9 @@ x.DETECTION_THRESH =0.75
 x.analyseMovie("/home/bgeurten/ownCloud/DiegoAIdata/test.mp4", #moviePos
             "/home/bgeurten/ownCloud/DiegoAIdata/test_tracked.avi", #anaPath out
             "/home/bgeurten/ownCloud/DiegoAIdata/test.xlsx") # xlsx file
-start = 2020-10-01 17:28:10.578095
+# Diego Test 1
+#start = 2020-10-01 17:28:10.578095
+#end   = 2020-10-01 18:59:55 
 
 
 #analyse multiple movie
