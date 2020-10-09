@@ -88,12 +88,12 @@ class charon:
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuronHaemo',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing'),#WORK_DIR        
                   
-        elif cellType == 'flyBehav':
-            self.initModel(6, #NUM_CLASSES     
+        elif cellType == 'courtDroso':
+            self.initModel(8, #NUM_CLASSES     
                           'flyBehav',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
-                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/flyBehav', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/courtDroso', #INFERENCE_GRAPH_DIR
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/flyBehav',#OUTPUT_DIR      
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/flyBehav',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR        

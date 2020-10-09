@@ -43,11 +43,11 @@ for file in fList:
 
 #analyse movie
 reload(charon)
-x = charon.charon('mosquitoDetector')
+x = charon.charon('courtDroso')
 x.DETECTION_THRESH =0.75  
-x.analyseMovie("/home/bgeurten/ownCloud/DiegoAIdata/test.mp4", #moviePos
-            "/home/bgeurten/ownCloud/DiegoAIdata/test_tracked.avi", #anaPath out
-            "/home/bgeurten/ownCloud/DiegoAIdata/test.xlsx") # xlsx file
+x.analyseMovie("/media/gwdg-backup/BackUp/Miriam/Bachelor/BA_Movies/2018_11_28/2018_11_28_mix_dark_5min.mkv", #moviePos
+            "/home/bgeurten/Videos/test_tracked.avi", #anaPath out
+            "/home/bgeurten/Videos/test.xlsx") # xlsx file
 # Diego Test 1
 #start = 2020-10-01 17:28:10.578095
 #end   = 2020-10-01 18:59:55 
