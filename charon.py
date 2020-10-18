@@ -125,6 +125,15 @@ class charon:
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/mosquitoDetector',#OUTPUT_DIR      
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/mosquitoDetector',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
+        elif cellType == 'flyFinder':
+            self.initModel(14, #NUM_CLASSES     
+                          'flyFinder',#MODEL_NAME      
+                          0.75,#DETECTION_THRESH
+                          '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/flyFinder', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/flyFinder',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/flyFinder',#ZIP_DIR         
+                          '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
         else:  
             print('There is no model for celltype: ' +str(cellType))
 
