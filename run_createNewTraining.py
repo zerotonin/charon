@@ -19,3 +19,14 @@ reload(training_utils)
 g = training_utils.runTrainingGenScripts(t)
 g.run()
 
+
+##########################
+# Add more training data #
+##########################
+
+reload(training_utils)
+t = training_utils.trainDataCuration('flyFinder',
+                                    '/media/dataSSD/trainingData/topFly/train',
+                                    sourceImgType ='png')
+t.chooseCandidateFiles()
+t.renameLabelsVerbose() #or set dictionary

@@ -19,6 +19,11 @@ class trainDataCuration:
         Path(self.TRAIN_DIR).mkdir(parents=True, exist_ok=True)
 
     def check4ExistingTrainingData(self):
+        '''
+        This function returns a tuple with to integers, containing
+        the number of existing xml files in the TEST_DIR and the 
+        TRAIN_DIR.
+        '''
         folderList = [self.TEST_DIR,self.TRAIN_DIR]
         fileCounter = [0,0]
         for folderI in range(len(folderList)):
@@ -191,6 +196,10 @@ class trainDataCuration:
             im = Image.open(imgSourcePos)
             #save image as png
             im.save(imgTargetPos)
+        
+    def transfer_AdditionalTrainingsData(self):
+        fileCounter = self.check4ExistingTrainingData() 
+        self.transfer_trainingData(testCounter=fileCounter[0],trainCounter=fileCounter[1])
 
 class runTrainingGenScripts:
     def __init__(self,transferObj):
