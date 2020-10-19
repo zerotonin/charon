@@ -1,4 +1,4 @@
-import os, generate_tfrecord,xml_to_csv,shutil
+import os, generate_tfrecord,xml_to_csv,shutil,re
 from tqdm import tqdm
 import xml.etree.ElementTree as ET
 from PIL import Image
@@ -201,6 +201,74 @@ class trainDataCuration:
         fileCounter = self.check4ExistingTrainingData() 
         self.transfer_trainingData(testCounter=fileCounter[0],trainCounter=fileCounter[1])
 
+class augmentTrainingGenScripts():
+    def __init__(self,transferObj,newLabelList):
+        self.train_csv_file = transferObj.TRAIN_DIR+'_labels.csv'
+        self.train_img_path = transferObj.TRAIN_DIR
+        self.test_csv_file  = transferObj.TEST_DIR+'_labels.csv'
+        self.test_img_path  = transferObj.TEST_DIR
+        self.output_path    = transferObj.WORK_DIR
+        self.tag            = transferObj.tag
+        self.inferencePath  = os.path.join("/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/",self.tag )
+        self.maxTrainSteps  = 200000
+        self.newLabelList   = newLabelList
+        self.labelFilePos   = os.path.join(self.output_path,'labelmap.pbtxt')
+    
+    def run(self):
+        #update the label dictionary and the label map file
+        self.labelFile2LabelDict()
+        self.updateDictAndFile()
+        self.lm = makelabelMapFile(self,ids=list(self.labelDict.values())  ,names=list(self.labelDict.keys()))   
+        self.lm.printNameIDs()
+        #and the rest
+        xml_to_csv.main(self.test_img_path,self.test_csv_file)
+        xml_to_csv.main(self.train_img_path,self.train_csv_file)
+        generate_tfrecord.main(os.path.join(self.output_path , "test.record"),self.test_img_path,self.test_csv_file,self.labelDict)
+        generate_tfrecord.main(os.path.join(self.output_path , "train.record"),self.train_img_path,self.train_csv_file,self.labelDict)
+        self.cf = adaptTFconfigFile(self,self.tag)
+        self.cf.run()
+
+    def labelFile2LabelDict(self):
+        lbMapFile = open('/media/dataSSD/trainingData/flyFinder/labelmap.pbtxt','r') 
+        lines     = lbMapFile.readlines()  
+        # reduce to id numbers and names
+        idName    = [line for line in lines if 'name' in line or 'id' in line]
+
+        # built labelDict from file Lines
+        idList    = list()
+        nameList  = list()
+        c         = 0
+        for valueLine in idName:
+            # if even line number it holds the integer id 
+            if c%2 == 0:
+                res = re.search(":(.*)\n",valueLine) 
+                idList.append(int(res.group(1)))
+            # if odd line number it holds label name
+            else:   
+                res = re.search("'(.*)'",valueLine)  
+                nameList.append(res.group(1))
+            c+=1
+        # built dict
+        self.labelDict = dict(zip(nameList,idList))
+        self.labelIDoffSet = idList[-1]      
+    
+    def updateDictAndFile(self):
+        outF = open(self.labelFilePos, "a")
+        c = 0
+        for newLabel in self.newLabelList: 
+            if newLabel in self.labelDict.keys(): 
+                print(newLabel + ' label is allready in use') 
+            else: 
+                c+=1 
+                self.labelDict[newLabel] = self.labelIDoffSet+c 
+                # write line to output file
+                outF.write("\n")
+                outF.write("item {\n")
+                outF.write("  id: " + str(self.labelIDoffSet+c) +"\n")
+                outF.write("  name: '" + newLabel +"'\n")
+                outF.write("}\n")
+        outF.close()
+    
 class runTrainingGenScripts:
     def __init__(self,transferObj):
 
