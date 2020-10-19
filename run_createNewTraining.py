@@ -30,3 +30,5 @@ t = training_utils.trainDataCuration('flyFinder',
                                     sourceImgType ='png')
 t.chooseCandidateFiles()
 t.renameLabelsVerbose() #or set dictionary
+
+t.transfer_AdditionalTrainingsData()

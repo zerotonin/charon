@@ -213,7 +213,7 @@ class runTrainingGenScripts:
         self.labelDict      = dict(zip(labelList,range(1,len(labelList)+1))) 
         self.tag            = transferObj.tag
         self.inferencePath  = os.path.join("/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/",self.tag )
-
+        self.maxTrainSteps  = 200000
     
     def run(self):
 
@@ -322,6 +322,7 @@ class adaptTFconfigFile:
         self.tag                = tag
         self.bashScriptPos      = os.path.join(scriptObj.output_path, 'train_and_getInfGraph.sh')
         self.inferencePath      = scriptObj.inferencePath
+        self.stepNum            = scriptObj.maxTrainSteps
 
     def readConfig(self):
         with open(self.originalConfigFile, 'r') as file:
@@ -349,6 +350,11 @@ class adaptTFconfigFile:
 
         self.config[129] = '  num_examples: '+ str(len(fList)) +'\n'
     
+    def updateStepNum(self):
+        # change the number of training iterations
+        self.config[112] = '  num_steps: '+ str(self.stepNum) +'\n'
+
+
     def run(self):
 
         self.readConfig()
@@ -356,6 +362,7 @@ class adaptTFconfigFile:
         self.updateCheckPoint()
         self.updateRecordPosition()
         self.updateTestImageNum()
+        self.updateStepNum()
 
         with open(self.targetConfigFile, 'w') as file:
             file.writelines( self.config )
