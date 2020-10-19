@@ -192,12 +192,43 @@ class charon:
         xlsPos = os.path.join(xlsPos,fileName)
         self.writer = pd.ExcelWriter(xlsPos, engine='xlsxwriter')
 
+    def setUp_TXTwriter(self,subfolder,fileName):
+        txtPos = os.path.join(self.OUTPUT_DIR,subfolder)
+        txtPos = os.path.join(txtPos,fileName)
+        self.writer = open(txtPos,"w")
+
+    def dataOut2STR(self,dataOut,frameNo):
+        '''
+        This function transforms the 3 level deep data-out list into a single string. data Out
+        is a list of detection and each detection is a 3 item list, consisting of the label, the
+        quality of detection and another four entry list, with the coordinates of the bouding box
+        of the detection. The bounding box is in normalised coordinates [x,y,x2,y2].
+
+        Now the resulting string is build as follows: 
+        frame_number : > Detection < > Detection 2< > Detection 3<  and so on
+        each detection looks like this > labelSTRING , qualityFLOAT, xFLOAT, yFLOAT,x 2FLOAT, y2FLOAT <
+        '''
+        str_out = str(frameNo) +" : "
+        if dataOut is not None:
+            for detection in dataOut:
+                str_out += ">"
+                c= 0
+                for dataEntry in detection:
+                    if c < 2:
+                        str_out += str(dataEntry) + ','
+                    else:
+                        for coord in dataEntry:
+                            str_out += str(coord) + ','
+                    c+=1
+                str_out = str_out[:-1]  + "< "
+        return str_out[:-3]   
+
     def analyseMovie(self,moviePos,pathOut,xlsFilename,writeDetectionMov=True):
         # Load the Tensorflow model into memory if this was not done before in self.runExperiment().
         if self.sess == None:
             self.setUp_tensorFlow()
         #set up xlsx writer
-        self.setUp_XLSwriter(os.path.dirname(xlsFilename),os.path.basename(xlsFilename))
+        self.setUp_TXTwriter(os.path.dirname(xlsFilename),os.path.basename(xlsFilename))
 
         # video reader enabled
         cap = cv2.VideoCapture(moviePos)
@@ -231,9 +262,8 @@ class charon:
    
             data_OUT = [class_STR_OUT, score_OUT.tolist(), box_OUT.tolist()]
             data_OUT = list(map(list, zip(*data_OUT)))
-            df = pd.DataFrame(data_OUT, columns = ['Type', 'Score','Box']) 
-            df.to_excel(self.writer, sheet_name='frame ' + str(c))
-            
+            str_OUT  = self.dataOut2STR(data_OUT,c)
+            self.writer.write(str_OUT + '\n')
             # Draw the results of the detection (aka 'visulaize the results')
             if writeDetectionMov == True:
                 vis_util.visualize_boxes_and_labels_on_image_array(
@@ -257,7 +287,7 @@ class charon:
     
         if writeDetectionMov == True:        
             out.release()
-        self.writer.save()
+        del self.writer
 
     def analyseImageList(self,subfolder,xlsFileName):
         # Load the Tensorflow model into memory if this was not done before in self.runExperiment().
