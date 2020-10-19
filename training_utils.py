@@ -17,6 +17,15 @@ class trainDataCuration:
     def makeTrainDirs(self):
         Path(self.TEST_DIR).mkdir(parents=True, exist_ok=True)
         Path(self.TRAIN_DIR).mkdir(parents=True, exist_ok=True)
+
+    def check4ExistingTrainingData(self):
+        folderList = [self.TEST_DIR,self.TRAIN_DIR]
+        fileCounter = [0,0]
+        for folderI in range(len(folderList)):
+            for file in os.listdir(folderList[folderI]): 
+                if file.endswith(".xml"):
+                    fileCounter[folderI] +=1
+        return tuple(fileCounter)
     
     def getLabelsFromXML(self, file):
         nameList = list()
