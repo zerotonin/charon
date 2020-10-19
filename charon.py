@@ -221,7 +221,7 @@ class charon:
                             str_out += str(coord) + ','
                     c+=1
                 str_out = str_out[:-1]  + "< "
-        return str_out[:-3]   
+        return str_out[:-1]   
 
     def analyseMovie(self,moviePos,pathOut,xlsFilename,writeDetectionMov=True):
         # Load the Tensorflow model into memory if this was not done before in self.runExperiment().
