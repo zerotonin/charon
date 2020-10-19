@@ -192,7 +192,7 @@ class charon:
         xlsPos = os.path.join(xlsPos,fileName)
         self.writer = pd.ExcelWriter(xlsPos, engine='xlsxwriter')
 
-    def analyseMovie(self,moviePos,pathOut,xlsFilename):
+    def analyseMovie(self,moviePos,pathOut,xlsFilename,writeDetectionMov=True):
         # Load the Tensorflow model into memory if this was not done before in self.runExperiment().
         if self.sess == None:
             self.setUp_tensorFlow()
@@ -207,7 +207,8 @@ class charon:
         ret, image = cap.read()    
         height, width, layers = image.shape
         im_size = (width,height)
-        out = cv2.VideoWriter(pathOut,cv2.VideoWriter_fourcc(*'DIVX'), fps, im_size)
+        if writeDetectionMov == True:
+            out = cv2.VideoWriter(pathOut,cv2.VideoWriter_fourcc(*'DIVX'), fps, im_size)
         c = 0
         while ret == True:
             # expand image
@@ -234,27 +235,28 @@ class charon:
             df.to_excel(self.writer, sheet_name='frame ' + str(c))
             
             # Draw the results of the detection (aka 'visulaize the results')
-
-            vis_util.visualize_boxes_and_labels_on_image_array(
-                image,
-                np.squeeze(boxes),
-                np.squeeze(classes).astype(np.int32),
-                np.squeeze(scores),
-                self.category_index,
-                use_normalized_coordinates=True,
-                line_thickness=4,
-                min_score_thresh=self.DETECTION_THRESH,
-                #track_ids=np.array(range(len(scores[0])),dtype=int),
-                max_boxes_to_draw= 500)
-            # write out image
-            out.write(image)
+            if writeDetectionMov == True:
+                vis_util.visualize_boxes_and_labels_on_image_array(
+                    image,
+                    np.squeeze(boxes),
+                    np.squeeze(classes).astype(np.int32),
+                    np.squeeze(scores),
+                    self.category_index,
+                    use_normalized_coordinates=True,
+                    line_thickness=4,
+                    min_score_thresh=self.DETECTION_THRESH,
+                    #track_ids=np.array(range(len(scores[0])),dtype=int),
+                    max_boxes_to_draw= 500)
+                # write out image
+                out.write(image)
             # frame Counter 
             c+=1
             # read fideo frame 
             ret, image = cap.read()    
 
-            
-        out.release()
+    
+        if writeDetectionMov == True:        
+            out.release()
         self.writer.save()
 
     def analyseImageList(self,subfolder,xlsFileName):

@@ -45,9 +45,9 @@ for file in fList:
 reload(charon)
 x = charon.charon('courtDroso')
 x.DETECTION_THRESH =0.75  
-x.analyseMovie("/media/gwdg-backup/BackUp/Miriam/Bachelor/BA_Movies/2018_11_28/2018_11_28_mix_dark_5min.mkv", #moviePos
-            "/home/bgeurten/Videos/test_tracked.avi", #anaPath out
-            "/home/bgeurten/Videos/test.xlsx") # xlsx file
+x.analyseMovie("/media/gwdg-backup/BackUp/Anka/Anka04/2019-09-25__10_12_36.mp4", #moviePos
+            "/home/bgeurten/Videos/2019-09-25__10_12_36.avi", #anaPath out
+            "/home/bgeurten/Videos/2019-09-25__10_12_36.xlsx") # xlsx file
 # Diego Test 1
 #start = 2020-10-01 17:28:10.578095
 #end   = 2020-10-01 18:59:55 
