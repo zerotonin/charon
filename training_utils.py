@@ -127,11 +127,7 @@ class trainDataCuration:
             del self.candidates[index]
     
 
-    def transfer_trainingData(self):
-        # initialize counter
-        testCounter  = 0
-        trainCounter = 0
-        fileI = 0
+    def transfer_trainingData(self,testCounter = 0, trainCounter = 0,fileI = 0):
         #run through all files
         for cand in tqdm(self.candidates,desc='transfering'):
             # get the candidate
