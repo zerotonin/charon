@@ -43,11 +43,15 @@ for file in fList:
 
 #analyse movie
 reload(charon)
-x = charon.charon('courtDroso')
+x = charon.charon('flyFinder')
 x.DETECTION_THRESH =0.75  
-x.analyseMovie("/media/gwdg-backup/BackUp/Anka/Anka04/2019-09-25__10_12_36.mp4", #moviePos
-            "/home/bgeurten/Videos/2019-09-25__10_12_36.avi", #anaPath out
-            "/home/bgeurten/Videos/2019-09-25__10_12_36.xlsx") # xlsx file
+start = time.time()
+
+x.analyseMovie("/media/gwdg-backup/BackUp/Anka/Anka05/2019-09-26__12_12_44.mp4", #moviePos
+            "/home/bgeurten/Videos/2019-09-26__12_12_44.avi", #anaPath out
+            "/home/bgeurten/Videos/2019-09-26__12_12_44.tra") # trace file
+end = time.time()
+print(end - start)
 # Diego Test 1
 #start = 2020-10-01 17:28:10.578095
 #end   = 2020-10-01 18:59:55 
