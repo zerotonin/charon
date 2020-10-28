@@ -62,16 +62,31 @@ function that allows to add more files and prolong training
   ```
     $ ipython
     import sys 
-    sys.path.append('/path/to/models/research/object_detection')    
-
+    sys.path.appen  
+    ```
 * Get the pretrained model from http://download.tensorflow.org/models/object_detection/faster_rcnn_inception_v2_coco_2018_01_28.tar.gz and unpack it in/ path/to/models/research/object_detection
-  ```
+
 * Testing with another model
     If you want to be sure that your installation was complete you can test it with a pre made
     model. By using this notebook and directly jumping to the cell with imports! If you run the full
     label IT WILL START IN models/research/object_detection/colab_tutorials/ and therefore it CANNOT load the data. Hence you need to add a os.chdir('/path/to/model') to load example data and import pathlib.  Or you run the third cell!
   ```
     jupyter notebook models/research/object_detection/colab_tutorials/object_detection_tutorial.ipynb 
+  ```
+
+
+* install the object detection scripts by:
+  ```
+    $ cd  ~/models/research
+    $ python setup.py build
+    $ python setup.py install
+  ```
+
+* than install tensorflow slim by:
+  ```
+    $ cd  ~/models/research/slim 
+    $ python setup.py build
+    $ python setup.py install
   ```
 
 * open .bashrc and add following line
@@ -83,7 +98,6 @@ function that allows to add more files and prolong training
   ```
     export PYTHONPATH="$PYTHONPATH:/home/${YOUR_USERNAME}/models/research/slim"
   ```
-
 * Check the methods in adaptTFconfigFile of training_utils.py
   Because newer versions of the model zoo update there config files you have to check if the line numbers
   in the following functions are still correct:
