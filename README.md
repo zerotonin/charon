@@ -106,4 +106,8 @@ function that allows to add more files and prolong training
   * updateRecordPosition()
   * updateTestImageNum()
 
+* If you want to check the progress of the learning curve during training activate tensorboard and than check your browser at http://machineAdress:6006
+  ```
+     tensorboard --logdir=training
+  ```
 
