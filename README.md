@@ -28,7 +28,7 @@ function that allows to add more files and prolong training
 
 * Get current Nvidia driver for GPU
 * Install Anaconda 
-  * Download from https://www.anaconda.com/
+  *  Download from https://www.anaconda.com/ for PCs and from https://github.com/Archiconda/build-tools/releases for nVidia Jetsons
   ```
     $ bash Anaconda3-2020.02-Linux-x86_64.sh 
   ```
