@@ -32,3 +32,8 @@ t.chooseCandidateFiles()
 t.renameLabelsVerbose() #or set dictionary
 
 t.transfer_AdditionalTrainingsData()
+
+reload(training_utils)
+g = training_utils.augmentTrainingGenScripts(t,['fly','arena_S_learningTop'])
+g.maxTrainSteps = 1200000
+g.run()
