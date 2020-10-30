@@ -213,7 +213,7 @@ class trainDataCuration:
             im.save(imgTargetPos)
         
         # clean labeldict from deleted labels
-        t.labelChanger = {key:value  for key,value in t.labelChanger.items() if v != '!deleteThisLabel!'}   
+        self.labelChanger = {key:value  for key,value in self.labelChanger.items() if value != '!deleteThisLabel!'}   
         
     def transfer_AdditionalTrainingsData(self):
         fileCounter = self.check4ExistingTrainingData() 

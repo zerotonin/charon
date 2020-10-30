@@ -17,6 +17,7 @@ t.transfer_trainingData()
 
 reload(training_utils)
 g = training_utils.runTrainingGenScripts(t)
+g.maxTrainSteps = 1000000
 g.run()
 
 
