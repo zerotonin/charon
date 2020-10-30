@@ -4,7 +4,7 @@ import charon, time,  training_utils
 reload(training_utils)
 
 t = training_utils.trainDataCuration('flyFinder',
-                                    '/media/gwdg-backup/labelData4DrosoFinder',
+                                    '/media/gwdg-backup/labelData4DrosoFinder/fromTop',
                                     sourceImgType ='png')
 t.chooseCandidateFiles()
 t.renameLabelsVerbose() #or set dictionary
@@ -35,5 +35,5 @@ t.transfer_AdditionalTrainingsData()
 
 reload(training_utils)
 g = training_utils.augmentTrainingGenScripts(t,['fly','arena_S_learningTop'])
-g.maxTrainSteps = 1200000
+g.maxTrainSteps = 1000000
 g.run()
