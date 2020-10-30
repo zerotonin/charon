@@ -195,8 +195,15 @@ class trainDataCuration:
                 name = objAnno.find('name')
                 # extract former name field content as key value for the label changer dict
                 oldName = name.text
-                #update with new label from labelChanger dict
-                name.text = self.labelChanger[oldName]
+
+                # check if label needs to be deleted 
+                if self.labelChanger[oldName] == '!deleteThisLabel!':
+                    # delete object
+                    root.remove(objAnno)
+                else:
+                    #update with new label from labelChanger dict
+                    name.text = self.labelChanger[oldName]
+
             #write the updated xml values to target position
             tree.write(xmlTargetPos)
 
@@ -204,6 +211,9 @@ class trainDataCuration:
             im = Image.open(imgSourcePos)
             #save image as png
             im.save(imgTargetPos)
+        
+        # clean labeldict from deleted labels
+        t.labelChanger = {key:value  for key,value in t.labelChanger.items() if v != '!deleteThisLabel!'}   
         
     def transfer_AdditionalTrainingsData(self):
         fileCounter = self.check4ExistingTrainingData() 
@@ -285,7 +295,6 @@ class runTrainingGenScripts:
         self.test_csv_file  = transferObj.TEST_DIR+'_labels.csv'
         self.test_img_path  = transferObj.TEST_DIR
         self.output_path    = transferObj.WORK_DIR
-        labelList           = set(list(transferObj.labelChanger.values())) 
         self.labelDict      = dict(zip(labelList,range(1,len(labelList)+1))) 
         self.tag            = transferObj.tag
         self.inferencePath  = os.path.join("/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/",self.tag )

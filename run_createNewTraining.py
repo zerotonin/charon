@@ -3,7 +3,7 @@ import charon, time,  training_utils
 
 reload(training_utils)
 
-t = training_utils.trainDataCuration('flyFinder',
+t = training_utils.trainDataCuration('flyFinder_food54',
                                     '/media/gwdg-backup/labelData4DrosoFinder/fromTop',
                                     sourceImgType ='png')
 t.chooseCandidateFiles()
