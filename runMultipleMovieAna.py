@@ -22,6 +22,16 @@ for folder in folderList:
     fList = x.getImagePos_search(folder,'mp4')
     fileList = fileList+fList
 
+
+# ana testFolder
+folder = '/home/bgeurten/Videos/testVideos'
+fileList = list()
+fList = x.getImagePos_search(folder,'avi')
+fileList = fileList+fList
+fList = x.getImagePos_search(folder,'mp4')
+fileList = fileList+fList
+
+
 # get rid of allready analysed videos
 fileList = [item for item in fileList  if '_ana' not in item]
 

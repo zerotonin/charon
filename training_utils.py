@@ -113,13 +113,21 @@ class trainDataCuration:
 
         print("Old label: " + label)
         correct = '?'
-        while (correct != 'y') and (correct != 'n'):
-            correct = input('Do you want to change the label? [y/n]')
+        while (correct != 'y') and (correct != 'n') and (correct != 'd'):
+            correct = input('Do you want to change the label [y/n] or delete it [d] ?')
 
         if correct == 'n':
 
             self.labelChanger[label] = label
-
+        
+        elif correct == 'd':
+            correct = '?'
+            while (correct != 'y')and (correct != 'n'):
+                correct = input('Are you sure to delete this label:' + label + '? [y/n]')
+                if correct == 'n':
+                    self.enterNewLabel(label)
+                else
+                    self.labelChanger[label] = '!deleteThisLabel!'
         else:
             correct = '?'
             while (correct != 'y'):
