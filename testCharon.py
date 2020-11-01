@@ -47,9 +47,29 @@ x = charon.charon('flyFinder')
 x.DETECTION_THRESH =0.75  
 start = time.time()
 
-x.analyseMovie("/media/gwdg-backup/BackUp/Anka/Anka05/2019-09-26__12_12_44.mp4", #moviePos
-            "/home/bgeurten/Videos/2019-09-26__12_12_44.avi", #anaPath out
-            "/home/bgeurten/Videos/2019-09-26__12_12_44.tra", writeDetectionMov=False) # trace file
+#'/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__15_47_00_yellowRut7_yellowgreen_IR.avi'
+#'/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__16_20_02_yellowRut7_yellowgreen_Light.avi'
+
+x.DETECTION_THRESH =0.5  
+x.analyseMovie('/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__15_47_00_yellowRut7_yellowgreen_IR.avi', #moviePos
+            "/home/bgeurten/Videos/test_IR_05.avi", #anaPath out
+            "/home/bgeurten/Videos/test_IR_05.tra", writeDetectionMov=True) # trace file
+x.DETECTION_THRESH =0.25  
+x.analyseMovie('/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__15_47_00_yellowRut7_yellowgreen_IR.avi', #moviePos
+            "/home/bgeurten/Videos/test_IR_025.avi", #anaPath out
+            "/home/bgeurten/Videos/test_IR_025.tra", writeDetectionMov=True) # trace file
+x.DETECTION_THRESH =0.75  
+x.analyseMovie('/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__16_20_02_yellowRut7_yellowgreen_Light.avi', #moviePos
+            "/home/bgeurten/Videos/test_VL_075.avi", #anaPath out
+            "/home/bgeurten/Videos/test_VL_075.tra", writeDetectionMov=True) # trace file
+x.DETECTION_THRESH =0.5  
+x.analyseMovie('/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__16_20_02_yellowRut7_yellowgreen_Light.avi', #moviePos
+            "/home/bgeurten/Videos/test_VL_05.avi", #anaPath out
+            "/home/bgeurten/Videos/test_VL_05.tra", writeDetectionMov=True) # trace file
+x.DETECTION_THRESH =0.25  
+x.analyseMovie('/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__16_20_02_yellowRut7_yellowgreen_Light.avi', #moviePos
+            "/home/bgeurten/Videos/test_VL_025.avi", #anaPath out
+            "/home/bgeurten/Videos/test_VL_025.tra", writeDetectionMov=True) # trace file
 end = time.time()
 print(end - start)
 # Diego Test 1
@@ -59,11 +79,12 @@ print(end - start)
 
 #analyse multiple movie
 reload(charon)
-x = charon.charon('flyBehav')
-x.DETECTION_THRESH =0.75  
+x = charon.charon('flyFinder_manuBenzer')
+x.DETECTION_THRESH =0.5  
 
-fList = x.getImagePos_search('/media/gwdg-backup/BackUp/DNB_2020/DarkFlySingle','avi')
+fList = x.getImagePos_search('/home/bgeurten/Videos/testVideos/manuBenzer','avi')
+fList = fList+ x.getImagePos_search('/home/bgeurten/Videos/testVideos/manuBenzer','mp4')
 for file in fList:
     x.analyseMovie(file, #moviePos
-            file[0:-4]+'_ana.mp4', #anaPath out
-            file[0:-3]+'xlsx') # xlsx file
+            file[0:-4]+'_ana.avi', #anaPath out
+            file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
