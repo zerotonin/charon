@@ -247,7 +247,7 @@ class augmentTrainingGenScripts():
         self.cf.run()
 
     def labelFile2LabelDict(self):
-        lbMapFile = open('/media/dataSSD/trainingData/flyFinder/labelmap.pbtxt','r') 
+        lbMapFile = open(self.labelFilePos,'r') 
         lines     = lbMapFile.readlines()  
         # reduce to id numbers and names
         idName    = [line for line in lines if 'name' in line or 'id' in line]
