@@ -3,6 +3,7 @@ from tqdm import tqdm
 import xml.etree.ElementTree as ET
 from PIL import Image
 from pathlib import Path
+import numpy as np
 
 class trainDataCuration:
     def __init__(self,tag,IMG_DIR,WORK_DIR='/media/dataSSD/trainingData/',sourceImgType ='tif'):
@@ -220,7 +221,7 @@ class trainDataCuration:
         self.transfer_trainingData(testCounter=fileCounter[0],trainCounter=fileCounter[1])
 
 class augmentTrainingGenScripts():
-    def __init__(self,transferObj,newLabelList):
+    def __init__(self,transferObj):
         self.train_csv_file = transferObj.TRAIN_DIR+'_labels.csv'
         self.train_img_path = transferObj.TRAIN_DIR
         self.test_csv_file  = transferObj.TEST_DIR+'_labels.csv'
@@ -229,12 +230,14 @@ class augmentTrainingGenScripts():
         self.tag            = transferObj.tag
         self.inferencePath  = os.path.join("/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/",self.tag )
         self.maxTrainSteps  = 200000
-        self.newLabelList   = newLabelList
+        self.labelList      = list(set(transferObj.labelChanger.values())) # get all the labels from the labelchanger
+        self.newLabelList   = list()
         self.labelFilePos   = os.path.join(self.output_path,'labelmap.pbtxt')
     
     def run(self):
         #update the label dictionary and the label map file
         self.labelFile2LabelDict()
+        self.findNewLabels()
         self.updateDictAndFile()
         self.lm = makelabelMapFile(self,ids=list(self.labelDict.values())  ,names=list(self.labelDict.keys()))   
         self.lm.printNameIDs()
@@ -247,7 +250,7 @@ class augmentTrainingGenScripts():
         self.cf.run()
 
     def labelFile2LabelDict(self):
-        lbMapFile = open('/media/dataSSD/trainingData/flyFinder/labelmap.pbtxt','r') 
+        lbMapFile = open(self.labelFilePos,'r') 
         lines     = lbMapFile.readlines()  
         # reduce to id numbers and names
         idName    = [line for line in lines if 'name' in line or 'id' in line]
@@ -286,6 +289,16 @@ class augmentTrainingGenScripts():
                 outF.write("  name: '" + newLabel +"'\n")
                 outF.write("}\n")
         outF.close()
+
+    def findNewLabels(self):
+        # This function saves all object names that are found in the new data, but not in the
+        # saved labelmap into the newLabelList variable. The newLabelList are the values from
+        # self.labelList has all labels of the added data
+        # self.labelDict.keys has all the labels that were found in the saved labelmap.pbtxt
+        # np.setdiff1d finds all entries that are in the first list and not in the second (and
+        # not vice versa)
+        self.newLabelList  = list(np.setdiff1d(self.labelList,list(self.labelDict.keys())))
+
     
 class runTrainingGenScripts:
     def __init__(self,transferObj):

@@ -6,14 +6,7 @@ reload(charon)
 x = charon.charon('flyFinder')
 x.DETECTION_THRESH =0.75  
 # folders that need to be investigated
-folderList = ["/media/gwdg-backup/BackUp/Anka/Anka00",
-              "/media/gwdg-backup/BackUp/Anka/Anka01",
-              "/media/gwdg-backup/BackUp/Anka/Anka02",
-              "/media/gwdg-backup/BackUp/Anka/Anka03",
-              "/media/gwdg-backup/BackUp/Anka/Anka04",
-              "/media/gwdg-backup/BackUp/Anka/Anka05",
-              "/media/gwdg-backup/BackUp/Anka/Anka06",
-              "/media/gwdg-backup/AutoBenzerSwap"]
+folderList = ["§]
 #check files in each folder
 fileList = list()
 for folder in folderList:
