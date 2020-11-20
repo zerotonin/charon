@@ -3,9 +3,9 @@ import charon, time,  training_utils
 
 reload(training_utils)
 
-t = training_utils.trainDataCuration('flyFinder_food54',
-                                    '/media/gwdg-backup/labelData4DrosoFinder/fromTop',
-                                    sourceImgType ='png')
+t = training_utils.trainDataCuration('cellCount_Schneider',
+                                    '/media/gwdg-backup/charonLabelData/Schneider',
+                                    sourceImgType ='tif')
 t.chooseCandidateFiles()
 t.renameLabelsVerbose() #or set dictionary
 #t.labelChanger = {'male1': 'male 1', 'agression': 'aggression', 'male 2': 'male 2', 'male 1': 'male 1', 'homo courtship': 'homo courtship', 'male2': 'male 2', 'courtship': 'courtship', 'female': 'female'}

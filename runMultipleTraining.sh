@@ -1,2 +1,4 @@
-python /home/bgeurten/models/research/object_detection/legacy/train.py --logtostderr --train_dir=/media/dataSSD/trainingData/flyFinder --pipeline_config_path=/media/dataSSD/trainingData/flyFinder/faster_rcnn_inception_v2_flyFinder.config
-python /home/bgeurten/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path /media/dataSSD/trainingData/flyFinder/faster_rcnn_inception_v2_flyFinder.config --trained_checkpoint_prefix /media/dataSSD/trainingData/flyFinder/model.ckpt-1200000 --output_directory /media/dataSSD/inferenceGraphs/flyFinder/
+#Train with following command:
+python /home/bgeurten/models/research/object_detection/legacy/train.py --logtostderr --train_dir=/media/dataSSD/trainingData/flyFinder_food54 --pipeline_config_path=/media/dataSSD/trainingData/flyFinder_food54/faster_rcnn_inception_v2_flyFinder_food54.config
+#Export graph 821173 need to be swapped for highest model version:
+python /home/bgeurten/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path /media/dataSSD/trainingData/flyFinder_food54/faster_rcnn_inception_v2_flyFinder_food54.config --trained_checkpoint_prefix /media/dataSSD/trainingData/flyFinder_food54/model.ckpt-821173 --output_directory /media/dataSSD/inferenceGraphs/flyFinder_food54/
