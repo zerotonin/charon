@@ -24,6 +24,11 @@ function that allows to add more files and prolong training
 ## Server Usage
  We implement a simple trick by using owncloud. 
 
+ ## Troubleshooting
+
+ Some flies never showed up found the mistake it is a 100 detections by default:https://stackoverflow.com/questions/56118540/how-to-find-bounding-boxes-coordinates-in-tensorflow-object-detection-api. In the config file there is the problem
+ 
+
 ## Install on Ubuntu 20.04
 
 * Get current Nvidia driver for GPU
