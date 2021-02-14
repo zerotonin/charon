@@ -20,7 +20,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import curve_fit
 
-def channelFunc(D,m0,Cch,Csp,kT = 4.1):
+
+def channelFunc(D,m0,Cch,Csp):
+    # kT =  Boltzman Konstant at Roomtemperatur ~ 4.1 zJ 
+    kT = 4.1
     return (np.exp(-((m0-((Cch/Csp**2)*D**2))/kT)))/(1+(np.exp(-((m0-((Cch/Csp**2)*D**2))/kT))))
 
 def readCSVFile():
@@ -44,10 +47,25 @@ def importData():
 
 def plotRawData(wt,dl):
 
-    plt.plot(wt[:,0],wt[:,1],'o',mfc="lightgray",mec="k")
-    plt.plot(dl[:,0],dl[:,1],'o',mfc="dimgray", mec="k")
+    plt.plot(wt[:,0],wt[:,1],'o',mfc="lightgray",mec="k",label='wildtype data')
+    plt.plot(dl[:,0],dl[:,1],'o',mfc="dimgray"  ,mec="k",label='double linker data')
 
+def plotFit(data,popt,labelStr,col ='r'):
+    plt.plot(data[:,0], channelFunc(data[:,0], *popt),color=col,label= 'fit for ' +labelStr+ ': m0=%5.3f, Cch=%5.3f, Csp=%5.3f' % tuple(popt))
+
+def finalisePlot():
+    plt.xlabel('absolute pressure stimulus, mmHq')
+    plt.ylabel('normalised cell response, aU')
+    plt.legend()
+    plt.show()
 
 wt,dl = importData()
+
+popt, pcov = curve_fit(channelFunc, wt[:,0], wt[:,1], bounds=(0, [100000., 100000., 100000.]))
+
+
+
+
 plotRawData(wt,dl)
-plt.show()
+plotFit(wt,popt,'wt')
+finalisePlot()
