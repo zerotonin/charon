@@ -23,9 +23,9 @@ from scipy.optimize import curve_fit
 def simpleSigmoid(z,a,b):
     # This is a simple sigmoid function to test if our curve fitting works.
     #
-    #   exp(-z ⋅ a + b)  
-    # ───────────────────
-    # 1 + exp(-z ⋅ a + b)
+    #       exp(-z ⋅ a + b)  
+    # y = ───────────────────
+    #     1 + exp(-z ⋅ a + b)
     
     return np.exp(-z*a+b)/(1 + np.exp(-z*a+b))
 
