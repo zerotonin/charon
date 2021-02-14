@@ -1,0 +1,44 @@
+# This module was designed to evaluate the usability of different fits
+# for observations during patch clamp recordings. The recorded cells expressed
+# the nompC-mechanotransducer in the wildtype form or with a duplicated region
+# called the "Linker". Hence common abbriviations are wildtype = wt and 
+# double-linker = dl.
+# The recording data and genetic modification are provided by P/ Hehlert, 
+# T. Effertz, and M. Goepfert
+#
+#
+# First fit function provided by M. Goepfert and T. Effertz
+# 
+# y=(exp(-((m0-((Cch/Csp^2)*D^2))/kT)))/(1+(exp(-((m0-((Cch/Csp^2)*D^2))/kT))))
+# 
+# m0 : Delta Energy channel closed open maybe around 25ish
+# Cch: Channel compliance seed values of 1000 or 300000 work
+# Csp: Gating spring compliance seed values of 600 or 11000 work
+# kT: Boltzman Konstant at Roomtemperatur ~ 4.1 zJ
+
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.optimize import curve_fit
+
+def channelFunc(D,m0,Cch,Csp,kT = 4.1):
+    return (np.exp(-((m0-((Cch/Csp**2)*D**2))/kT)))/(1+(np.exp(-((m0-((Cch/Csp**2)*D**2))/kT))))
+
+def importData():
+    # read from csv file
+    wt = np.genfromtxt('wt.csv',delimiter=',')
+    dl = np.genfromtxt('dl.csv',delimiter=',')
+
+    #sort by x values
+    wt = wt[wt[:,0].argsort(kind='mergesort')]
+    dl = dl[dl[:,0].argsort(kind='mergesort')]
+    return wt,dl
+
+def plotRawData(wt,dl):
+
+    plt.plot(wt[:,0],wt[:,1],'o',mfc="lightgray",mec="k")
+    plt.plot(dl[:,0],dl[:,1],'o',mfc="darkgray", mec="k")
+
+
+wt,dl = importData()
+plotRawData(wt,dl)
+plt.show()
