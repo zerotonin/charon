@@ -23,15 +23,24 @@ from scipy.optimize import curve_fit
 def channelFunc(D,m0,Cch,Csp,kT = 4.1):
     return (np.exp(-((m0-((Cch/Csp**2)*D**2))/kT)))/(1+(np.exp(-((m0-((Cch/Csp**2)*D**2))/kT))))
 
-def importData():
+def readCSVFile():
     # read from csv file
     wt = np.genfromtxt('wt.csv',delimiter=',')
     dl = np.genfromtxt('dl.csv',delimiter=',')
+    return wt,dl
 
+
+def sortDataByFirstColumn(wt,dl):
     #sort by x values
     wt = wt[wt[:,0].argsort(kind='mergesort')]
     dl = dl[dl[:,0].argsort(kind='mergesort')]
     return wt,dl
+
+def importData():
+    wt,dl = readCSVFile()
+    wt,dl = sortDataByFirstColumn(wt,dl)
+    return wt,dl
+
 
 def plotRawData(wt,dl):
 
