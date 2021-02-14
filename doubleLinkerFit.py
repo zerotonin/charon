@@ -36,7 +36,7 @@ def importData():
 def plotRawData(wt,dl):
 
     plt.plot(wt[:,0],wt[:,1],'o',mfc="lightgray",mec="k")
-    plt.plot(dl[:,0],dl[:,1],'o',mfc="darkgray", mec="k")
+    plt.plot(dl[:,0],dl[:,1],'o',mfc="dimgray", mec="k")
 
 
 wt,dl = importData()
