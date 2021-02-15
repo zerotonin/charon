@@ -53,8 +53,14 @@ def channelFunc(D,m0,Cch,Csp):
     # kT =  Boltzman Konstant at Roomtemperatur ~ 4.1 zJ 
 
     kT = 4.1
+    #return (np.exp(-((m0-((Cch/(Cch+Csp**2))*D**2))/kT)))/(1+(np.exp(-((m0-((Cch/(Cch+Csp**2))*D**2))/kT))))
     return (np.exp(-((m0-((Cch/Csp**2)*D**2))/kT)))/(1+(np.exp(-((m0-((Cch/Csp**2)*D**2))/kT))))
 
+def channelFuncSimplified(D,m0,C):
+
+    kT = 4.1
+    return (np.exp(-((m0-((C/C**2)*D**2))/kT)))/(1+(np.exp(-((m0-((C/C**2)*D**2))/kT))))
+  
 def readCSVFile():
     # read from csv file
     wt = np.genfromtxt('wt.csv',delimiter=',')
@@ -83,6 +89,9 @@ def plotFit(data,popt,dataStr,col ='dimgray'):
     if len(popt) == 3:
         labelStr = 'fit for ' +dataStr+ ': m0=%5.3f, Cch=%5.3f, Csp=%5.3f' % tuple(popt)
         plt.plot(data[:,0], channelFunc(data[:,0], *popt),color=col,label= labelStr)
+    elif len(popt) == 2:
+        labelStr = 'fit for ' +dataStr+ ': m0=%5.3f, C=%5.3f' % tuple(popt)
+        plt.plot(data[:,0], channelFuncSimplified(data[:,0], *popt),color=col,label= labelStr)
     else:
         labelStr = 'fit for ' +dataStr+ ': a=%5.3f,b=%5.3f' % tuple(popt)
         plt.plot(data[:,0], simpleSigmoid(data[:,0], *popt),color=col,label= labelStr)
@@ -94,6 +103,23 @@ def finalisePlot():
     plt.legend(loc='upper left',fancybox=True, shadow=True)
     plt.show()
 
+def quickFit(wt,dl,funcName,p0=[1,400,400],bounds=(0.0001, [3000.,10000.,1000]),method="lm",maxfev=100000000):
+    if funcName == 'channelFunc':
+        wt_popt, wt_pcov = curve_fit(channelFunc, wt[:,0], wt[:,1],p0=p0,bounds=bounds,method=method,maxfev=maxfev)
+        dl_popt, dl_pcov = curve_fit(channelFunc, dl[:,0], dl[:,1],p0=p0,bounds=bounds,method=method,maxfev=maxfev)
+    elif funcName == 'simpleSigmoid':
+        wt_popt, wt_pcov = curve_fit(simpleSigmoid, wt[:,0], wt[:,1],p0=p0,bounds=bounds,method=method,maxfev=maxfev)
+        dl_popt, dl_pcov = curve_fit(simpleSigmoid, dl[:,0], dl[:,1],p0=p0,bounds=bounds,method=method,maxfev=maxfev)
+    return (wt_popt,wt_pcov,dl_popt,dl_pcov)
+
+def quickReport(wt,dl,fitResult):
+    plt.figure()
+    plotRawData(wt,dl)
+    plotFit(wt,fitResult[0],'wt','lightgray')
+    plotFit(dl,fitResult[2],'dl','dimgray')
+    if len(fitResult[0]) ==3:
+        plotFit(dl,[fitResult[0][0],fitResult[0][1]/2,fitResult[0][2]*2],'dl double','blue')
+    finalisePlot()
 
 
 # ██████  ██    ██ ███    ██     ███████ ██ ████████ ███████ 
@@ -105,14 +131,52 @@ def finalisePlot():
 
 # import the raw data
 wt,dl = importData()
-dl = np.vstack((np.array([0.,0.]),dl))
+##dl = np.vstack((np.array([0.001,0.001]),dl,np.array([175.,1.])))
+
+
 # preform simple fit
-popt, pcov = curve_fit(channelFunc, wt[:,0], wt[:,1],p0=[25,1000,600])#, bounds=(0, [1000000., 1000000., 1000000.]))
-popt2, pcov2 = curve_fit(channelFunc, dl[:,0], dl[:,1],p0=[25,1000,600])#, bounds=(0, [1000000., 1000000., 1000000.]))
+fitResult = quickFit(wt,dl,'channelFunc',p0=[15,15,15],bounds=(0.0001, [10000.,10000.,1000]),method="trf",maxfev=100000000)
+#fitResult = quickFit(wt,dl,'simpleSigmoid',p0=[200,40],bounds=(0.0001, [10000000.,10000000.]),method="trf",maxfev=100000000)
+quickReport(wt,dl,fitResult)    
 # plot result
-plt.figure()
-plotRawData(wt,dl)
-plotFit(wt,popt,'wt','lightgray')
-plotFit(dl,popt2,'dl','gray')
-print(popt)
-finalisePlot()
+
+'''
+
+#
+samples = 100
+trialCch = np.geomspace(0.001,10000,samples,endpoint=True)
+trialCsp = np.geomspace(0.001,10000,samples,endpoint=True)
+resres = np.zeros(shape=(samples,samples))
+for CchI in range(1,samples):
+    for CspI in range(1,samples):
+        res = channelFunc(wt[:,0],25.223,trialCch[CchI],trialCsp[CspI])
+        #res = channelFuncSimplified(wt[:,0],trialCch[CchI],trialCsp[CspI])
+        resres[CchI,CspI] = np.nansum((wt[:,1]-res)**2)
+
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+
+# Set up grid and test data
+x = trialCch
+y = trialCsp
+
+
+hf = plt.figure()
+#ha = hf.add_subplot(111, projection='3d')
+
+X, Y = np.meshgrid(x, y)  # `plot_surface` expects `x` and `y` data to be 2D
+#ha.plot_surface(X, Y, resres, cmap=cm.inferno)
+plt.pcolormesh(X, Y, resres, cmap=cm.inferno)
+plt.xscale("log")
+plt.yscale("log")
+
+hf = plt.figure()
+ha = hf.add_subplot(111, projection='3d')
+
+X, Y = np.meshgrid(x, y)  # `plot_surface` expects `x` and `y` data to be 2D
+ha.plot_surface(X, Y, resres, cmap=cm.inferno)
+ha.set_xscale('log')
+ha.set_yscale('log')
+
+plt.show()
+'''
