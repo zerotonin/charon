@@ -26,8 +26,8 @@ g.run()
 ##########################
 
 reload(training_utils)
-t = training_utils.trainDataCuration('flyFinder_food54',
-                                    '/media/gwdg-backup/labelData4DrosoFinder/fromTop2',
+t = training_utils.trainDataCuration('flyFinder_autoBenzer',
+                                    '/home/bgeurten/ownCloud/trainData',
                                     sourceImgType ='png')
 t.chooseCandidateFiles()
 t.renameLabelsVerbose() #or set dictionary
