@@ -5,7 +5,7 @@ import charon, time,  training_utils
 reload(charon)
 x = charon.charon('locustNeuron')
 start = time.time()
-x.runExperimentAnalysis("/media/dataSSD/cellDetector/zips/LuizaLocustaNeuron.zip")
+x.runExperimentAnalysis("/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuron/2021-04-22_Lm-neuron-Rotenon-12h-2.zip")
 end = time.time()
 print(end - start)
 
