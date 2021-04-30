@@ -32,6 +32,7 @@ function that allows to add more files and prolong training
 ## Install on Ubuntu 20.04
 
 * Get current Nvidia driver for GPU
+* Install and test CUDA from nvidia - > test can be done via "nvidia-smi" on bash
 * Install Anaconda 
   *  Download from https://www.anaconda.com/ for PCs and from https://github.com/Archiconda/build-tools/releases for nVidia Jetsons
   ```
