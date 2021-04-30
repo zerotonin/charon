@@ -67,7 +67,8 @@ function that allows to add more files and prolong training
   ```
     $ ipython
     import sys 
-    sys.path.appen  
+    sys.path.append('/home/bgeurten/models/research/object_detection')
+
     ```
 * Get the pretrained model from http://download.tensorflow.org/models/object_detection/faster_rcnn_inception_v2_coco_2018_01_28.tar.gz and unpack it in/ path/to/models/research/object_detection
 
