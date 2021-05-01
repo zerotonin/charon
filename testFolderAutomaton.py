@@ -4,4 +4,4 @@ import folderAutomaton
 reload(folderAutomaton)
 x = folderAutomaton.folderAutomaton()  
 
-x.run()
+x.run('verbose')
