@@ -515,7 +515,7 @@ class charon:
         if len(unUseableFiles) != 0:
             if self.protocolFlag == True:
                 for L in unUseableFiles:
-                    self.protocol('Image unsuable:' L)
+                    self.protocol('Image unsuable: ' + L)
             else:
                 for L in unUseableFiles:
                     print(L)
