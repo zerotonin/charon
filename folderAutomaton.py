@@ -46,19 +46,15 @@ class folderAutomaton:
     
     def analyseZips(self):
         for dataObj in self.dataObjList:
-            print('start analysis: ' + str(dataObj.fPos))
             if dataObj.sizeConsistentFlag == True and dataObj.analyseFlag == False:
                 dataObj.analyseFlag = True
                 try:
                     x = charon.charon(dataObj.AItag)
-                    print('object created')
                     x.runExperimentAnalysis(dataObj.fPos)
-                    print('experiment analysed')
                     dataObj.writeOutputFlag = True
                     dataObj.expirationDate  = datetime.datetime.now()+datetime.timedelta(days=4)    
                     dataObj.success         = True
                     dataObj.resultPos       = x.resultZipPos
-                    print('data written: ' + str(dataObj.resultPos))
                     del x
                 except:
                     dataObj.success         = False
@@ -135,7 +131,9 @@ class folderAutomaton:
         
         print('Only in death duty ends!')
 
-    def run(self,loadCharonFlag = 'load'):
+
+    def startUpCharon(self,loadCharonFlag):
+
         if loadCharonFlag == 'verbose':
             self.startUpDlg()
         elif loadCharonFlag == 'load':
@@ -147,21 +145,22 @@ class folderAutomaton:
         elif loadCharonFlag == 'fresh':
             self.startUpDlg()
             print('Starting fresh!\n Only in death duty ends!\n\n')
+
+        
+    def run(self,loadCharonFlag = 'load'):
+        self.startUpCharon(loadCharonFlag)
         c=0
         while True:
             if c==1000:
                 self.saveCharonObjList()
+                os.system("find "+str(self.downloadPath)+"/* -mindepth 1 -mtime +5 -delete")
                 c = 0
-            print('here')
             self.checkFolders4NewObjects()
             self.analyseZips()
             
-            #self.delteExpiredOutputs()
-            #self.clearObjectList()
             c+=1
             gc.collect()
             time.sleep(5) 
-
 
 if __name__ == "__main__":
     automaton = folderAutomaton()   
