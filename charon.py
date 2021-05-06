@@ -27,7 +27,7 @@ sys.path.append("/home/bgeurten/tensorFlowModels/research/object_detection")
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 from PIL import Image
-
+from datetime import datetime
 
 class charon:
     def __init__(self,cellType='locustNeuron'):
@@ -375,20 +375,43 @@ class charon:
         df.to_excel(self.writer, sheet_name='Summary')
         self.writer.save()
         return np.array([countCells[:,0].sum(),countCells[:,1].sum()])
+    
+    def protocol(self,protocolFlag, protoStr ='None',startFlag=False):
+        if protocolFlag == False:
+            print('proto flag false')
+            return
+        
+        if startFlag == True:
+            fileName = os.basename(protoStr.split(" ")[-1])
+            self.protoPos = os.path.join(self.OUTPUT_DIR,fileName[0:-4]+'_protocol.txt')
+            print(self.protoPos)
+            text_file = open(self.protoPos, "w")
+        else:
+            text_file = open(self.protoPos, "a")
 
-    def runExperimentAnalysis(self,zipPos):
+        text_file.write(str(datetime.now())+': '+protoStr+'\n')
+
+    def runExperimentAnalysis(self,zipPos,protocolFlag=False):
         # Extract zip file
+        print('Here')
+        self.protocol(protocolFlag,'Starting to unzip ' + str(zipPos),True)
         self.EXP_DIR =self.unzip(zipPos)
+        self.protocol(protocolFlag,'Finished to unzip ' + str(zipPos))
         
         # Convert all images to PNG and remove TIFS
+        self.protocol(protocolFlag,'Starting to convert tif files to png')
         self.convertTIF2PNG()
+        self.protocol(protocolFlag,'Finished to convert tif files to png')
         
         # Get all treatment directories 
+        self.protocol(protocolFlag,'Starting to create treatment subdirectories.')
         self.TREATMENT_DIRS = [d[0] for d in os.walk(self.EXP_DIR)]
         self.TREATMENT_DIRS = self.TREATMENT_DIRS[1::] # to get rid of parent directory
+        self.protocol(protocolFlag,'Finished to create treatment subdirectories.')
 
 
         # Load the Tensorflow model into memory.
+        self.protocol(protocolFlag,'Setting up tensorflow and the AI model.')
         self.setUp_tensorFlow()
         
         #variables for summary over treatments
@@ -397,31 +420,38 @@ class charon:
         treatI =0
         
         for treatment in self.TREATMENT_DIRS:
+            self.protocol(protocolFlag,'Running treatment: ' + str(treatment))
             self.imgList = self.getImagePos_search(treatment,'.png')
             (outPath,xlsFileName) = os.path.split(treatment)
+            self.protocol(protocolFlag,'Writing output for treatment: ' + str(treatment))
             treatmentSummary[treatI,:] = self.runTreatmentAnalysis(self.EXP_DIR,xlsFileName+'.xlsx')
             treatmentNames.append(xlsFileName)
             treatI+=1
             
         # prepare data for pandas
+        self.protocol(protocolFlag,'Preparing summary.')
         sumList1 = treatmentSummary[:,0].tolist()
         sumList2 = treatmentSummary[:,1].tolist()
         data_OUT = [treatmentNames,sumList1,sumList2]
         data_OUT = list(map(list, zip(*data_OUT)))
         df = pd.DataFrame(data_OUT, columns = ['treatment','alive', 'dead']) 
         
+        self.protocol(protocolFlag,'Writing summary.')
         #writeOut to XLSX
         self.setUp_XLSwriter(self.EXP_DIR,'summary.xlsx')
         df.to_excel(self.writer, sheet_name='Summary')
         self.writer.save()
 
         #zip results
+        self.protocol(protocolFlag,'Starting to zip results.')
         self.zipResults()
+        self.protocol(protocolFlag,'Finished to zip results to ' + str(self.resultZipPos))
         #clean up
+        self.protocol(protocolFlag,'Starting to clean working directory.')
         self.deleteWorkDir()
-        print(zipPos)
         self.deleteOriginalZip(zipPos)
-        print('Done')
+        self.protocol(protocolFlag,'Finished  cleaning working directory. \n STOP')
+        
 
 
     def deleteWorkDir(self):

@@ -50,7 +50,7 @@ class folderAutomaton:
                 dataObj.analyseFlag = True
                 try:
                     x = charon.charon(dataObj.AItag)
-                    x.runExperimentAnalysis(dataObj.fPos)
+                    x.runExperimentAnalysis(dataObj.fPos,protocolFlag=True)
                     dataObj.writeOutputFlag = True
                     dataObj.expirationDate  = datetime.datetime.now()+datetime.timedelta(days=4)    
                     dataObj.success         = True
