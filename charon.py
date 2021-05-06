@@ -380,12 +380,9 @@ class charon:
     def protocol(self, protoStr ='None',startFlag=False):
         if self.protocolFlag == False:
             return
-        print('p routine')
         if startFlag == True:
             fileName = os.path.basename(protoStr.split(" ")[-1])
-            print('fname',fileName)
             self.protoPos = os.path.join(self.OUTPUT_DIR,fileName[0:-4]+'_protocol.txt')
-            print(self.protoPos)
             text_file = open(self.protoPos, "w")
         else:
             text_file = open(self.protoPos, "a")
