@@ -28,6 +28,9 @@ class drosoImgSplitter():
 class circleDetector():
     # https://stackoverflow.com/questions/60637120/detect-circles-in-opencv
     def __init__(self):
+        self.setLarvalParameters()
+
+    def setLarvalParameters(self):
         self.medianFilterKernel = 3
 
         self.cannyPara1         = 80
@@ -36,6 +39,16 @@ class circleDetector():
         self.houghMinR          = 8
         self.houghMaxR          = 12
         self.houghMinDist       = 8
+
+    def setPrePupaParameters(self):
+        self.medianFilterKernel = 3
+
+        self.cannyPara1         = 80
+        self.cannyPara2         = 9
+        
+        self.houghMinR          = 4
+        self.houghMaxR          = 10
+        self.houghMinDist       = 5
 
     def readImage(self,fileName):
         self.img = cv2.imread(fileName)
@@ -48,11 +61,11 @@ class circleDetector():
 
     def imageMorph(self):
         self.img_gray   = self.img2gray(self.img)
-        self.img_blured = self.filterImg(self.img_gray,self.medianFilterKernel)
+        self.img_blurred = self.filterImg(self.img_gray,self.medianFilterKernel)
     
     def getHoughCircles(self):
         # docstring of HoughCircles: HoughCircles(image, method, dp, minDist[, circles[, param1[, param2[, minRadius[, maxRadius]]]]]) -> circles
-        return cv2.HoughCircles(self.img_blured, cv2.HOUGH_GRADIENT, 1, self.houghMinDist, 
+        return cv2.HoughCircles(self.img_blurred, cv2.HOUGH_GRADIENT, 1, self.houghMinDist, 
                                 param1=self.cannyPara1, param2=self.cannyPara2, minRadius=self.houghMinR, 
                                 maxRadius=self.houghMaxR )
     
@@ -66,11 +79,17 @@ class circleDetector():
         else: 
             return np.array([circles[:,0]-circles[:,2],circles[:,1]-circles[:,2],circles[:,0]+circles[:,2],circles[:,1]+circles[:,2] ]).T
     
-    def makeDataFrame(self,fileName,circles,bboxes):
+    def makeDataFrame(self,fileName,circles):
+        # get 2D list
+        circles = circles.squeeze()
+        # calc bounding boxes
+        bboxes  = self.circles2boundingBoxes(circles)
+        # make dataframe
         if len(circles.shape)<2:
             cellDF = pd.DataFrame(dict(zip(['x_min','y_min','x_max','y_max','x_cen','y_cen','radius'],list(np.hstack((bboxes,circles))))),index=[0])
         else:
             cellDF = pd.DataFrame(np.hstack((bboxes,circles)),columns=['x_min','y_min','x_max','y_max','x_cen','y_cen','radius'])
+        # add file position
         cellDF['fileName'] = fileName
         return cellDF
 
@@ -80,12 +99,12 @@ class circleDetector():
         self.readImage(fileName)
         self.imageMorph()
         circles = self.detectCircles()
+        # plot
         if plotFlag:
             self.plotFrame(circles)
+        # make dataframe that also includes calculating the bounding boxes
         if circles is not None:
-            circles = circles.squeeze()
-            bboxes  = self.circles2boundingBoxes(circles)
-            cellDF  = self.makeDataFrame(fileName,circles,bboxes)
+            cellDF  = self.makeDataFrame(fileName,circles)
             return cellDF
         else:
             return None
@@ -106,6 +125,7 @@ class circleDetector():
 
         # Show result for testing:
         cv2.imshow('img', img_result)
+        cv2.imshow('img_blurred', self.img_blurred)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
