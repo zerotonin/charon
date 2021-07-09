@@ -91,13 +91,32 @@ class trainMultiplier:
             sizeVal = img_size[1]
         else:
             raise ValueError('training multiplier flip coordinate is neither x nor y: ' + str(flipCoord))
-        coords = list(xmlRoot.iter(flipCoord+'max'))+list(xmlRoot.iter(flipCoord+'min'))
+        objList = list(xmlRoot.iter('object'))
         #update bbox values
-        for coord in coords:
-            oldCoord = int(coord.text)
-            newCoord = sizeVal -oldCoord
-            coord.text = str(newCoord)
+        for obj in objList:
+            maxNodeStr = flipCoord+'max'
+            maxNode    = obj.find(maxNodeStr)
+            oldMax = int(maxNode.text)
+            newMin = sizeVal -oldMax # because flipping changes the min and max as well
 
+            minNodeStr = flipCoord+'min'
+            minNode    = obj.find(minNodeStr)
+            oldMin = int(minNode.text)
+            newMax = sizeVal -oldMin # see above
+
+
+            minNode.text = str(newMin)
+            maxNode.text = str(newMax)
+
+    def changeFilePosInXML(self,xmlRoot,flipAxStr):
+        
+        fileNameNode = xmlRoot.find('filename')
+        fileNameStr  = fileNameNode.text
+        fileNameNode.text = self.updateFileName(fileNameStr,flipAxStr)
+        
+        pathNode = xmlRoot.find('path')
+        pathStr  = pathNode.text
+        pathNode.text = self.updateFileName(pathStr,flipAxStr)
 
     
     def flipXML(self,xmlPos):
@@ -107,17 +126,20 @@ class trainMultiplier:
         if 'h' in self.flipType:
             tree,xmlRoot  = self.readXMLroot(xmlPos)
             self.flipXMLCoord(xmlRoot,'x',img_size)
+            self.changeFilePosInXML(xmlRoot,'h')
             writePos = self.updateFileName(xmlPos,'h')
             tree.write(writePos)
         if 'v' in self.flipType:
             tree,xmlRoot  = self.readXMLroot(xmlPos)
             self.flipXMLCoord(xmlRoot,'y',img_size)
+            self.changeFilePosInXML(xmlRoot,'v')
             writePos = self.updateFileName(xmlPos,'v')  
             tree.write(writePos)       
         if 'b' in self.flipType:
             tree,xmlRoot  = self.readXMLroot(xmlPos)
             self.flipXMLCoord(xmlRoot,'x',img_size)
             self.flipXMLCoord(xmlRoot,'y',img_size)
+            self.changeFilePosInXML(xmlRoot,'b')
             writePos = self.updateFileName(xmlPos,'b')
             tree.write(writePos)
     
