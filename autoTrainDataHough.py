@@ -80,8 +80,6 @@ class circleDetector():
             return np.array([circles[:,0]-circles[:,2],circles[:,1]-circles[:,2],circles[:,0]+circles[:,2],circles[:,1]+circles[:,2] ]).T
     
     def makeDataFrame(self,fileName,circles):
-        # get 2D list
-        circles = circles.squeeze()
         # calc bounding boxes
         bboxes  = self.circles2boundingBoxes(circles)
         # make dataframe
@@ -92,6 +90,58 @@ class circleDetector():
         # add file position
         cellDF['fileName'] = fileName
         return cellDF
+
+    def makeXML(self,fileName,circles, imgShape):
+        # calc bounding boxes
+        bboxes  = self.circles2boundingBoxes(circles)
+        # make xml
+        xmlPos =fileName[:-3]+'xml'
+        xmlFileNameField = os.path.basename(fileName)
+        xmlFolderField = os.path.basename(os.path.dirname(fileName))
+        xmlObjectTag = 'cell'
+        file1 = open(xmlPos,"w")
+        file1.write(f'<annotation>\n')
+        file1.write(f'	<folder>{xmlFolderField}</folder>\n')
+        file1.write(f'	<filename>{xmlFileNameField}</filename>\n')
+        file1.write(f'	<path>{fileName}</path>\n')
+        file1.write(f'	<source>\n')
+        file1.write(f'		<database>Unknown</database>\n')
+        file1.write(f'	</source>\n')
+        file1.write(f'	<size>\n')
+        file1.write(f'		<width>{imgShape[1]}</width>\n')
+        file1.write(f'		<height>{imgShape[0]}</height>\n')
+        file1.write(f'		<depth>{imgShape[2]}</depth>\n')
+        file1.write(f'	</size>\n')
+        file1.write(f'	<segmented>0</segmented>\n')
+        if len(circles.shape)<2:
+            file1.write(f'	<object>\n')
+            file1.write(f'		<name>{xmlObjectTag}</name>\n')
+            file1.write(f'		<pose>Unspecified</pose>\n')
+            file1.write(f'		<truncated>0</truncated>\n')
+            file1.write(f'		<difficult>0</difficult>\n')
+            file1.write(f'		<bndbox>\n')
+            file1.write(f'			<xmin>{bboxes[0]}</xmin>\n')
+            file1.write(f'			<ymin>{bboxes[1]}</ymin>\n')
+            file1.write(f'			<xmax>{bboxes[2]}</xmax>\n')
+            file1.write(f'			<ymax>{bboxes[3]}</ymax>\n')
+            file1.write(f'		</bndbox>\n')
+            file1.write(f'	</object>\n')
+        else:
+            for i in range(bboxes.shape[0]):
+                file1.write(f'	<object>\n')
+                file1.write(f'		<name>{xmlObjectTag}</name>\n')
+                file1.write(f'		<pose>Unspecified</pose>\n')
+                file1.write(f'		<truncated>0</truncated>\n')
+                file1.write(f'		<difficult>0</difficult>\n')
+                file1.write(f'		<bndbox>\n')
+                file1.write(f'			<xmin>{bboxes[i,0]}</xmin>\n')
+                file1.write(f'			<ymin>{bboxes[i,1]}</ymin>\n')
+                file1.write(f'			<xmax>{bboxes[i,2]}</xmax>\n')
+                file1.write(f'			<ymax>{bboxes[i,3]}</ymax>\n')
+                file1.write(f'		</bndbox>\n')
+                file1.write(f'	</object>\n')
+
+        file1.write(f'</annotation>')
 
 
     def detectCellsInFile(self,fileName,plotFlag = False):
@@ -104,7 +154,10 @@ class circleDetector():
             self.plotFrame(circles)
         # make dataframe that also includes calculating the bounding boxes
         if circles is not None:
+            # get 2D list
+            circles = circles.squeeze()
             cellDF  = self.makeDataFrame(fileName,circles)
+            self.makeXML(fileName,circles,self.img.shape)
             return cellDF
         else:
             return None
