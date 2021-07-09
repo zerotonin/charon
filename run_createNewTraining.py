@@ -4,7 +4,7 @@ import charon, time,  training_utils, trainDataMultiplier
 
 
 reload(training_utils)
-path2labeledData = '/home/bgeurten/ownCloud/personalSwaps/PeguinTrainData'
+path2labeledData = '/media/dataSSD/trainDataFlipped'
 
 ###############################
 # quadrupel your labeled data #
@@ -16,7 +16,7 @@ tm.flipFolder()
 # Create training data #
 ########################
 
-t = training_utils.trainDataCuration('PenguinTracer',
+t = training_utils.trainDataCuration('flyFinder_autoBenzerFlippo',
                                     path2labeledData,
                                     sourceImgType ='png')
 t.chooseCandidateFiles()
@@ -31,7 +31,7 @@ t.transfer_trainingData()
 # Run gen scripts #
 # #################
 reload(training_utils)
-g = training_utils.runTrainingGenScripts(t)
+g = training_utils.runTrainingGenScripts(t,python='/home/bgeurten/anaconda3/envs/charon/bin/python')
 g.maxTrainSteps = 100000
 g.run()
 
