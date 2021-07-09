@@ -94,13 +94,15 @@ class trainMultiplier:
         objList = list(xmlRoot.iter('object'))
         #update bbox values
         for obj in objList:
+            bndboxNode = obj.find('bndbox')
+
             maxNodeStr = flipCoord+'max'
-            maxNode    = obj.find(maxNodeStr)
+            maxNode    = bndboxNode.find(maxNodeStr)
             oldMax = int(maxNode.text)
             newMin = sizeVal -oldMax # because flipping changes the min and max as well
 
             minNodeStr = flipCoord+'min'
-            minNode    = obj.find(minNodeStr)
+            minNode    = bndboxNode.find(minNodeStr)
             oldMin = int(minNode.text)
             newMax = sizeVal -oldMin # see above
 
