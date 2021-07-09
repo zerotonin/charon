@@ -20,7 +20,7 @@ cD.detectCellsInFile(imgFiles[123],plotFlag=True)
 
 
 cD = circleDetector()
-for stack in stackDirs[]:
+for stack in stackDirs:
     cD.detectCellsInFolder(stack,'png')
     cD.saveFolderDF(f'{stack}.csv')
 
