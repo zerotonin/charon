@@ -6,7 +6,7 @@ reload(charon)
 x = charon.charon('flyFinder_food54')
 x.DETECTION_THRESH =0.75  
 # folders that need to be investigated
-folderList = ["§]
+folderList = ['']
 #check files in each folder
 fileList = list()
 for folder in folderList:
