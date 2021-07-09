@@ -1,23 +1,38 @@
 from importlib import reload
-import charon, time,  training_utils
+import charon, time,  training_utils, trainDataMultiplier
+
+
 
 reload(training_utils)
+path2labeledData = '/home/bgeurten/ownCloud/personalSwaps/PeguinTrainData'
 
-t = training_utils.trainDataCuration('cellCount_Schneider',
-                                    '/media/gwdg-backup/charonLabelData/Schneider',
-                                    sourceImgType ='tif')
+###############################
+# quadrupel your labeled data #
+###############################
+tm = trainDataMultiplier.trainMultiplier(path2labeledData,sourceImgType ='png',flipType='hvb')
+tm.flipFolder()
+
+########################
+# Create training data #
+########################
+
+t = training_utils.trainDataCuration('PenguinTracer',
+                                    path2labeledData,
+                                    sourceImgType ='png')
 t.chooseCandidateFiles()
 t.renameLabelsVerbose() #or set dictionary
 #t.labelChanger = {'male1': 'male 1', 'agression': 'aggression', 'male 2': 'male 2', 'male 1': 'male 1', 'homo courtship': 'homo courtship', 'male2': 'male 2', 'courtship': 'courtship', 'female': 'female'}
 #t.labelChanger = {'arena-TR_manuBenzer': 'arena_TR_manuBenzer', 'arena_TL_manuBenzer': 'arena_TL_manuBenzer', 'arene_LR_manuBenzer': 'arena_LR_manuBenzer', 'arena-LR_manuBenzer': 'arena_LR_manuBenzer', 'fly': 'fly', 'arena_LR_manuBenzer': 'arena_LR_manuBenzer', 'adomen': 'abdomen', 'abdomen': 'abdomen', 'head': 'head', 'arena_LL_autoBenzer': 'arena_LL_autoBenzer', 'arena_RL_manuBenzer': 'arena_LR_manuBenzer', 'arena_TR_autoBenzer': 'arena_TR_autoBenzer', 'arena_LLw_manuBenzer': 'arena_LL_manuBenzer', 'arene_TR_manuBenzer': 'arena_TR_manuBenzer', 'arena_food_tc': 'arena_food_tc', 'arena_LS_autoBenzer': 'arena_LS_autoBenzer', 'arene_LL_manuBenzer': 'arena_LL_manuBenzer', 'arene_TL_manuBenzer': 'arena_TL_manuBenzer', 'arena-LL_manuBenzer': 'arena_LL_manuBenzer', 'arena_TwL_manuBenzer': 'arena_TL_manuBenzer', 'arena_TL_autoBenzer': 'arena_TL_autoBenzer', 'andomen': 'abdomen', 'arena_TS_autoBenzer': 'arena_TS_autoBenzer', 'arena_TR_manuBenzer': 'arena_TR_manuBenzer', 'arena_LL_manuBenzer': 'arena_LL_manuBenzer', 'arena_LR_autoBenzer': 'arena_LR_autoBenzer', 'arena_LwR_manuBenzer': 'arena_LR_manuBenzer'}
-
+#t.labelChanger = {'TC.f W+': 'TC', 'marker': 'marker', 'Arena': 'arena', 'TC': 'TC', 'mark': 'marker', 'TC.m W+': 'TC', 'arena': 'arena', 'TC.m W-': 'TC', 'TC.f W-': 'TC', 'TC ': 'TC'}
 t.makeTrainDirs()
 t.transfer_trainingData()
 
-
+###################
+# Run gen scripts #
+# #################
 reload(training_utils)
 g = training_utils.runTrainingGenScripts(t)
-g.maxTrainSteps = 1000000
+g.maxTrainSteps = 100000
 g.run()
 
 
