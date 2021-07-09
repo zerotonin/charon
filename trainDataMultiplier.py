@@ -26,6 +26,12 @@ class trainMultiplier:
     
     def getXMLpos(self):
         self.xmlPos = [ x[:-3]+'xml' for x in self.imagePos]
+    def cleanLists(self):
+        # test if file exists
+        boolList       = [os.path.isfile(x) for x in self.xmlPos]
+        # generate only if value is true
+        self.xmlPos   = [i for (i, v) in zip(self.xmlPos  , boolList) if v]
+        self.imagePos = [i for (i, v) in zip(self.imagePos, boolList) if v]
 
     def readImg(self,imgPos):
         return cv2.imread(imgPos)
@@ -118,6 +124,7 @@ class trainMultiplier:
     def flipFolder(self):
         self.getFilePos_search()
         self.getXMLpos()
+        self.cleanLists()
         for imgPos,xmlPos in tqdm(list(zip(self.imagePos,self.xmlPos)),desc='flip images'):
             self.flipImage(imgPos)
             self.flipXML(xmlPos)
