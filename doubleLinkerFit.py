@@ -53,13 +53,18 @@ def channelFunc(D,m0,Cch,Csp):
     # kT =  Boltzman Konstant at Roomtemperatur ~ 4.1 zJ 
 
     kT = 4.1
-    #return (np.exp(-((m0-((Cch/(Cch+Csp**2))*D**2))/kT)))/(1+(np.exp(-((m0-((Cch/(Cch+Csp**2))*D**2))/kT))))
-    return (np.exp(-((m0-((Cch/Csp**2)*D**2))/kT)))/(1+(np.exp(-((m0-((Cch/Csp**2)*D**2))/kT))))
+    return (np.exp(-((m0-((Cch/(Cch*Csp+Csp**2))*D**2))/kT)))/(1+(np.exp(-((m0-((Cch/(Cch*Csp+Csp**2))*D**2))/kT))))
+    #return (np.exp(-((m0-((Cch/Csp**2)*D**2))/kT)))/(1+(np.exp(-((m0-((Cch/Csp**2)*D**2))/kT)))) # simplified version
 
 def channelFuncSimplified(D,m0,C):
 
     kT = 4.1
     return (np.exp(-((m0-((C/C**2)*D**2))/kT)))/(1+(np.exp(-((m0-((C/C**2)*D**2))/kT))))
+
+def comboFit(D,m0,Cch,Csp,splitNum=100):
+    wt_Y = channelFunc(D[0:splitNum],m0,Cch,Csp)
+    dl_Y = channelFunc(D[splitNum:],m0,Cch,Csp*2)
+    return np.hstack((wt_Y,dl_Y))
   
 def readCSVFile():
     # read from csv file
@@ -103,7 +108,7 @@ def finalisePlot():
     plt.legend(loc='upper left',fancybox=True, shadow=True)
     plt.show()
 
-def quickFit(wt,dl,funcName,p0=[1,400,400],bounds=(0.0001, [3000.,10000.,1000]),method="lm",maxfev=100000000):
+def quickFit(wt,dl,funcName,p0=[25,400,400],bounds=(0.0001, [3000.,10000000.,1000]),method="dogbox",maxfev=100000000):
     if funcName == 'channelFunc':
         wt_popt, wt_pcov = curve_fit(channelFunc, wt[:,0], wt[:,1],p0=p0,bounds=bounds,method=method,maxfev=maxfev)
         dl_popt, dl_pcov = curve_fit(channelFunc, dl[:,0], dl[:,1],p0=p0,bounds=bounds,method=method,maxfev=maxfev)
@@ -118,7 +123,8 @@ def quickReport(wt,dl,fitResult):
     plotFit(wt,fitResult[0],'wt','lightgray')
     plotFit(dl,fitResult[2],'dl','dimgray')
     if len(fitResult[0]) ==3:
-        plotFit(dl,[fitResult[0][0],fitResult[0][1]/2,fitResult[0][2]*2],'dl double','blue')
+        plotFit(wt,[fitResult[0][0],fitResult[0][1],fitResult[0][2]*2],'wt double','blue')
+        plotFit(dl,[fitResult[2][0],fitResult[2][1],fitResult[0][2]*2],'dl double','red')
     finalisePlot()
 
 
@@ -133,6 +139,13 @@ def quickReport(wt,dl,fitResult):
 wt,dl = importData()
 ##dl = np.vstack((np.array([0.001,0.001]),dl,np.array([175.,1.])))
 
+combo_popt, combo_pcov = curve_fit(comboFit, np.hstack((wt[:,0],dl[:,0])), np.hstack((wt[:,1],dl[:,1])),bounds=(0.0001, [3000.,100000.,1000]),p0=[1,10,400],method="dogbox",maxfev=100000000)
+plt.figure()
+plotRawData(wt,dl)
+plotFit(wt,combo_popt,'wt','lightgray')
+plotFit(dl,[combo_popt[0],combo_popt[1],combo_popt[2]*2],'dl','dimgray')
+finalisePlot()
+'''
 
 # preform simple fit
 fitResult = quickFit(wt,dl,'channelFunc',p0=[15,15,15],bounds=(0.0001, [10000.,10000.,1000]),method="trf",maxfev=100000000)
@@ -140,7 +153,6 @@ fitResult = quickFit(wt,dl,'channelFunc',p0=[15,15,15],bounds=(0.0001, [10000.,1
 quickReport(wt,dl,fitResult)    
 # plot result
 
-'''
 
 #
 samples = 100
