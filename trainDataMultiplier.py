@@ -25,7 +25,7 @@ class trainMultiplier:
         self.imagePos.sort()
     
     def getXMLpos(self):
-        self.xmlPos = [ x[:-3]+'xml' for x in tm.imagePos]
+        self.xmlPos = [ x[:-3]+'xml' for x in self.imagePos]
 
     def readImg(self,imgPos):
         return cv2.imread(imgPos)
