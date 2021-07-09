@@ -50,7 +50,7 @@ class folderAutomaton:
                 dataObj.analyseFlag = True
                 try:
                     x = charon.charon(dataObj.AItag)
-                    x.runExperimentAnalysis(dataObj.fPos)
+                    x.runExperimentAnalysis(dataObj.fPos,protocolFlag=True)
                     dataObj.writeOutputFlag = True
                     dataObj.expirationDate  = datetime.datetime.now()+datetime.timedelta(days=4)    
                     dataObj.success         = True
@@ -131,7 +131,9 @@ class folderAutomaton:
         
         print('Only in death duty ends!')
 
-    def run(self,loadCharonFlag = 'load'):
+
+    def startUpCharon(self,loadCharonFlag):
+
         if loadCharonFlag == 'verbose':
             self.startUpDlg()
         elif loadCharonFlag == 'load':
@@ -143,21 +145,24 @@ class folderAutomaton:
         elif loadCharonFlag == 'fresh':
             self.startUpDlg()
             print('Starting fresh!\n Only in death duty ends!\n\n')
+
+        
+    def run(self,loadCharonFlag = 'load'):
+        self.startUpCharon(loadCharonFlag)
         c=0
         while True:
             if c==1000:
                 self.saveCharonObjList()
+                os.system("find "+str(self.downloadPath)+"/* -mindepth 1 -mtime +5 -delete")
                 c = 0
             self.checkFolders4NewObjects()
             self.analyseZips()
-            self.delteExpiredOutputs()
-            #self.clearObjectList()
+            
             c+=1
             gc.collect()
             time.sleep(5) 
 
-
 if __name__ == "__main__":
     automaton = folderAutomaton()   
-    automaton.run()             
+    automaton.run('verbose')             
 
