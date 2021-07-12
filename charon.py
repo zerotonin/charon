@@ -113,7 +113,7 @@ class charon:
                           'drosoCellCounting',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
-                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/drosoCellCounting', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/DrosoNeuron4x', #INFERENCE_GRAPH_DIR
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/drosoNucleusCounter',#OUTPUT_DIR      
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/drosoNucleusCounter',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
