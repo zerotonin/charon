@@ -301,7 +301,7 @@ class augmentTrainingGenScripts():
 
     
 class runTrainingGenScripts:
-    def __init__(self,transferObj):
+    def __init__(self,transferObj,pythonPos=''):
 
         self.train_csv_file = transferObj.TRAIN_DIR+'_labels.csv'
         self.train_img_path = transferObj.TRAIN_DIR
@@ -313,6 +313,7 @@ class runTrainingGenScripts:
         self.tag            = transferObj.tag
         self.inferencePath  = os.path.join("/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/",self.tag )
         self.maxTrainSteps  = 200000
+        self.pythonPos      = pythonPos
     
     def run(self):
 
@@ -324,7 +325,7 @@ class runTrainingGenScripts:
         self.lm.printNameIDs()   
         self.lm.writeFile()
         self.cf = adaptTFconfigFile(self,self.tag)
-        self.cf.run()
+        self.cf.run(self.pythonPos,self.maxTrainSteps)
 class makelabelMapFile:
     def __init__(self,scriptObj,names = [], ids = []):
         self.names = names
@@ -454,8 +455,7 @@ class adaptTFconfigFile:
         self.config[112] = '  num_steps: '+ str(self.stepNum) +'\n'
 
 
-    def run(self):
-
+    def run(self,pythonPos,maxSteps):
         self.readConfig()
         self.updateLabelNum()
         self.updateCheckPoint()
@@ -463,11 +463,15 @@ class adaptTFconfigFile:
         self.updateTestImageNum()
         self.updateStepNum()
 
+        if pythonPos != '':
+            pythonStr = os.path.join(pythonPos,'python')
+        else:
+            pythonStr = 'python'
         with open(self.targetConfigFile, 'w') as file:
             file.writelines( self.config )
 
-        trainCommandStr = "python /home/bgeurten/models/research/object_detection/legacy/train.py --logtostderr --train_dir="+ self.trainDir +" --pipeline_config_path="+ self.targetConfigFile +""
-        extractInfGraphCommandStr = "python /home/bgeurten/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path " + self.targetConfigFile + " --trained_checkpoint_prefix " + self.trainDir+"/model.ckpt-XXXXXXXX --output_directory /media/dataSSD/inferenceGraphs/" + self.tag + "/"
+        trainCommandStr = f'{pythonStr} /home/bgeurten/models/research/object_detection/legacy/train.py --logtostderr --train_dir={self.trainDir} --pipeline_config_path={self.targetConfigFile}'
+        extractInfGraphCommandStr = f'{pythonStr} /home/bgeurten/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path {self.targetConfigFile} --trained_checkpoint_prefix {self.trainDir}/model.ckpt-{str(maxSteps)} --output_directory /media/dataSSD/inferenceGraphs/{self.tag}/'
         
         Path(self.inferencePath).mkdir(parents=True, exist_ok=True)
         shutil.copyfile(self.pbTXTPos, os.path.join(self.inferencePath,'labelmap.pbtxt'))

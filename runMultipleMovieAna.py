@@ -3,10 +3,10 @@ import charon, time,  training_utils
 from tqdm import tqdm
 
 reload(charon)
-x = charon.charon('flyFinder')
+x = charon.charon('flyFinder_food54')
 x.DETECTION_THRESH =0.75  
 # folders that need to be investigated
-folderList = ["§]
+folderList = ['']
 #check files in each folder
 fileList = list()
 for folder in folderList:
@@ -34,3 +34,9 @@ for file in tqdm(fileList,desc='analysing movies '):
     x.analyseMovie(file, #moviePos
             file[0:-4]+'_ana.avi', #anaPath out
             file[0:-3]+'tra',writeDetectionMov=True) # tra file
+
+
+file = '/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-30__17_01_25_blueCS8g8d_yellowblue_Light.avi'
+x.analyseMovie(file, #moviePos
+        file[0:-4]+'_ana.avi', #anaPath out
+        file[0:-3]+'tra',writeDetectionMov=True) # tra file
