@@ -143,7 +143,7 @@ class folderAutomaton:
             except:
                 print('Charon object list NOT loaded! Starting fresh! \n Only in death duty ends!\n\n')
         elif loadCharonFlag == 'fresh':
-            self.startUpDlg()
+            #self.startUpDlg()
             print('Starting fresh!\n Only in death duty ends!\n\n')
 
         
@@ -164,5 +164,5 @@ class folderAutomaton:
 
 if __name__ == "__main__":
     automaton = folderAutomaton()   
-    automaton.run('verbose')             
+    automaton.run('fresh')             
 
