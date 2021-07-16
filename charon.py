@@ -107,6 +107,15 @@ class charon:
                           '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/triboliumNeuron2', #INFERENCE_GRAPH_DIR
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/triboliumNeuron',#OUTPUT_DIR      
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/triboliumNeuron',#ZIP_DIR         
+                          '/media/dataSSD/cellDetector/analysing')#WORK_DIR         elif cellType == 'triboliumNeuron':
+        elif cellType == 'triboliumTracer4x':
+            self.initModel(2, #NUM_CLASSES     
+                          'triboliumTracer4x',#MODEL_NAME      
+                          0.75,#DETECTION_THRESH
+                          '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/triboliumTracer4x', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/triboliumTracer4x',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/triboliumTracer4x',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
         elif cellType == 'drosoNucleus':
             self.initModel(1, #NUM_CLASSES     
@@ -131,9 +140,9 @@ class charon:
                           'flyFinder_manuBenzer',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
-                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/flyFinder_manuBenzer', #INFERENCE_GRAPH_DIR
-                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/flyFinder_manuBenzer',#OUTPUT_DIR      
-                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/flyFinder_manuBenzer',#ZIP_DIR         
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/autoBenzer4x', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/autoBenzer4x',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/autoBenzer4x',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
         elif cellType == 'flyFinder_food54':
             self.initModel(14, #NUM_CLASSES     

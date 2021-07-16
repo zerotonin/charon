@@ -81,10 +81,23 @@ print(end - start)
 reload(charon)
 x = charon.charon('flyFinder_manuBenzer')
 x.DETECTION_THRESH =0.5  
+file='/media/dataSSD/2018-04-19__11_28_32.avi'
+x.analyseMovie(file, #moviePos
+            file[0:-4]+'_ana.avi', #anaPath out
+            file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
+
 
 fList = x.getImagePos_search('/home/bgeurten/Videos/testVideos/manuBenzer','avi')
 fList = fList+ x.getImagePos_search('/home/bgeurten/Videos/testVideos/manuBenzer','mp4')
 for file in fList:
     x.analyseMovie(file, #moviePos
+            file[0:-4]+'_ana.avi', #anaPath out
+            file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
+            
+reload(charon)
+x = charon.charon('triboliumTracer4x')
+x.DETECTION_THRESH =0.5  
+file='/media/gwdg-backup/BackUp/Yegi/2020-11-19__14_34_03.avi'
+x.analyseMovie(file, #moviePos
             file[0:-4]+'_ana.avi', #anaPath out
             file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
