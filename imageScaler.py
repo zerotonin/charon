@@ -125,7 +125,7 @@ class imageScaler:
         self.scaleXMLCoord(xmlRoot)
         tree.write(self.updateFileName(xmlPos))
     
-    def resizeFolder(self):
+    def scaleFolder(self):
         self.getFilePos_search()
         self.getXMLpos()
         self.cleanLists()
