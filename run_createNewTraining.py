@@ -4,8 +4,9 @@ import charon, time,  training_utils, imageMultiplier, imageScaler
 
 
 reload(training_utils)
-path2labeledData = '/media/dataSSD/multipliedData/Funnel'
-imgExt = 'JPG'
+path2labeledData = '/media/dataSSD/multipliedData/trainData_penguin2'
+nameOfTheNN = 'penguinPicker4x'
+imgExt = 'png'
 
 ##################################
 # scale your labeled if to large #
@@ -25,7 +26,7 @@ tm.flipFolder()
 # Create training data #
 ########################
 
-t = training_utils.trainDataCuration('penguinPicker4x',
+t = training_utils.trainDataCuration(nameOfTheNN,
                                     path2labeledData,
                                     sourceImgType =imgExt)
 t.chooseCandidateFiles()
