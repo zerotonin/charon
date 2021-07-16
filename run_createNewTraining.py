@@ -1,16 +1,25 @@
 from importlib import reload
-import charon, time,  training_utils, imageMultiplier
+import charon, time,  training_utils, imageMultiplier, imageScaler
 
 
 
 reload(training_utils)
-path2labeledData = '/media/dataSSD/multipliedData/trainData_penguin'
+path2labeledData = '/media/dataSSD/multipliedData/Funnel'
+imgExt = 'JPG'
+
+##################################
+# scale your labeled if to large #
+##################################
+
+iS = imageScaler.imageScaler(path2labeledData,1024,sourceImgType =imgExt,overWriteMode=False)
+iS.scaleFolder()
 
 ###############################
 # quadrupel your labeled data #
 ###############################
-tm = imageMultiplier.imageMultiplier(path2labeledData,sourceImgType ='png',flipType='hvb')
+tm = imageMultiplier.imageMultiplier(path2labeledData,sourceImgType =imgExt,flipType='hvb')
 tm.flipFolder()
+
 
 ########################
 # Create training data #
@@ -18,7 +27,7 @@ tm.flipFolder()
 
 t = training_utils.trainDataCuration('penguinPicker4x',
                                     path2labeledData,
-                                    sourceImgType ='png')
+                                    sourceImgType =imgExt)
 t.chooseCandidateFiles()
 t.renameLabelsVerbose() #or set dictionary
 #t.labelChanger = {'TC.f W-': 'TC', 'Arena': 'arena', 'mark': 'marker', 'TC': 'TC', 'marker': 'marker', 'TC ': 'TC', 'TC.m W-': 'TC', 'TC.m W+': 'TC', 'TC.f W+': 'TC', 'arena': 'arena'}
