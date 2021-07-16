@@ -1,5 +1,5 @@
 from importlib import reload
-import charon, time,  training_utils, trainDataMultiplier
+import charon, time,  training_utils, imageMultiplier
 
 
 
@@ -9,7 +9,7 @@ path2labeledData = '/media/dataSSD/multipliedData/trainData_penguin'
 ###############################
 # quadrupel your labeled data #
 ###############################
-tm = trainDataMultiplier.trainMultiplier(path2labeledData,sourceImgType ='png',flipType='hvb')
+tm = imageMultiplier.imageMultiplier(path2labeledData,sourceImgType ='png',flipType='hvb')
 tm.flipFolder()
 
 ########################
@@ -31,7 +31,7 @@ t.transfer_trainingData()
 # #################
 reload(training_utils)
 g = training_utils.runTrainingGenScripts(t,pythonPos='/home/bgeurten/anaconda3/envs/charon/bin/')
-g.maxTrainSteps = 200000
+g.maxTrainSteps = 1000000
 g.run()
 
 

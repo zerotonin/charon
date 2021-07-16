@@ -5,7 +5,7 @@ from PIL import Image
 from pathlib import Path
 import numpy as np
 
-class trainMultiplier:
+class imageMultiplier:
     def __init__(self,IMG_DIR,sourceImgType ='png',flipType='hvb'):
     
         self.IMG_DIR       = IMG_DIR # where the original image data is
