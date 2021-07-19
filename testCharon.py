@@ -93,7 +93,8 @@ for file in fList:
     x.analyseMovie(file, #moviePos
             file[0:-4]+'_ana.avi', #anaPath out
             file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
-            
+
+# analyse single movie  
 reload(charon)
 x = charon.charon('triboliumTracer4x')
 x.DETECTION_THRESH =0.5  
