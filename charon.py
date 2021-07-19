@@ -109,7 +109,7 @@ class charon:
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/triboliumNeuron',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR         elif cellType == 'triboliumNeuron':
         elif cellType == 'triboliumTracer4x':
-            self.initModel(2, #NUM_CLASSES     
+            self.initModel(3, #NUM_CLASSES     
                           'triboliumTracer4x',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
@@ -144,14 +144,14 @@ class charon:
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/autoBenzer4x',#OUTPUT_DIR      
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/autoBenzer4x',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
-        elif cellType == 'flyFinder_food54':
-            self.initModel(14, #NUM_CLASSES     
+        elif cellType == 'Funnel':
+            self.initModel(13, #NUM_CLASSES     
                           'flyFinder_food54',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
-                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/flyFinder_food54', #INFERENCE_GRAPH_DIR
-                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/flyFinder_food54',#OUTPUT_DIR      
-                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/flyFinder_food54',#ZIP_DIR         
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/funnelfinder', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/funnelFinder',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/funnelFinder',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
         else:  
             print('There is no model for celltype: ' +str(cellType))
