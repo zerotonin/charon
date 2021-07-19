@@ -144,9 +144,9 @@ class charon:
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/autoBenzer4x',#OUTPUT_DIR      
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/autoBenzer4x',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
-        elif cellType == 'Funnel':
+        elif cellType == 'funnelFinder':
             self.initModel(13, #NUM_CLASSES     
-                          'flyFinder_food54',#MODEL_NAME      
+                          'funnelFinder',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
                           '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/funnelfinder', #INFERENCE_GRAPH_DIR
@@ -154,7 +154,7 @@ class charon:
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/funnelFinder',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
         else:  
-            print('There is no model for celltype: ' +str(cellType))
+            raise ValueError('charon: There is no model for celltype: ' +str(cellType))
 
         
 
