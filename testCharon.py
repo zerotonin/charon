@@ -3,9 +3,9 @@ import charon, time,  training_utils
 
 #Neuron zipped experiment
 reload(charon)
-x = charon.charon('locustNeuron')
+x = charon.charon('funnelFinder')
 start = time.time()
-x.runExperimentAnalysis("/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/locustNeuron/2021-04-22_Lm-neuron-Rotenon-12h-2.zip")
+x.runExperimentAnalysis("/media/dataSSD/funnelTest.zip")
 end = time.time()
 print(end - start)
 
