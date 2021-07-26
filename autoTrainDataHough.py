@@ -38,7 +38,7 @@ class circleDetector():
         
         self.houghMinR          = 8
         self.houghMaxR          = 12
-        self.houghMinDist       = 8
+        self.houghMinDist       = 12
 
     def setPrePupaParameters(self):
         self.medianFilterKernel = 3
@@ -48,7 +48,7 @@ class circleDetector():
         
         self.houghMinR          = 4
         self.houghMaxR          = 10
-        self.houghMinDist       = 5
+        self.houghMinDist       = 10
 
     def readImage(self,fileName):
         self.img = cv2.imread(fileName)
@@ -163,7 +163,7 @@ class circleDetector():
             return None
 
     def detectCellsInFolder(self,directory,extension,plotFlag = False):
-        imgFiles = [os.path.join(directory,f) for f in os.listdir(directory) if f.endswith(extension)]
+        imgFiles = [os.path.join(directory,f) for f in os.listdir(directory) if f.endswith(extension)].sort()
         dataFrameList = list()
         for imgFile in tqdm(imgFiles,desc='detectingCells'):
             dataFrameList.append(self.detectCellsInFile(imgFile,plotFlag))
