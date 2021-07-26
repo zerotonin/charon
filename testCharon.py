@@ -3,9 +3,9 @@ import charon, time,  training_utils
 
 #Neuron zipped experiment
 reload(charon)
-x = charon.charon('funnelFinder')
+x = charon.charon('drosoNucleus')
 start = time.time()
-x.runExperimentAnalysis("/media/dataSSD/funnelTest.zip")
+x.runExperimentAnalysis("/media/dataSSD/drosoTestStackExp.zip")
 end = time.time()
 print(end - start)
 
@@ -99,6 +99,15 @@ reload(charon)
 x = charon.charon('triboliumTracer4x')
 x.DETECTION_THRESH =0.5  
 file='/media/gwdg-backup/BackUp/Yegi/2020-11-19__14_34_03.avi'
+x.analyseMovie(file, #moviePos
+            file[0:-4]+'_ana.avi', #anaPath out
+            file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
+
+# analyse single movie  
+reload(charon)
+x = charon.charon('penguinPicker')
+x.DETECTION_THRESH =0.95  
+file='/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_04-03-2021.mp4'
 x.analyseMovie(file, #moviePos
             file[0:-4]+'_ana.avi', #anaPath out
             file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
