@@ -120,7 +120,7 @@ class charon:
         elif cellType == 'drosoNucleus':
             self.initModel(1, #NUM_CLASSES     
                           'drosoCellCounting',#MODEL_NAME      
-                          0.75,#DETECTION_THRESH
+                          0.35,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
                           '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/DrosoNeuron4x', #INFERENCE_GRAPH_DIR
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/drosoNucleusCounter',#OUTPUT_DIR      
@@ -150,6 +150,15 @@ class charon:
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
                           '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/funnelfinder', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/funnelFinder',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/funnelFinder',#ZIP_DIR         
+                          '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
+        elif cellType == 'penguinPicker':
+            self.initModel(3, #NUM_CLASSES     
+                          'penguinPicker',#MODEL_NAME      
+                          0.75,#DETECTION_THRESH
+                          '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/penguinPicker4x', #INFERENCE_GRAPH_DIR
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/funnelFinder',#OUTPUT_DIR      
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/funnelFinder',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
@@ -432,13 +441,16 @@ class charon:
         treatI =0
         
         for treatment in self.TREATMENT_DIRS:
-            self.protocol('Running treatment: ' + str(treatment))
-            self.imgList = self.getImagePos_search(treatment,'.png')
-            (outPath,xlsFileName) = os.path.split(treatment)
-            self.protocol('Writing output for treatment: ' + str(treatment))
-            treatmentSummary[treatI,:] = self.runTreatmentAnalysis(self.EXP_DIR,xlsFileName+'.xlsx')
-            treatmentNames.append(xlsFileName)
-            treatI+=1
+            try:
+                self.protocol('Running treatment: ' + str(treatment))
+                self.imgList = self.getImagePos_search(treatment,'.png')
+                (outPath,xlsFileName) = os.path.split(treatment)
+                self.protocol('Writing output for treatment: ' + str(treatment))
+                treatmentSummary[treatI,:] = self.runTreatmentAnalysis(self.EXP_DIR,xlsFileName+'.xlsx')
+                treatmentNames.append(xlsFileName)
+                treatI+=1
+            except:
+                print(f'Treatment {treatment} did not finish analysis. Please check protocol file for more details.')
             
         # prepare data for pandas
         self.protocol('Preparing summary.')

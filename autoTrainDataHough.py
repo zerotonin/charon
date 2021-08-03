@@ -53,6 +53,9 @@ class circleDetector():
     def readImage(self,fileName):
         self.img = cv2.imread(fileName)
 
+    def writeImage(self,fileName,img):
+        cv2.imwrite(fileName, img.astype(np.uint8))
+        
     def img2gray(self,image):
         return cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
     
@@ -143,12 +146,18 @@ class circleDetector():
 
         file1.write(f'</annotation>')
 
-
-    def detectCellsInFile(self,fileName,plotFlag = False):
-
+    def standardCircleDetection(self,fileName):
         self.readImage(fileName)
         self.imageMorph()
-        circles = self.detectCircles()
+        return self.detectCircles()
+
+
+
+    def detectCellsInFile(self,fileName,plotFlag = False):
+        # This function detects all circles in a file and saves out the data
+        # in label image format
+        circles = self.standardCircleDetection(fileName)
+        
         # plot
         if plotFlag:
             self.plotFrame(circles)
@@ -168,6 +177,77 @@ class circleDetector():
         for imgFile in tqdm(imgFiles,desc='detectingCells'):
             dataFrameList.append(self.detectCellsInFile(imgFile,plotFlag))
         self.FolderDF = pd.concat(dataFrameList)
+
+    
+    def checkSplitBoxLimits(self,xmin,xmax,ymin,ymax):
+        checkResult = True
+        if xmin < 0 or ymin < 0:
+            checkResult = False
+        if xmax > self.img.shape[0]-1:
+            checkResult = False
+        if ymax > self.img.shape[1]-1:
+               checkResult = False
+        return checkResult
+        
+    def makeRandomPadding(self,padding):
+        padNeg = int(np.random.rand(1)*padding*2)
+        padPos = 10-padNeg
+        return [padNeg,padPos]
+
+    def makeSplitBox(self,circle,):
+        xpad = self.makeRandomPadding(int(circle[2]*0.5))
+        ypad = self.makeRandomPadding(int(circle[2]*0.5))
+        ymin = int(circle[0] - circle[2] - xpad[0])
+        ymax = int(circle[0] + circle[2] + xpad[1])
+        xmin = int(circle[1] - circle[2] - ypad[0])
+        xmax = int(circle[1] + circle[2] + ypad[1])
+        return xmin,xmax,ymin,ymax
+    
+    def makeNewCircleCoords(self,circle,xmin,ymin):
+        return np.array([circle[0]-ymin,circle[1]-xmin,circle[2]])
+    
+    def cropImage(self,xmin,xmax,ymin,ymax):
+
+        if len(self.img.shape) == 3:
+            newImage = self.img[xmin:xmax+1,ymin:ymax+1,0::]
+        else:
+            newImage = self.img[xmin:xmax+1,ymin:ymax+1]
+        return newImage
+
+
+
+    def splitCellsInFile(self,fileName,plotFlag = False):
+        # This function detects all circles (n) in an image and than splits
+        # the image in n images which are saved seperately with seperate xml
+        # files. This is done to avoid wrong classification if the circles
+        # cluster at certain parts of the image
+    
+        circles = self.standardCircleDetection(fileName)
+        
+        # plot
+        if plotFlag:
+            self.plotFrame(circles)
+        # make dataframe that also includes calculating the bounding boxes
+        if circles is not None:
+            # get 2D list
+            circles = circles.squeeze()
+            if len(circles.shape) < 2:
+                circles = np.expand_dims(circles,axis=0)
+            for cI in range(circles.shape[0]):
+                xmin,xmax,ymin,ymax = self.makeSplitBox(circles[cI,0::])
+                boxOK = self.checkSplitBoxLimits(xmin,xmax,ymin,ymax)
+                if boxOK:
+                    newCircleCoord = self.makeNewCircleCoords(circles[cI,0::],xmin,ymin)
+                    newImage       = self.cropImage(xmin,xmax,ymin,ymax)
+                    newFileName    = f'{fileName[0:-4]}_cell{str(cI).zfill(4)}{fileName[-4::]}'
+                    self.writeImage(newFileName,newImage)
+                    self.makeXML(newFileName,newCircleCoord,newImage.shape)
+
+    def splitCellsInFolder(self,directory,extension,plotFlag = False):
+        imgFiles = [os.path.join(directory,f) for f in os.listdir(directory) if f.endswith(extension)]
+        imgFiles.sort()
+        for imgFile in tqdm(imgFiles,desc='detectingCells'):
+            self.splitCellsInFile(imgFile,plotFlag)
 
     def plotFrame(self,circles):
         img_result = self.img.copy()
