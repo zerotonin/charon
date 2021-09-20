@@ -14,14 +14,22 @@ def recursiveFindFiles(sourceDir,fileExt):
 def sendDirToTSP(sourceDir,fileExt,AIstring,detThresh,writeMovFlag,pythonPos='/home/bgeurten/anaconda3/envs/charon/bin/python',charonDir = '/home/bgeurten/PyProjects/charon'):
     fileList = recursiveFindFiles(sourceDir,fileExt)
     for f in fileList:
-        os.system(f'')
-        os.system(f'tsp cd {charonDir}; {pythonPos} charonMovieToTSP.py -i {f} -a {AIstring} -d {detThresh} -o {writeMovFlag}')
+        os.system(f'tsp cd {charonDir}')
+        os.system(f'tsp {pythonPos} charonMovieToTSP.py -i {f} -a {AIstring} -d {detThresh} -o {writeMovFlag}')
 
 
-sourceDir    = '/media/gwdg-backup/BackUp/penguins/'
-fileExt      = 'mp4'
-AIstring     = 'penguinPicker'
+#sourceDir    = '/media/gwdg-backup/BackUp/penguins/'
+#fileExt      = 'mp4'
+#AIstring     = 'penguinPicker'
+#detThresh    = 0.95
+#writeMovFlag = False
+
+
+
+
+sourceDir    = '/media/gwdg-backup/BackUp/Yegi'
+fileExt      = 'avi'
+AIstring     = 'triboliumTracer4x'
 detThresh    = 0.95
 writeMovFlag = False
-
 sendDirToTSP(sourceDir,fileExt,AIstring,detThresh,writeMovFlag)
