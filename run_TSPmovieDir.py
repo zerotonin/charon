@@ -8,7 +8,8 @@ def recursiveFindFiles(sourceDir,fileExt):
     os.system('clear')
     print('Finding Files!')
     fileList =  [os.path.join(dp, f) for dp, dn, filenames in os.walk(sourceDir) for f  in filenames if f.endswith(fileExt)]
-    return fileList.sort()
+    fileList.sort()
+    return fileList
 
 def sendDirToTSP(sourceDir,fileExt,AIstring,detThresh,writeMovFlag,pythonPos='/home/bgeurten/anaconda3/envs/charon/bin/python',charonDir = '/home/bgeurten/PyProjects/charon'):
     fileList = recursiveFindFiles(sourceDir,fileExt)
