@@ -4,8 +4,8 @@ import charon, time,  training_utils, imageMultiplier, imageScaler
 
 
 reload(training_utils)
-path2labeledData = '/media/dataSSD/multipliedData/trainData_penguin2'
-nameOfTheNN = 'penguinPicker4x'
+path2labeledData = '/home/bgeurten/ownCloud/ScienceProjects/Quantification/traindata'
+nameOfTheNN = 'tribNeuronTracer'
 imgExt = 'png'
 
 ##################################
@@ -41,7 +41,7 @@ t.transfer_trainingData()
 # #################
 reload(training_utils)
 g = training_utils.runTrainingGenScripts(t,pythonPos='/home/bgeurten/anaconda3/envs/charon/bin/')
-g.maxTrainSteps = 1000000
+g.maxTrainSteps = 200000
 g.run()
 
 
