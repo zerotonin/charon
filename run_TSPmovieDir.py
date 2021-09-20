@@ -17,19 +17,19 @@ def sendDirToTSP(sourceDir,fileExt,AIstring,detThresh,writeMovFlag,pythonPos='/h
         os.system(f'tsp cd {charonDir}')
         os.system(f'tsp {pythonPos} charonMovieToTSP.py -i {f} -a {AIstring} -d {detThresh} -o {writeMovFlag}')
 
-
+# Kenneth
 #sourceDir    = '/media/gwdg-backup/BackUp/penguins/'
 #fileExt      = 'mp4'
 #AIstring     = 'penguinPicker'
 #detThresh    = 0.95
 #writeMovFlag = False
 
-
-
-
+# Yegi
 sourceDir    = '/media/gwdg-backup/BackUp/Yegi'
 fileExt      = 'avi'
 AIstring     = 'triboliumTracer4x'
 detThresh    = 0.95
 writeMovFlag = False
+
+
 sendDirToTSP(sourceDir,fileExt,AIstring,detThresh,writeMovFlag)
