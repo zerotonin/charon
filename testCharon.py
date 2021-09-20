@@ -79,20 +79,18 @@ print(end - start)
 
 #analyse multiple movie
 reload(charon)
-x = charon.charon('flyFinder_manuBenzer')
-x.DETECTION_THRESH =0.5  
-file='/media/dataSSD/2018-04-19__11_28_32.avi'
-x.analyseMovie(file, #moviePos
-            file[0:-4]+'_ana.avi', #anaPath out
-            file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
+x = charon.charon('triboliumTracer4x')
+x.DETECTION_THRESH =0.8
 
-
-fList = x.getImagePos_search('/home/bgeurten/Videos/testVideos/manuBenzer','avi')
-fList = fList+ x.getImagePos_search('/home/bgeurten/Videos/testVideos/manuBenzer','mp4')
+fList = x.getImagePos_search('/media/gwdg-backup/BackUp/Yegi','avi')
+#fList = fList+ x.getImagePos_search('/home/bgeurten/Videos/testVideos/manuBenzer','mp4')
 for file in fList:
-    x.analyseMovie(file, #moviePos
+    try:
+        x.analyseMovie(file, #moviePos
             file[0:-4]+'_ana.avi', #anaPath out
-            file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
+            file[0:-3]+'tra', writeDetectionMov=False) # xlsx file
+    except:
+        print(f'following file unreadable: {file}' )
 
 # analyse single movie  
 reload(charon)
@@ -111,3 +109,28 @@ file='/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_04-03-2021.mp4'
 x.analyseMovie(file, #moviePos
             file[0:-4]+'_ana.avi', #anaPath out
             file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
+
+# analyse single movie  
+reload(charon)
+x = charon.charon('flyFinder_manuBenzer')
+x.DETECTION_THRESH =0.25  
+file='/media/gwdg-backup/AutoBenzerSwap/2020-06-06__17_46_43.avi'
+x.analyseMovie(file, #moviePos
+            file[0:-4]+'_ana.avi', #anaPath out
+            file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
+
+import os
+
+for f in fileList:
+    os.system(f'tsp ' + str(f))
+#analyse multiple movie
+reload(charon)
+x = charon.charon('triboliumTracer4x')
+x.DETECTION_THRESH =0.8
+
+fList = x.getImagePos_search('/media/gwdg-backup/BackUp/Yegi','avi')
+#fList = fList+ x.getImagePos_search('/home/bgeurten/Videos/testVideos/manuBenzer','mp4')
+for file in fList:
+    x.analyseMovie(file, #moviePos
+            file[0:-4]+'_ana.avi', #anaPath out
+            file[0:-3]+'tra', writeDetectionMov=False) # xlsx file
