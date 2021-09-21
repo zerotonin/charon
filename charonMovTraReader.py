@@ -92,6 +92,14 @@ class charonMovTraReader():
         return (name[2::],float(qual),float(x1),float(y1),float(x2),float(y2))
 
     def buildDataFrame(self):
+        """This function builds the dataframe from the list data.
+           
+           [pandas dataframe]: a pandas data frame with hierarchical indexing the first index is time in
+                            seconds the second the number of detection. If multiple detections are in
+                            the frame they get number from 0 to n. The columns are the label of the 
+                            detection followed by the bounding box as x_min, y_min,x_max, and y_max in
+                            normalised pixel coordinates
+        """        
         # get the maximal number of detections
         self.maxDetections = np.array([len(x[1]) for x in self.dataList]).max()
         # these are the fix column labels from  charon
@@ -101,6 +109,13 @@ class charonMovTraReader():
         self.df = pd.DataFrame(self.makeTallFormatList(), index=self.makeMultiIndeces(),columns = columns)
 
     def makeMultiIndeces(self):
+        """This function creates to arrays with the time and detection indices.
+
+        Returns:
+            list of arrays: the first entry is a numpy array with all timestamps. Each time
+                            stamp is repeated self.maxDetections times. The second entry
+                            is a list of all detections repeated self.frame_count times.
+        """        
         # index 
         timeIndex = np.linspace(0,self.duration_s,self.frame_count)
         timeIndex = [np.full((1,self.maxDetections),x).tolist() for x in timeIndex]
