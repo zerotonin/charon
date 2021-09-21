@@ -75,6 +75,8 @@ class folderAutomaton:
                         self.dataObjList.append(charonData.charonData(path,os.path.getsize(path),AItag))
     
     def analyseZips(self):
+        """This function analyses a zip file completly, including transcoding, AI recognition, and output saving
+        """        
         for dataObj in self.dataObjList:
             if dataObj.sizeConsistentFlag == True and dataObj.analyseFlag == False:
                 dataObj.analyseFlag = True
@@ -92,6 +94,14 @@ class folderAutomaton:
                     self.writeNegativeOutput(dataObj)
 
     def writeImageCount(self,AItag,cellNo):
+        """This function records the number of analysed cell in the cell counter.
+
+        In the file specified in self.cellTotalFile all recordings will be saved 
+
+        Args:
+            AItag ([type]): [description]
+            cellNo ([type]): [description]
+        """        
 
         if os.path.exists(self.cellTotalFile):
             cellTotalFile = open(self.cellTotalFile,'a')  # append if already exists 
