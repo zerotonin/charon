@@ -74,6 +74,7 @@ class charon:
         self.ZIP_DIR = ZIP_DIR
         self.WORK_DIR = WORK_DIR
         self.sess = None
+        self.imageCounter = 0
 
     def setCellTypeAI(self,cellType):
 
@@ -532,7 +533,7 @@ class charon:
                  os.remove(tif)
                  print(tif + ' not found!')
                  unUseableFiles.append(tif)
-        
+        self.imageCounter = len(tifList) - len(unUseableFiles)
         if len(unUseableFiles) != 0:
             if self.protocolFlag == True:
                 for L in unUseableFiles:
