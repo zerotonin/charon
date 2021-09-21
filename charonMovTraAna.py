@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import cv2,os
+from tqdm import tqdm
 
 class charonMovTraAna():
     """This class analyses the tra files produced by charon movie classification.
@@ -42,6 +43,8 @@ class charonMovTraAna():
                 self.duration_s   = self.frame_count/self.fps
 
 
+
+
     def readTRAfile(self):
         """ This function reass the trafile and returns the data as a list of tuples.
 
@@ -59,7 +62,7 @@ class charonMovTraAna():
         traFile = open(self.traFilePos, 'r')
         Lines = traFile.readlines()
         self.dataList = list()
-        for line in Lines:
+        for line in tqdm(Lines,desc='reading tra file'):
             self.dataList.append(self.splitLine(line))
         traFile.close()
     
@@ -103,7 +106,95 @@ class charonMovTraAna():
         name,qual,x1,y1,x2,y2 = det.split(',')
         return (name[2::],float(qual),float(x1),float(y1),float(x2),float(y2))
 
+    def buildDataFrame(self, mode='tall'):
+        if mode == 'tall':
+            self.buildTallDataFrame()
+        elif mode == 'wide':
+            self.buildWideDataFrame()
+        else:
+            raise ValueError(f'The mode of building of the dataframe is unknown: {mode}')
 
+    def buildWideDataFrame(self):
+        # get the maximal number of detections
+        self.maxDetections = np.array([len(x[1]) for x in self.dataList]).max()
+        # get multi index columns as tuples
+        columnTups = self.makeMultiIndexColumnTups()
+        # index 
+        timeIndex = np.linspace(0,self.duration_s,self.frame_count)
+        self.df = pd.DataFrame(self.makeWideFormatList(), columns = columnTups, index=timeIndex)
+        self.df.columns = pd.MultiIndex.from_tuples(self.df.columns, names=['Detection Number','Attribute'])
+
+    def makeMultiIndexColumnTups(self):
+        # these are the fix column labels from  charon
+        columns    = ['label','quality','x1','y1','x2','y2']
+        # create one set per possible detection in frame
+        columnTups = [ [(i,label) for label in columns] for i in range(self.maxDetections) ]
+        # flatten list
+        columnTups = [item for sublist in columnTups for item in sublist]
+        return columnTups
+
+
+    def makeWideFormatList(self):
+        
+        dataListWide = list()
+        for frame in tqdm(self.dataList,desc='wide list format'):
+            wideFrame = list()
+            det_count = len(frame[1])
+            for det in frame[1]:
+                for field in det:
+                    wideFrame.append(field)
+            for emptyDet in range(self.maxDetections-det_count):
+                wideFrame.append('')
+                wideFrame.append(-1)
+                for i in range(4):
+                    wideFrame.append(0)
+            dataListWide.append(wideFrame)
+
+        return dataListWide
+
+    def buildTallDataFrame(self):
+        # get the maximal number of detections
+        self.maxDetections = np.array([len(x[1]) for x in self.dataList]).max()
+        # these are the fix column labels from  charon
+        columns    = ['label','quality','x1','y1','x2','y2']
+        # index 
+        timeIndex = np.linspace(0,self.duration_s,self.frame_count)
+        self.df = pd.DataFrame(self.makeTallFormatList(), index=self.makeMultiIndeces(),columns = columns)
+
+    def makeMultiIndeces(self):
+        # index 
+        timeIndex = np.linspace(0,self.duration_s,self.frame_count)
+        timeIndex = [np.full((1,self.maxDetections),x).tolist() for x in timeIndex]
+        timeIndex = self.flattenList(self.flattenList(timeIndex))
+
+        detIndex = [ list(range(self.maxDetections)) for x in range(self.frame_count)]
+        # flatten list
+        detIndex = self.flattenList(detIndex)
+        
+        return [timeIndex,detIndex]
+
+    def flattenList(self,bulkList):
+        # flatten list
+        return [item for sublist in bulkList for item in sublist]
+
+    def makeTallFormatList(self):
+        
+        dataListTall = list()
+        for frame in tqdm(self.dataList,desc='tall list format'):
+            det_count = len(frame[1])
+            for det in frame[1]:
+                dataListTall.append(list(det))
+            for emptyDet in range(self.maxDetections-det_count):
+                det= list()
+                det.append('')
+                det.append(-1)
+                for i in range(4):
+                    det.append(0)
+                dataListTall.append(det)
+        return dataListTall
+    
+    def main(self):
+        
 
 
 movF = '/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_02-03-2021_Dato1.mp4'
@@ -111,9 +202,5 @@ traF = '/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_02-03-2021_Dato1.tra'
 
 movAna = charonMovTraAna(traF,movF)
 movAna.readTRAfile()
-
-
-maxDetections = np.array([len(x[1]) for x in dataList]).max()
-
-
+movAna.buildTallDataFrame()
 
