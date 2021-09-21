@@ -31,7 +31,6 @@ class folderAutomaton:
 
             Attention
             ---------
-
             On different systems all paths need to be adjusted to the correct position.
         """        
         #              tag : (INFERENCE_GRAPH_DIR, OUTPUT_DIR, INPUT_DIR)
@@ -39,6 +38,7 @@ class folderAutomaton:
         self.inferencePath = os.path.join(self.sharePath,'inferenceGraphs')
         self.uploadPath    = os.path.join(self.sharePath,'cellDetector_charon/upload')
         self.downloadPath  = os.path.join(self.sharePath,'cellDetector_charon/download')
+        self.cellTotalFile = os.path.join(self.inferencePath,'totalCount.csv')
         self.AIdict= {'locustNeuron'   :(os.path.join(self.inferencePath,'locustNeuron'        ),os.path.join(self.downloadPath,'locustNeuron'       ),os.path.join(self.uploadPath,'locustNeuron')),
                       'locustHaemo'    :(os.path.join(self.inferencePath,'locustHaemoInference'),os.path.join(self.downloadPath,'locustNeuronHaemo'  ),os.path.join(self.uploadPath,'locustNeuronHaemo')),
                       'flyBehav'       :(os.path.join(self.inferencePath,'flyBehav'            ),os.path.join(self.downloadPath,'flyBehav'           ),os.path.join(self.uploadPath,'flyBehav')),
@@ -47,7 +47,7 @@ class folderAutomaton:
                       'triboliumNeuron':(os.path.join(self.inferencePath,'triboliumNeuron'     ),os.path.join(self.downloadPath,'triboliumNeuron'    ),os.path.join(self.uploadPath,'triboliumNeuron'))}
         self.dataObjListFpos = os.path.join(self.inferencePath,'charonObjList.dat')
         self.dataObjList     = list()
-        
+
 
     def checkFolders4NewObjects(self):
         for AItag, AIpaths in self.AIdict.items():
@@ -85,10 +85,23 @@ class folderAutomaton:
                     dataObj.expirationDate  = datetime.datetime.now()+datetime.timedelta(days=4)    
                     dataObj.success         = True
                     dataObj.resultPos       = x.resultZipPos
+                    self.writeImageCount(dataObj.AItag,dataObj.imageCounter)
                     del x
                 except:
                     dataObj.success         = False
                     self.writeNegativeOutput(dataObj)
+
+    def writeImageCount(self,AItag,cellNo):
+
+        if os.path.exists(self.cellTotalFile):
+            cellTotalFile = open(self.cellTotalFile,'a')  # append if already exists 
+        else:
+            cellTotalFile = open(self.cellTotalFile,'w')   # make a new file if not 
+            cellTotalFile.write("Date Time, AI Tag, Cell Number\n")
+
+
+        cellTotalFile.write(datetime.datetime.now().strftime("%d.%m.%y %H:%M:%S")+ f",{AItag},{cellNo}\n")
+        cellTotalFile.close()
 
 
     def writeNegativeOutput(self,dataObj):
