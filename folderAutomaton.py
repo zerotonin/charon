@@ -4,7 +4,36 @@ from pathlib import Path
 
 
 class folderAutomaton:
+    """ The folderAutomaton class observes a folder and its subfolder for new zip files, which will
+        be analysed using the CHARON.
+
+        These zip-files usually hold multiple experiments, documented in tif format. Dependent on
+        the subfolder observed a distinct AI of the charon family is used to classify the cells in
+        the zip-file. The resulting data files will be saved in the download tree of the same 
+        parent directory. Example:
+
+
+        parent Directory
+            |___uploads
+            |       |___locustNeuron <- empty 
+            |       |___drosoNucleus 
+            |       |       |__________experiment.zip <- will be analysed by drosoCellCounting AI
+            |       |___triboleumNeuron
+            |               |__________experiment.zip <- will be analysed by triboliumNeuron AI
+            |___downloads
+                    |___locustNeuron 
+                    |___drosoNucleus <- this where the results of  drosoCellCounting AI get saved
+                    |___triboleumNeuron <- this where the results of  triboliumNeuron AI get saved
+
+    """    
     def __init__(self):
+        """ This function initialsises the object and holds all nescessary paths to run charon. 
+
+            Attention
+            ---------
+
+            On different systems all paths need to be adjusted to the correct position.
+        """        
         #              tag : (INFERENCE_GRAPH_DIR, OUTPUT_DIR, INPUT_DIR)
         self.sharePath = '/media/dataSSD/ownCloudDrosoVis'
         self.inferencePath = os.path.join(self.sharePath,'inferenceGraphs')
@@ -18,6 +47,7 @@ class folderAutomaton:
                       'triboliumNeuron':(os.path.join(self.inferencePath,'triboliumNeuron'     ),os.path.join(self.downloadPath,'triboliumNeuron'    ),os.path.join(self.uploadPath,'triboliumNeuron'))}
         self.dataObjListFpos = os.path.join(self.inferencePath,'charonObjList.dat')
         self.dataObjList     = list()
+        
 
     def checkFolders4NewObjects(self):
         for AItag, AIpaths in self.AIdict.items():
