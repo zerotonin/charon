@@ -36,6 +36,9 @@ class charonPresenter():
         else:
             raise ValueError(f'charonPresenter:main:media modus {self.mode} not implemented.')
         
+        return image
+
+        
     def openVideoReader(self):
         self.videoCap = cv2.VideoCapture(self.mediaFile)
         self.videoReaderOpen = True
