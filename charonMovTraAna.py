@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 
-import cv2,os,charonMovTraReader
+import cv2,os,charonMovTraReader,charonPresenter
 import matplotlib.pyplot as plt
 class charonMovTraAna():
     """This class analyses the tra files produced by charon movie classification.
@@ -55,16 +55,11 @@ class charonMovTraAna():
 
 movF = '/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_02-03-2021_Dato1.mp4'
 traF = '/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_02-03-2021_Dato1.tra'
-
+detF = '/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_02-03-2021_Dato1.h5'
+detF = './test.h5'
 movAna = charonMovTraAna(traF,movF)
 movAna.calculateCenter()
 df = movAna.df
-
-x,y = [],[]
-
-x.append (df.x_mean)
-y.append (df.y_mean)
-fig = plt.figure()
-ax = fig.add_subplot(111)
-ax.plot(y,x,'o')
-plt.show()
+df.to_hdf(detF,key='df')
+cp = charonPresenter.charonPresenter(movF,detF,mode='video',frameNo =32445)
+cp.main()
