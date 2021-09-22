@@ -263,7 +263,7 @@ class charon:
         cap = cv2.VideoCapture(moviePos)
         #fps 
         fps = round(cap.get(cv2.CAP_PROP_FPS))
-        # read fideo frame 
+        # read video frame 
         ret, image = cap.read()    
         height, width, layers = image.shape
         im_size = (width,height)
