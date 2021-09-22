@@ -105,9 +105,13 @@ class charonMovTraReader():
         # these are the fix column labels from  charon
         columns    = ['label','quality','x_min','y_min','x_max','y_max']
         # index 
-        timeIndex = np.linspace(0,self.duration_s,self.frame_count)
         self.df = pd.DataFrame(self.makeTallFormatList(), index=self.makeMultiIndeces(),columns = columns)
-
+        # time  stamps 
+        timeStamps = np.linspace(0,self.duration_s,self.frame_count)
+        timeStamps = [np.full((1,self.maxDetections),x).tolist() for x in timeStamps]
+        timeStamps = self.flattenList(self.flattenList(timeStamps))
+        self.df['time_s'] = timeStamps
+ 
     def makeMultiIndeces(self):
         """This function creates to arrays with the time and detection indices.
 
@@ -120,17 +124,12 @@ class charonMovTraReader():
         frameIndex = np.linspace(0,self.frame_count-1,self.frame_count,dtype=int)
         frameIndex = [np.full((1,self.maxDetections),x).tolist() for x in frameIndex]
         frameIndex = self.flattenList(self.flattenList(frameIndex))
-        
-
-        # time  index 
-        timeIndex = np.linspace(0,self.duration_s,self.frame_count)
-        timeIndex = [np.full((1,self.maxDetections),x).tolist() for x in timeIndex]
-        timeIndex = self.flattenList(self.flattenList(timeIndex))
+    
 
         detIndex = [ list(range(self.maxDetections)) for x in range(self.frame_count)]
         detIndex = self.flattenList(detIndex)
         
-        return [frameIndex,timeIndex,detIndex]
+        return [frameIndex,detIndex]
 
     def flattenList(self,bulkList):
         """This function flattens a list of list, into a one dimensional list
