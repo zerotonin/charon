@@ -115,17 +115,22 @@ class charonMovTraReader():
             list of arrays: the first entry is a numpy array with all timestamps. Each time
                             stamp is repeated self.maxDetections times. The second entry
                             is a list of all detections repeated self.frame_count times.
-        """        
-        # index 
+        """    
+        # frame index
+        frameIndex = np.linspace(0,self.frame_count-1,self.frame_count,dtype=int)
+        frameIndex = [np.full((1,self.maxDetections),x).tolist() for x in frameIndex]
+        frameIndex = self.flattenList(self.flattenList(frameIndex))
+        
+
+        # time  index 
         timeIndex = np.linspace(0,self.duration_s,self.frame_count)
         timeIndex = [np.full((1,self.maxDetections),x).tolist() for x in timeIndex]
         timeIndex = self.flattenList(self.flattenList(timeIndex))
 
         detIndex = [ list(range(self.maxDetections)) for x in range(self.frame_count)]
-        # flatten list
         detIndex = self.flattenList(detIndex)
         
-        return [timeIndex,detIndex]
+        return [frameIndex,timeIndex,detIndex]
 
     def flattenList(self,bulkList):
         """This function flattens a list of list, into a one dimensional list
