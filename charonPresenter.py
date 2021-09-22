@@ -18,11 +18,13 @@ class charonPresenter():
         self.savePos         = None
         self.videoCap        = None
         self.df              = None
+        self.image           = None
+        self.frame_count     = None
     
     def main(self):
         detections = self.getDetections()
-        image      = self.getImage()
-        image = self.annotateImage(image,detections)
+        self.image      = self.getImage()
+        self.image = self.annotateImage(self.image,detections)
         self.presentImage()
         if self.saveFlag:
             self.saveImage()
@@ -30,7 +32,8 @@ class charonPresenter():
     def getDetections(self):
         if not self.detFileLoaded:
             self.df  = pd.read_hdf(self.detFilePD)
-        det = self.df[[self.frameNo]]
+            self.detFileLoaded = True
+        det = self.df.loc[[self.frameNo]]
         
         return det
 
@@ -49,11 +52,14 @@ class charonPresenter():
         
     def openVideoReader(self):
         self.videoCap = cv2.VideoCapture(self.mediaFile)
+        self.frame_count  = int(self.videoCap.get(cv2.CAP_PROP_FRAME_COUNT))
         self.videoReaderOpen = True
         
     def readVideoFrame(self,frameNo):
-        self.videoCap.set(2,self.frameNo)
+        self.videoCap.set(1,self.frameNo/self.frame_count)
         ret,frame = self.videoCap.read()
+        if not ret:
+            raise Exception(f'Frame {self.frameNo} could not be loaded!')
         return frame
 
     def annotateImage(self,image,detections):
@@ -63,8 +69,8 @@ class charonPresenter():
             return image
         
 
-    def presentImage(self, image):
-        cv2.imshow(f'{os.path.basename(self.mediaFile)} @ frame {self.frameNo}' , image)
+    def presentImage(self):
+        cv2.imshow(f'{os.path.basename(self.mediaFile)} @ frame {self.frameNo}' , self.image)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
         
