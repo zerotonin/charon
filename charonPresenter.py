@@ -14,6 +14,7 @@ class charonPresenter():
         self.saveFlag        = False
         self.saveFormat      = None # 'image' or 'video'          
         self.savePos         = None
+        self.videoCap        = None
     
     def main(self):
         detections = self.getDetections()
@@ -36,11 +37,13 @@ class charonPresenter():
             raise ValueError(f'charonPresenter:main:media modus {self.mode} not implemented.')
         
     def openVideoReader(self):
-        self.cap = cv2.VideoCapture(self.mediaFile)
+        self.videoCap = cv2.VideoCapture(self.mediaFile)
         self.videoReaderOpen = True
         
-    def getDetections(self):
-        pass
+    def readVideoFrame(self,frameNo):
+        self.videoCap.set(2,self.frameNo)
+        ret,frame = self.videoCap.read()
+        return frame
 
     def getDetections(self):
         pass
