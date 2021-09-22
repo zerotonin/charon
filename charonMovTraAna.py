@@ -4,6 +4,7 @@ from tqdm import tqdm
 
 import cv2,os,charonMovTraReader,charonPresenter
 import matplotlib.pyplot as plt
+from importlib import reload
 class charonMovTraAna():
     """This class analyses the tra files produced by charon movie classification.
 
@@ -61,5 +62,6 @@ movAna = charonMovTraAna(traF,movF)
 movAna.calculateCenter()
 df = movAna.df
 df.to_hdf(detF,key='df')
+reload(charonPresenter)
 cp = charonPresenter.charonPresenter(movF,detF,mode='video',frameNo =32445)
 cp.main()
