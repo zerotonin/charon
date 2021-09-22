@@ -20,6 +20,7 @@ class charonPresenter():
         self.df              = None
         self.image           = None
         self.frame_count     = None
+        self.imageScaling    = 1.0
     
     def main(self):
         self.detections = self.getDetections()
@@ -47,7 +48,14 @@ class charonPresenter():
         else:
             raise ValueError(f'charonPresenter:main:media modus {self.mode} not implemented.')
         
-        return image
+        resized = self.resizeImage(image)
+        return resized
+
+    def resizeImage(self,image):
+
+        width  = int(image.shape[1]*self.imageScaling)
+        height = int(image.shape[0]*self.imageScaling)
+        return cv2.resize(image, (width,height), interpolation = cv2.INTER_AREA)
 
         
     def openVideoReader(self):
