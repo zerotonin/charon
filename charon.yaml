@@ -30,3 +30,4 @@ dependencies:
       - opencv-python
       - pycocotools
       - tf_slim
+      - tables
