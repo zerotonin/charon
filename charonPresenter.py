@@ -2,19 +2,22 @@
 import cv2
 from bounding_box import bounding_box as bb
 import os
+import pandas as pd
 
 class charonPresenter():
 
-    def __init__(self,mediaFile,traFilePD,mode,frameNo=0):
+    def __init__(self,mediaFile,detFilePD,mode,frameNo=0):
         self.mediaFile       = mediaFile
-        self.traFilePD       = traFilePD
+        self.detFilePD       = detFilePD
         self.mode            = mode
         self.frameNo         = frameNo
         self.videoReaderOpen = False
+        self.detFileLoaded   = False
         self.saveFlag        = False
         self.saveFormat      = None # 'image' or 'video'          
         self.savePos         = None
         self.videoCap        = None
+        self.df              = None
     
     def main(self):
         detections = self.getDetections()
@@ -23,14 +26,18 @@ class charonPresenter():
         if self.saveFlag:
             self.saveImage()
 
+    def getDetections(self):
+        if not self.detFileLoaded:
+            self.df  = pd.read_hdf(self.detFilePD)
+        det = self.df[[self.frameNo]]
+        
+        return det
 
     def getImage(self):
         if self.mode == 'video':
-            if self.videoReaderOpen:
-                image = self.readVideoFrame(self.frameNo)
-            else:
+            if not self.videoReaderOpen:
                 self.openVideoReader()
-                image = self.readVideoFrame(self.frameNo)
+            image = self.readVideoFrame(self.frameNo)
         elif self.mode == 'image':
             image = cv2.imread(self.mediaFile, cv2.IMREAD_COLOR)
         else:
