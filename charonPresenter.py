@@ -22,9 +22,9 @@ class charonPresenter():
         self.frame_count     = None
     
     def main(self):
-        detections = self.getDetections()
+        self.detections = self.getDetections()
         self.image      = self.getImage()
-        self.image = self.annotateImage(self.image,detections)
+        self.annotateImage()
         self.presentImage()
         if self.saveFlag:
             self.saveImage()
@@ -62,11 +62,15 @@ class charonPresenter():
             raise Exception(f'Frame {self.frameNo} could not be loaded!')
         return frame
 
-    def annotateImage(self,image,detections):
-        
-        for det in detections:
-            bb.add(image, det['x_min'], det['y_min'], det['x_max'], det['y_max'], det['label'])
-            return image
+    def annotateImage(self):
+        for det in self.detections.iterrows():
+            x_min = int(det[1]['x_min'] * self.image.shape[1])
+            y_min = int(det[1]['y_min'] * self.image.shape[0])
+            x_max = int(det[1]['x_max'] * self.image.shape[1])
+            y_max = int(det[1]['y_max'] * self.image.shape[0])
+            label = det[1]['label']
+            print('image',self.image)
+            bb.add(self.image,x_min,y_min,x_max,y_max,label )
         
 
     def presentImage(self):
