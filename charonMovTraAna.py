@@ -1,8 +1,9 @@
 import pandas as pd
 import numpy as np
-import cv2,os,charonMovTraReader
 from tqdm import tqdm
 
+import cv2,os,charonMovTraReader
+import matplotlib.pyplot as plt
 class charonMovTraAna():
     """This class analyses the tra files produced by charon movie classification.
 
@@ -45,10 +46,25 @@ class charonMovTraAna():
         traReader = charonMovTraReader.charonMovTraReader(traFile,[self.fps,self.frame_width,self.frame_height,self.frame_count])
         self.df = traReader.main()
         del(traReader)
-                
+
+    def calculateCenter(self):
+        """This function calculates the middle of the bounding box.
+        """                      
+        self.df['x_mean'] = (self.df['x_min'] + self.df['x_max'])/2.0
+        self.df['y_mean'] = (self.df['y_min'] + self.df['y_max'])/2.0
 
 movF = '/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_02-03-2021_Dato1.mp4'
 traF = '/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_02-03-2021_Dato1.tra'
 
 movAna = charonMovTraAna(traF,movF)
+movAna.calculateCenter()
+df = movAna.df
 
+x,y = [],[]
+
+x.append (df.x_mean)
+y.append (df.y_mean)
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.plot(y,x,'o')
+plt.show()
