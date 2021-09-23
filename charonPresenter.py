@@ -6,11 +6,12 @@ import pandas as pd
 
 class charonPresenter():
 
-    def __init__(self,mediaFile,detFilePD,mode,frameNo=0):
+    def __init__(self,mediaFile,detFilePD,mode,frameNo=0,imageScale=1.0):
         self.mediaFile       = mediaFile
         self.detFilePD       = detFilePD
         self.mode            = mode
         self.frameNo         = frameNo
+        self.imageScaling    = imageScale
         self.videoReaderOpen = False
         self.detFileLoaded   = False
         self.saveFlag        = False
@@ -20,7 +21,6 @@ class charonPresenter():
         self.df              = None
         self.image           = None
         self.frame_count     = None
-        self.imageScaling    = 1.0
     
     def main(self):
         self.detections = self.getDetections()
@@ -81,9 +81,9 @@ class charonPresenter():
             bb.add(self.image,x_min,y_min,x_max,y_max,label )
         
 
-    def presentImage(self):
+    def presentImage(self,waitKeyDurMS = 0):
         cv2.imshow(f'{os.path.basename(self.mediaFile)} @ frame {self.frameNo}' , self.image)
-        cv2.waitKey(0)
+        cv2.waitKey(waitKeyDurMS)
         cv2.destroyAllWindows()
         
     
