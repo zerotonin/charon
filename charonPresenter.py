@@ -14,6 +14,7 @@ class charonPresenter():
         self.videoReaderOpen  = False
         self.detFileLoaded    = False
         self.frameOverlayFlag = True
+        self.showFlag         = True
         self.videoCap         = None
         self.df               = None
         self.image            = None
@@ -23,7 +24,8 @@ class charonPresenter():
         self.detections = self.getDetections()
         self.image      = self.getImage()
         self.annotateImage()
-        self.presentImage(waitKeyDurMS=waitKeyDurMS,destroyFlag=destroyFlag)
+        if showFlag = True:
+            self.presentImage(waitKeyDurMS=waitKeyDurMS,destroyFlag=destroyFlag)
         return self.image
 
     def getDetections(self):
