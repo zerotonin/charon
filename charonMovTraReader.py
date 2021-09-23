@@ -87,8 +87,11 @@ class charonMovTraReader():
                    x-position (x1), larger  x-position (x2), smaller y-position (y1), 
                    and larger y-position (y2). x1, y1, x2, and y2 make the bounding box 
                    of the detection. All of them are in normalised coordinates. 
+
+        Attention:
+            tensor flow returns the bounding boxes as y_min,x_min,y_max,x_max
         """        
-        name,qual,x1,y1,x2,y2 = det.split(',')
+        name,qual,y1,x1,y2,x2 = det.split(',')
         return (name[2::],float(qual),float(x1),float(y1),float(x2),float(y2))
 
     def buildDataFrame(self):
