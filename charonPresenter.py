@@ -22,11 +22,11 @@ class charonPresenter():
         self.image           = None
         self.frame_count     = None
     
-    def main(self):
+    def main(self,waitKeyDurMS=0,destroyFlag = True):
         self.detections = self.getDetections()
         self.image      = self.getImage()
         self.annotateImage()
-        self.presentImage()
+        self.presentImage(waitKeyDurMS=waitKeyDurMS,destroyFlag=destroyFlag)
         if self.saveFlag:
             self.saveImage()
 
@@ -83,10 +83,11 @@ class charonPresenter():
             detNum += 1
         
 
-    def presentImage(self,waitKeyDurMS = 0):
+    def presentImage(self,waitKeyDurMS = 0,destroyFlag =True):
         cv2.imshow(f'{os.path.basename(self.mediaFile)} @ frame {self.frameNo}' , self.image)
         cv2.waitKey(waitKeyDurMS)
-        cv2.destroyAllWindows()
+        if destroyFlag:
+            cv2.destroyAllWindows()
         
     
     def saveImage(self):
