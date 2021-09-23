@@ -64,8 +64,9 @@ class charonPresenter():
         self.videoReaderOpen = True
         
     def readVideoFrame(self):
-        self.videoCap.set(1,self.frameNo/self.frame_count)
+        self.videoCap.set(1,self.frameNo)
         ret,frame = self.videoCap.read()
+        print()
         if not ret:
             raise Exception(f'Frame {self.frameNo} could not be loaded!')
         return frame
@@ -78,7 +79,6 @@ class charonPresenter():
             x_max = int(det[1]['x_max'] * self.image.shape[1])
             y_max = int(det[1]['y_max'] * self.image.shape[0])
             label = f"{detNum}: {det[1]['label']} {np.around(det[1]['quality'],decimals=2)}"
-            print('image',self.image)
             bb.add(self.image,x_min,y_min,x_max,y_max,label )
             detNum += 1
         
