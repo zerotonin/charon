@@ -1,23 +1,23 @@
 
-import cv2
+import cv2,os,math
 from bounding_box import bounding_box as bb
-import os
 import pandas as pd
 import numpy as np
 class charonPresenter():
 
     def __init__(self,mediaFile,detFilePD,mode,frameNo=0,imageScale=1.0):
-        self.mediaFile       = mediaFile
-        self.detFilePD       = detFilePD
-        self.mode            = mode
-        self.frameNo         = frameNo
-        self.imageScaling    = imageScale
-        self.videoReaderOpen = False
-        self.detFileLoaded   = False
-        self.videoCap        = None
-        self.df              = None
-        self.image           = None
-        self.frame_count     = None
+        self.mediaFile        = mediaFile
+        self.detFilePD        = detFilePD
+        self.mode             = mode
+        self.frameNo          = frameNo
+        self.imageScaling     = imageScale
+        self.videoReaderOpen  = False
+        self.detFileLoaded    = False
+        self.frameOverlayFlag = True
+        self.videoCap         = None
+        self.df               = None
+        self.image            = None
+        self.frame_count      = None
     
     def main(self,waitKeyDurMS=0,destroyFlag = True):
         self.detections = self.getDetections()
@@ -77,6 +77,8 @@ class charonPresenter():
             label = f"{detNum}: {det[1]['label']} {np.around(det[1]['quality'],decimals=2)}"
             bb.add(self.image,x_min,y_min,x_max,y_max,label )
             detNum += 1
+        if self.frameOverlayFlag:
+            self.addFrameOverlay()
         
 
     def presentImage(self,waitKeyDurMS = 0,destroyFlag =True):
@@ -87,5 +89,26 @@ class charonPresenter():
             cv2.destroyAllWindows()
         
     
-    def saveImage(self):
+    def getDigits(self,n):
+        if n > 0:
+                digits = int(math.log10(n))+1
+        elif n == 0:
+            digits = 1
+        else:
+            digits = int(math.log10(-n))+2 # +1 if you don't count the '-' 
+        return digits
+    
+    def addFrameOverlay(self):
+        digitLength = self.getDigits(self.frame_count)
+        frameStr = format(self.frameNo,f'{digitLength}d')
+        totalStr  = str(self.frame_count)
+        overlayStr = f'frame {frameStr} of {totalStr}'
+        cv2.putText(
+            self.image, #numpy array on which text is written
+            overlayStr, #text
+            (10,30), #position at which writing has to start
+            cv2.FONT_HERSHEY_PLAIN, #font family
+            1, #font size
+            (209, 80, 0, 128), #font color
+            1)
         pass
