@@ -24,7 +24,7 @@ class charonPresenter():
         self.detections = self.getDetections()
         self.image      = self.getImage()
         self.annotateImage()
-        if showFlag = True:
+        if self.showFlag == True:
             self.presentImage(waitKeyDurMS=waitKeyDurMS,destroyFlag=destroyFlag)
         return self.image
 
