@@ -14,9 +14,6 @@ class charonPresenter():
         self.imageScaling    = imageScale
         self.videoReaderOpen = False
         self.detFileLoaded   = False
-        self.saveFlag        = False
-        self.saveFormat      = None # 'image' or 'video'          
-        self.savePos         = None
         self.videoCap        = None
         self.df              = None
         self.image           = None
@@ -27,8 +24,7 @@ class charonPresenter():
         self.image      = self.getImage()
         self.annotateImage()
         self.presentImage(waitKeyDurMS=waitKeyDurMS,destroyFlag=destroyFlag)
-        if self.saveFlag:
-            self.saveImage()
+        return self.image
 
     def getDetections(self):
         if not self.detFileLoaded:
