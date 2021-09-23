@@ -63,5 +63,5 @@ movAna.calculateCenter()
 df = movAna.df
 df.to_hdf(detF,key='df')
 reload(charonPresenter)
-cp = charonPresenter.charonPresenter(movF,detF,mode='video',frameNo =30445)
+cp = charonPresenter.charonPresenter(movF,detF,mode='video',frameNo =30445,imageScale=0.5)
 cp.main()
