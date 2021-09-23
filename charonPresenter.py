@@ -42,7 +42,7 @@ class charonPresenter():
         if self.mode == 'video':
             if not self.videoReaderOpen:
                 self.openVideoReader()
-            image = self.readVideoFrame(self.frameNo)
+            image = self.readVideoFrame()
         elif self.mode == 'image':
             image = cv2.imread(self.mediaFile, cv2.IMREAD_COLOR)
         else:
@@ -63,7 +63,7 @@ class charonPresenter():
         self.frame_count  = int(self.videoCap.get(cv2.CAP_PROP_FRAME_COUNT))
         self.videoReaderOpen = True
         
-    def readVideoFrame(self,frameNo):
+    def readVideoFrame(self):
         self.videoCap.set(1,self.frameNo/self.frame_count)
         ret,frame = self.videoCap.read()
         if not ret:
@@ -84,8 +84,9 @@ class charonPresenter():
         
 
     def presentImage(self,waitKeyDurMS = 0,destroyFlag =True):
-        cv2.imshow(f'{os.path.basename(self.mediaFile)} @ frame {self.frameNo}' , self.image)
-        cv2.waitKey(waitKeyDurMS)
+       # cv2.imshow(f'{os.path.basename(self.mediaFile)} @ frame {self.frameNo}' , self.image)
+        cv2.imshow(f'{os.path.basename(self.mediaFile)}' , self.image)
+        cv2.waitKey(waitKeyDurMS) & 0XFF
         if destroyFlag:
             cv2.destroyAllWindows()
         

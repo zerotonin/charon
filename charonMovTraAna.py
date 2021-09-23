@@ -65,6 +65,6 @@ df.to_hdf(detF,key='df')
 reload(charonPresenter)
 cp = charonPresenter.charonPresenter(movF,detF,mode='video',frameNo =30445,imageScale=0.5)
 
-for frameI in range(200):
+for frameI in range(2000):
     cp.frameNo = frameI
-    cp.main(10)
+    cp.main(10,False)
