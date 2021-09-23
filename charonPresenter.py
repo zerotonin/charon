@@ -3,7 +3,7 @@ import cv2
 from bounding_box import bounding_box as bb
 import os
 import pandas as pd
-
+import numpy as np
 class charonPresenter():
 
     def __init__(self,mediaFile,detFilePD,mode,frameNo=0,imageScale=1.0):
@@ -71,14 +71,16 @@ class charonPresenter():
         return frame
 
     def annotateImage(self):
+        detNum = 0
         for det in self.detections.iterrows():
             x_min = int(det[1]['x_min'] * self.image.shape[1])
             y_min = int(det[1]['y_min'] * self.image.shape[0])
             x_max = int(det[1]['x_max'] * self.image.shape[1])
             y_max = int(det[1]['y_max'] * self.image.shape[0])
-            label = det[1]['label']
+            label = f"{detNum}: {det[1]['label']} {np.around(det[1]['quality'],decimals=2)}"
             print('image',self.image)
             bb.add(self.image,x_min,y_min,x_max,y_max,label )
+            detNum += 1
         
 
     def presentImage(self,waitKeyDurMS = 0):
