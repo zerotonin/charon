@@ -42,6 +42,7 @@ class charonPresenter():
                 self.openVideoReader()
             image = self.readVideoFrame()
         elif self.mode == 'image':
+            self.frameOverlayFlag = False
             image = cv2.imread(self.mediaFile, cv2.IMREAD_COLOR)
         else:
             raise ValueError(f'charonPresenter:main:media modus {self.mode} not implemented.')
