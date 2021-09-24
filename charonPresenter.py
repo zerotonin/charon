@@ -64,7 +64,6 @@ class charonPresenter():
     def readVideoFrame(self):
         self.videoCap.set(1,self.frameNo)
         ret,frame = self.videoCap.read()
-        print()
         if not ret:
             raise Exception(f'Frame {self.frameNo} could not be loaded!')
         return frame
