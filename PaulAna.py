@@ -1,42 +1,53 @@
 from importlib import reload
-import charon,cv2,charonPresenter
+import charon,cv2,charonPresenter,os
 from pathlib import Path
 import pandas as pd
 from tqdm import tqdm
 # do everything by hand
 reload(charon)
 
-x = charon.charon("funnelFinder")
-fileList = list()
-data = list()
-srcDir = '/media/gwdg-backup/BackUp/Paul_Funnel'
+def recurFileFinder(srcPath,fileExt):
+    fileList = list()
+    for path in Path(srcPath).rglob(f'*.{fileExt}'):
+        fileList.append(str(path))
+    return fileList
 
-for path in Path(srcDir).rglob('*.JPG'):
-    fileList.append(str(path))
+
+def getMetaDataFromFilePosition(filePos):
+    fileName = os.path.basename(filePos)
+    date,hour,genType,imgType = fileName.split('__') 
+    hour = int(hour)
+    imgType=imgType.split('.')[0]
+    imgTypeList = imgType.split('_')
+    imgPosInt = int(imgTypeList[0])
+    imgPosStr = imgTypeList[1]
+    if len(imgTypeList) == 3:
+        light = '12h_12h'
+    else:
+        light = 'dark'
+    return date,hour,genType,light,imgPosStr,imgPosInt
+
+
+x = charon.charon("funnelFinder")
+srcDir = '/media/gwdg-backup/BackUp/Paul_Funnel'
+fileList =recurFileFinder(srcDir,'JPG')
+data = list()
+
 
 for fPos in tqdm(fileList,desc='analysing images'):
     image = cv2.imread(fPos)
     boxes,scores,classes = x.generalMultiClassDetection(image)  
+    date,hour,genType,light,imgPosStr,imgPosInt =getMetaDataFromFilePosition(fPos)
 
     detIndex  = list(range(len(boxes)))
     fileIndex =[fPos for x in detIndex]
-    data+= list(zip(fileIndex,detIndex,boxes,scores,classes))
-
+    metaData = [(date,hour,genType,light,imgPosStr,imgPosInt) for x in detIndex]
+    data+= list(zip(fileIndex,detIndex,boxes,scores,classes,metaData))
 indices = [[x[0] for x in data ],[x[1] for x in data ]]
-rawData = [(x[4],x[3],x[2][0],x[2][1],x[2][2],x[2][3]) for x in data]
-columns    = ['label','quality','y_min','x_min','y_max','x_max']
+rawData = [(x[5][0],x[5][1],x[5][2],x[5][3],x[5][4],x[5][5],x[4],x[3],x[2][0],x[2][1],x[2][2],x[2][3]) for x in data]
+columns    = ['date', 'hour', 'genType', 'light', 'imgPosStr', 'imgPosInt', 'label','quality','y_min','x_min','y_max','x_max']
 # index 
 df = pd.DataFrame(rawData, index=indices,columns = columns)
-df.to_hdf('./resultDataFrame.h5',key='df')
+df.to_hdf('/media/gwdg-backup/BackUp/Paul_Funnel/resultDataFrame.h5',key='df')
 
-
-fPos = '/media/gwdg-backup/BackUp/Paul_Funnel/run 1/2020_05_22__16__tm6bpzl__3_ortho_BH.JPG'
-fPos = fileList[156]
-df.loc[[fPos]]
-cP = charonPresenter.charonPresenter(fPos,'','image')
-cP.frameNo = fPos
-cP.df = df
-cP.detFileLoaded = True
-cP.imageScaling = 0.25
-frame = cP.main(0, True)
-cv2.imwrite('./example.png',frame)
+df = pd.read_hdf('/media/gwdg-backup/BackUp/Paul_Funnel/resultDataFrame.h5',key='df')
