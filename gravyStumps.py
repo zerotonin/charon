@@ -18,12 +18,12 @@ class graviStumps():
         else:
             raise ValueError(f'graviStumps:__init__: stump type unknown: {stumpType}')
 
-        fitResultPitch  = self.fit_sin(self.yawAngle,self.pitchAngle)
+        fitResultPitch  = self.fit_yawAngleBased(self.yawAngle,self.pitchAngle,'cos')
         self.funcPitch  = fitResultPitch['fitfunc']
-        fitResultLength = self.fit_sin(self.yawAngle,self.lengthMM)
+        fitResultLength = self.fit_yawAngleBased(self.yawAngle,self.lengthMM,'sin')
         self.funcLength = fitResultLength['fitfunc']
     
-    def fit_sin(self,tt, yy):
+    def fit_yawAngleBased(self,tt, yy,type='sin'):
         '''Fit sin to the input time sequence, and return fitting parameters "amp", "omega", "phase", "offset", "freq", "period" and "fitfunc"'''
         tt = np.array(tt)
         yy = np.array(yy)
@@ -33,10 +33,31 @@ class graviStumps():
         guess_amp = np.std(yy) * 2.**0.5
         guess_offset = np.mean(yy)
         guess = np.array([guess_amp, 2.*np.pi*guess_freq, 0., guess_offset])
-
-        def sinfunc(t, A, w, p, c):  return A * np.sin(w*t + p) + c
+        if type == 'sin':
+            def sinfunc(t, A, w, p, c):  return A * np.sin(w*t + p) + c
+        elif type == 'cos':
+            def sinfunc(t, A, w, p, c):  return A * np.cos(w*t + p) + c
         popt, pcov = scipy.optimize.curve_fit(sinfunc, tt, yy, p0=guess)
         A, w, p, c = popt
         f = w/(2.*np.pi)
-        fitfunc = lambda t: A * np.sin(w*t + p) + c
+        if type == 'sin':
+            fitfunc = lambda t: A * np.sin(w*t + p) + c
+        elif type == 'cos':
+            fitfunc = lambda t: A * np.cos(w*t + p) + c
         return {"amp": A, "omega": w, "phase": p, "offset": c, "freq": f, "period": 1./f, "fitfunc": fitfunc, "maxcov": np.max(pcov), "rawres": (guess,popt,pcov)}
+
+    def plotFitFunc(self):
+        x_data = np.linspace(0,360,1000)
+        plt.figure(figsize=(6, 4))
+        plt.scatter(self.yawAngle, self.pitchAngle, label='pitchAngle')
+        plt.plot(x_data,self.funcPitch(x_data)    , label='Fitted function')
+        plt.figure(figsize=(6, 4))
+        plt.scatter(self.yawAngle, self.lengthMM  , label='sideLength')
+        plt.plot(x_data,self.funcLength(x_data)   , label='Fitted function') 
+
+        plt.legend(loc='best')
+
+        plt.show()
+
+x = graviStumps()
+x.plotFitFunc()
