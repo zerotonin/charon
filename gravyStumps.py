@@ -10,18 +10,16 @@ class graviStumps():
 
         self.yawAngle       = np.array([0   ,    45,    90,   135,   180,   225,   270,   315,  360],dtype=float)
         if stumpType == 'large':
-            self.pitchAngle = np.array([90  ,    87,    77,    67,    65,    67,    77,    87,   90],dtype=float)
-            self.lengthMM   = np.array([55.0, 55.06, 56.52, 59.75, 60.84, 59.75, 56.62, 55.06, 55.0],dtype=float)
+            self.pitchAngle = np.array([90  , 86.03977342, 76.70142967, 67.02602285, 64.69862137, 67.02602285, 76.70142967, 86.03977342, 90],dtype=float)
+            self.lengthMM   = np.array([55.0, 55.13164150, 56.51548460, 59.30853371, 60.83584470, 59.30853371, 56.51548460, 55.13164150, 55.0],dtype=float)
         elif stumpType == 'small':
-            self.pitchAngle = np.array([90  ,    84,    72,    61,    57,    61,    72,    84,   90],dtype=float)
-            self.lengthMM   = np.array([40.0, 40.23, 42.06, 45.52, 47.71, 45.52, 42.06, 40.23, 40.0],dtype=float)
+            self.pitchAngle = np.array([90  , 84.56238130, 71.99583839, 60.97806217, 56.97613244, 60.97806217, 71.99583839, 84.56238130, 90],dtype=float)
+            self.lengthMM   = np.array([40.0, 40.18081522, 42.05948169, 45.74387446, 47.70744177, 45.74387446, 42.05948169, 40.18081522, 40.0],dtype=float)
         else:
             raise ValueError(f'graviStumps:__init__: stump type unknown: {stumpType}')
 
-        fitResultPitch  = self.fit_yawAngleBased(self.yawAngle,self.pitchAngle,'cos')
-        self.funcPitch  = fitResultPitch['fitfunc']
-        fitResultLength = self.fit_yawAngleBased(self.yawAngle,self.lengthMM,'sin')
-        self.funcLength = fitResultLength['fitfunc']
+        self.funcPitch  = self.fit_yawAngleBased(self.yawAngle,self.pitchAngle,'cos')
+        self.funcLength = self.fit_yawAngleBased(self.yawAngle,self.lengthMM,'gauss')
     
     def fit_yawAngleBased(self,tt, yy,type='sin'):
         '''Fit sin to the input time sequence, and return fitting parameters "amp", "omega", "phase", "offset", "freq", "period" and "fitfunc"'''
@@ -34,17 +32,29 @@ class graviStumps():
         guess_offset = np.mean(yy)
         guess = np.array([guess_amp, 2.*np.pi*guess_freq, 0., guess_offset])
         if type == 'sin':
-            def sinfunc(t, A, w, p, c):  return A * np.sin(w*t + p) + c
+            def fitfunc(t, A, w, p, c):  return  A * np.sin(w*t + p) + c
+            popt, pcov = scipy.optimize.curve_fit(fitfunc, tt, yy, p0=guess)
+            A, w, p, c = popt
         elif type == 'cos':
-            def sinfunc(t, A, w, p, c):  return A * np.cos(w*t + p) + c
-        popt, pcov = scipy.optimize.curve_fit(sinfunc, tt, yy, p0=guess)
-        A, w, p, c = popt
-        f = w/(2.*np.pi)
+            def fitfunc(t, A, w, p, c):  return A * np.cos(w*t + p) + c
+            popt, pcov = scipy.optimize.curve_fit(fitfunc, tt, yy, p0=guess)
+            A, w, p, c = popt
+        elif type == 'gauss':
+            n = len(yy)                          #the number of data
+            mean = sum(tt*yy)/n                   #note this correction
+            sigma = np.sqrt(sum(yy*(tt-mean)**2)/n)      #note this correction
+            def fitfunc(x, a, x0, sigma,d): return a*np.exp(-(x-x0)**2/(2*sigma**2))+d
+            popt, pcov = scipy.optimize.curve_fit(fitfunc, tt, yy, bounds=(0,[1,mean,sigma,55]), method='dogbox')
+            a, x0, sigma,d = popt
+            print(d)
+
         if type == 'sin':
-            fitfunc = lambda t: A * np.sin(w*t + p) + c
+            resfunc = lambda t: A * np.sin(w*t + p) + c
         elif type == 'cos':
-            fitfunc = lambda t: A * np.cos(w*t + p) + c
-        return {"amp": A, "omega": w, "phase": p, "offset": c, "freq": f, "period": 1./f, "fitfunc": fitfunc, "maxcov": np.max(pcov), "rawres": (guess,popt,pcov)}
+            resfunc = lambda t: A * np.cos(w*t + p) + c
+        elif type == 'gauss':
+            resfunc = lambda x: a*np.exp(-(x-x0)**2/(2*sigma**2))+d
+        return  resfunc
 
     def plotFitFunc(self):
         x_data = np.linspace(0,360,1000)
@@ -59,5 +69,5 @@ class graviStumps():
 
         plt.show()
 
-x = graviStumps()
+x = graviStumps('large')
 x.plotFitFunc()
