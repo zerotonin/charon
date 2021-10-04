@@ -19,7 +19,7 @@ class graviStumps():
             raise ValueError(f'graviStumps:__init__: stump type unknown: {stumpType}')
 
         self.funcPitch  = self.fit_yawAngleBased(self.yawAngle,self.pitchAngle,'cos')
-        self.funcLength = self.fit_yawAngleBased(self.yawAngle,self.lengthMM,'gauss')
+        self.funcLength = self.fit_yawAngleBased(self.yawAngle,self.lengthMM,'sin')
     
     def fit_yawAngleBased(self,tt, yy,type='sin'):
         '''Fit sin to the input time sequence, and return fitting parameters "amp", "omega", "phase", "offset", "freq", "period" and "fitfunc"'''
@@ -69,5 +69,6 @@ class graviStumps():
 
         plt.show()
 
-x = graviStumps('large')
-x.plotFitFunc()
+if __name__ == '__main__':
+    x = graviStumps('large')
+    x.plotFitFunc()
