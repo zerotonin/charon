@@ -1,5 +1,3 @@
 #!
-
-conda activate charon
 cd /home/bgeurten/PyProjects/charon/
-python folderAutomaton.py
+/home/bgeurten/anaconda3/envs/charon/bin/python folderAutomaton.py

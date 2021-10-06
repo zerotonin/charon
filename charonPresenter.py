@@ -27,6 +27,8 @@ class charonPresenter():
         self.image      = self.getImage()
         self.annotateImage()
         self.presentImage()
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
         if self.saveFlag:
             self.saveImage()
 
@@ -83,9 +85,28 @@ class charonPresenter():
 
     def presentImage(self):
         cv2.imshow(f'{os.path.basename(self.mediaFile)} @ frame {self.frameNo}' , self.image)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
         
+
+    def runMovie(self):
+        self.openVideoReader()
+        c = 0
+        while self.videoCap.isOpened():
+            flag,image      = self.videoCap.read()
+
+            if flag == True:
+                self.frameNo    = c
+                self.detections = self.getDetections()
+                self.image      = self.resizeImage(image)
+                self.annotateImage()
+                self.presentImage()
+                c+=1
+                if cv2.waitKey(100) & 0xFF == ord('q'):
+                    break
+            else:
+                break
+        self.videoCap.release()
+        cv2.destroyAllWindows()
+
     
     def saveImage(self):
         pass
