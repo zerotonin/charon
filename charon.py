@@ -252,6 +252,39 @@ class charon:
                 str_out = str_out[:-1]  + "< "
         return str_out[:-1]   
 
+    def detect(self,image):
+        # expand image
+        image_expanded = np.expand_dims(image, axis=0)      # Path to image
+
+            # Perform the actual detection by running the model with the image as input
+        (boxes, scores, classes, num) = self.sess.run([self.detection_boxes, 
+                                                        self.detection_scores, 
+                                                        self.detection_classes, 
+                                                        self.num_detections],
+                                                        feed_dict={self.image_tensor: image_expanded})
+        return boxes,scores,classes,num
+    
+    def thresholdQuality(self,boxes,scores,classes):
+        # get all scores above above threshold
+        idx       = scores >= self.DETECTION_THRESH
+        box_OUT   = boxes[idx]
+        score_OUT = scores[idx]
+        class_OUT = classes[idx]
+        return box_OUT, score_OUT, class_OUT
+    
+    def generalMultiClassDetection(self,image):
+        # Load the Tensorflow model into memory if this was not done before in self.runExperiment().
+        if self.sess == None:
+            self.setUp_tensorFlow()
+
+        boxes,scores,classes,num = self.detect(image)
+        box_OUT, score_OUT, class_OUT = self.thresholdQuality(boxes,scores,classes)
+        #human readable classes
+        class_STR_OUT = [self.labelDictInv[a] for a in class_OUT]
+        return box_OUT,score_OUT,class_STR_OUT
+
+
+
     def analyseMovie(self,moviePos,pathOut,xlsFilename,writeDetectionMov=True):
         # Load the Tensorflow model into memory if this was not done before in self.runExperiment().
         if self.sess == None:
@@ -271,21 +304,8 @@ class charon:
             out = cv2.VideoWriter(pathOut,cv2.VideoWriter_fourcc(*'DIVX'), fps, im_size)
         c = 0
         while ret == True:
-            # expand image
-            image_expanded = np.expand_dims(image, axis=0)      # Path to image
-
-             # Perform the actual detection by running the model with the image as input
-            (boxes, scores, classes, num) = self.sess.run([self.detection_boxes, 
-                                                           self.detection_scores, 
-                                                           self.detection_classes, 
-                                                           self.num_detections],
-                                                           feed_dict={self.image_tensor: image_expanded})
-
-            # get all scores above above threshold
-            idx       = scores >= self.DETECTION_THRESH
-            box_OUT   = boxes[idx]
-            score_OUT = scores[idx]
-            class_OUT = classes[idx]
+            boxes,scores,classes,num = self.detect(image)
+            box_OUT, score_OUT, class_OUT = self.thresholdQuality(boxes,scores,classes)
             #human readable classes
             class_STR_OUT = [self.labelDictInv[a] for a in class_OUT]
    

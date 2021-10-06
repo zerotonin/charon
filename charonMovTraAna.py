@@ -46,6 +46,7 @@ class charonMovTraAna():
         
         traReader = charonMovTraReader.charonMovTraReader(traFile,[self.fps,self.frame_width,self.frame_height,self.frame_count])
         self.df = traReader.main()
+        self.cPresenter = None
         del(traReader)
 
     def calculateCenter(self):
@@ -54,15 +55,51 @@ class charonMovTraAna():
         self.df['x_mean'] = (self.df['x_min'] + self.df['x_max'])/2.0
         self.df['y_mean'] = (self.df['y_min'] + self.df['y_max'])/2.0
 
+    def writeOutDetectionDataFrame(self,fPos):
+        self.df.to_hdf(fPos,key='df')
+
+    def writeOutAnalysedFrame(self,fPos,imageScale,frame,showFrames=False):
+        self.initCharonPresenter(frame,imageScale)
+        self.cPresenter.showFlag = showFrames
+        frame = self.cPresenter.main(10,False)
+        cv2.imwrite(fPos, frame)
+    
+    def writeOutAnaMovie(self,fPos,imageScale,frames=None,showFrames=False):
+        self.initCharonPresenter(0,imageScale)
+        self.cPresenter.showFlag = showFrames
+        if frames == None:
+            frames = (0,self.frame_count)
+
+        startWriter= True
+        for frameI in tqdm(range(frames[0],frames[1]),desc='write movie'):
+            self.cPresenter.frameNo = frameI
+            frame = self.cPresenter.main(10,False)
+
+            if startWriter:
+                # important the frame shape of numpy and cv2 is often transposed!
+                out = cv2.VideoWriter(fPos,cv2.VideoWriter_fourcc(*'mp4v'), movAna.fps, (frame.shape[1],frame.shape[0]))
+                startWriter = False
+            out.write(frame)
+     
+        out.release()
+    
+    def initCharonPresenter(self,frame,imageScale):
+        if self.cPresenter == None:
+            self.cPresenter = charonPresenter.charonPresenter(movF,detF,mode='video',frameNo =frame,imageScale=imageScale)
+            #write detections to presenter object
+            self.cPresenter.df = self.df
+            self.cPresenter.detFileLoaded = True
+
 movF = '/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_02-03-2021_Dato1.mp4'
+pathOut = '/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_02-03-2021_Dato1_Ana.mp4'
 traF = '/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_02-03-2021_Dato1.tra'
 detF = '/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_02-03-2021_Dato1.h5'
 detF = './test.h5'
+imgOut = './test.png'
+movOut = '/media/dataSSD/transcodeFiles/test.mp4'
+
 movAna = charonMovTraAna(traF,movF)
 movAna.calculateCenter()
-df = movAna.df
-df.to_hdf(detF,key='df')
-reload(charonPresenter)
-cp = charonPresenter.charonPresenter(movF,detF,mode='video',frameNo =10445)
-cp.imageScaling = 0.5
-cp.runMovie()
+
+#movAna.writeOutAnalysedFrame(imgOut,1.0,27989)
+movAna.writeOutAnaMovie(movOut,0.5)

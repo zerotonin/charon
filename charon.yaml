@@ -31,3 +31,4 @@ dependencies:
       - pycocotools
       - tf_slim
       - tables
+      - bounding_box
