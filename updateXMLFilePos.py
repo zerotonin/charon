@@ -1,5 +1,6 @@
 import os,sys, getopt
 import xml.etree.ElementTree as ET
+from tqdm import tqdm
 
 class updateXMLFilePos():
 
@@ -27,19 +28,21 @@ class updateXMLFilePos():
             #write xml
             tree.write(self.filePath)
 
+
+
 if __name__ == '__main__':
     
     # get input variables
-    usageStr = 'usage: updateXMLFilePos.py -i <xmlFilePos>'
+    usageStr = 'usage: updateXMLFilePos.py -i <xmlFileDir>'
     try:
-        opts, args = getopt.getopt(sys.argv[1:],"hi:",["xmlFilePos="])
+        opts, args = getopt.getopt(sys.argv[1:],"hi:",["xmlDir="])
         print(sys.argv)
     except getopt.GetoptError:
         print(usageStr)
         sys.exit(2)
 
     #parse Inputs
-    xmlFilePos       = False
+    xmlDir       = False
 
     for o, a in opts:
         # if user asks for help 
@@ -47,11 +50,13 @@ if __name__ == '__main__':
             print(usageStr)
             sys.exit(2)
         elif o == '-i':
-            xmlFilePos = a
+            xmlDir = a
 
-    if os.path.isfile(xmlFilePos) == False:
-        raise ValueError(f'-i is not an existing file: {xmlFilePos} ')
+    if os.path.isdir(xmlDir) == False:
+        raise ValueError(f'-i is not an existing file: {xmlDir} ')
 
+    for xmlFilePos in tqdm(os.listdir(xmlDir),'parsing xml Files'):
+        if xmlFilePos.endswith(".xml"):
 
-    xmlObj = updateXMLFilePos(xmlFilePos)
-    xmlObj.main()
+            xmlObj = updateXMLFilePos(os.path.join(xmlDir,xmlFilePos))
+            xmlObj.main()
