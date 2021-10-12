@@ -1,15 +1,17 @@
 import gravityFunnel
-
+import pandas as pd
+import numpy as np
+from scipy.interpolate import griddata
 
 class analysePupaePosition():
 
-    def __init__(self,pupaeCoords,funnelType='large'):
+    def __init__(self,pupaeData,funnelType='large'):
         self.gravFunnel = gravityFunnel.gravityFunnel(funnelType)
-        self.pupaeCoords = pupaeCoords
-        self.interpYawData()
+        self.pupaeData = pupaeData
+        self.getInterpYawData()
     
 
-    def interpYawData(self):
+    def getInterpYawData(self):
         # coordinate dictionary to transform x,y in bounding box to  funnel yaw 
         #
         # 0,0-------------------1,0
@@ -49,48 +51,52 @@ class analysePupaePosition():
         self.boundingBoxYawCoords['ortho'] = view3
         self.boundingBoxYawCoords['left']  = view4
         self.boundingBoxYawCoords['right'] = view5
-    def pixelPos2FunnelPos(self,larvaePos,imgPosStr):
-        if 'top' == imgPosStr:
-            self.pixel2FunnelPos_top(larvaePos)
-        elif 'slope' == imgPosStr:
-            self.pixel2FunnelPos_slope(larvaePos)
-        elif 'ortho' == imgPosStr:
-            self.pixel2FunnelPos_ortho(larvaePos)
-        elif 'left' == imgPosStr:
-            self.pixel2FunnelPos_left(larvaePos)
-        elif 'right' == imgPosStr:
-            self.pixel2FunnelPos_right(larvaePos)
-        elif 'bottom' == imgPosStr:
-            self.pixel2FunnelPos_bottom(larvaePos)
+
+    def pixelPos2FunnelPos(self):
+        if 'top' == self.pupaeData['imgPosStr']:
+            self.pixel2FunnelPos_top()
+        elif 'slope' == self.pupaeData['imgPosStr']:
+            self.pixel2FunnelPos_slope()
+        elif 'ortho' == self.pupaeData['imgPosStr']:
+            self.pixel2FunnelPos_ortho()
+        elif 'left' == self.pupaeData['imgPosStr']:
+            self.pixel2FunnelPos_left()
+        elif 'right' == self.pupaeData['imgPosStr']:
+            self.pixel2FunnelPos_right()
+        elif 'bottom' == self.pupaeData['imgPosStr']:
+            self.pixel2FunnelPos_bottom()
         else:
             raise ValueError(f'gravityFunnel:pixelPos2FunnelPos: imgPosStr illdefined: {imgPosStr}')    
 
-    def pixel2FunnelPos_top(self,larvaePos):
+    def pixel2FunnelPos_top(self):
         #1 from the top looking on the short end of the funnel
         #  steep slope is right 0° yaw , shallow slope is left 180° yaw
         raise NotImplementedError
 
-    def pixel2FunnelPos_slope(self,larvaePos):
+    def pixel2FunnelPos_slope(self):
         #2 looking on the shallow slope of the funnel
         #  top is 90° yaw, middle is 180° yaw, down is 270° yaw
-        bb_yaw = self.boundingBoxYawCoords['slope']
+        yaw = self.interpolateYaw()
 
-    def pixel2FunnelPos_ortho(self,larvaePos):
+    def pixel2FunnelPos_ortho(self):
         #3 looking on the steep slope of the funnel
         #  top is 90° yaw, middle is 0°/360° yaw, down is 270° yaw
-        bb_yaw = self.boundingBoxYawCoords['ortho']
-        
-    def pixel2FunnelPos_left(self,larvaePos):
+        yaw = self.interpolateYaw()
+
+    def pixel2FunnelPos_left(self):
         #4 steep slope up shallow slope down
         #  top is 360° yaw, down is 180° yaw
-        bb_yaw = self.boundingBoxYawCoords['left']
+        yaw = self.interpolateYaw()
 
-    def pixel2FunnelPos_right(self,larvaePos):
+    def pixel2FunnelPos_right(self):
         #5 steep slope down shallow slope up
         #  top is 180° yaw, down is 0° yaw
-        bb_yaw = self.boundingBoxYawCoords['right']
+        yaw = self.interpolateYaw()
 
-    def pixel2FunnelPos_bottom(self,larvaePos):
+    def pixel2FunnelPos_bottom(self):
         #6 looking into the funnel from the large oppening
         #  steep slope is left 0° yaw , shallow slope is right 180° yaw
         raise NotImplementedError
+
+    def interpolateYawPos(self):
+        bb_yaw = self.boundingBoxYawCoords[self.pupaeData['imgPosStr']]
