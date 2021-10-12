@@ -1,4 +1,5 @@
 import pandas as pd
+import analysePupaePosition
 
 class larvaePosAna():
     def __init__(self,dfPos):
@@ -16,7 +17,6 @@ class larvaePosAna():
     def getAnalysisSets(self,dateStr,hourInt,strainStr,viewStr):
         funnelSet = self.getFunnelSet(dateStr,hourInt,strainStr)
         viewSet   = self.getViewSet(funnelSet,viewStr)
-        print(viewSet)
         larvaeSet = viewSet.loc[(viewSet['label'] == 'inner_larva')|(viewSet['label'] == 'outter_larva')]
         funnel    = viewSet[viewSet['label'] == 'funnel']
         return (larvaeSet,funnel)
@@ -33,7 +33,14 @@ class larvaePosAna():
     def larvaPosAna(self,dateStr,hourInt,strainStr,viewStr):
         anaSets = self.getAnalysisSets(dateStr,hourInt,strainStr,viewStr)
         larvaeFunnelNorm = self.larvaeInFunnelNorm(anaSets)
-        print(anaSets[0],larvaeFunnelNorm)
+        print(larvaeFunnelNorm)
+        df = pd.DataFrame()
+        for index, row in larvaeFunnelNorm.iterrows():
+            self.pupos = analysePupaePosition.analysePupaePosition(row) 
+            row= self.pupos.pixelPos2FunnelPos()
+            df.loc[index] = row
+            print(self.pupos.pupaeData,row)
+        print(dfl)
 
 if __name__ ==  '__main__':
        
