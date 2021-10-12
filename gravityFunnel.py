@@ -4,7 +4,7 @@ import numpy as np
 import scipy.optimize
 from tqdm import tqdm
 
-class graviStumps():
+class gravityFunnel():
 
     def __init__(self,stumpType ='large'):
 
