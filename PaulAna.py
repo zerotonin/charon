@@ -50,8 +50,12 @@ columns    = ['date', 'hour', 'genType', 'light', 'imgPosStr', 'imgPosInt', 'lab
 df = pd.DataFrame(rawData,columns = columns)
 df.to_hdf('/media/gwdg-backup/BackUp/Paul_Funnel/resultDataFrame.h5',key='df')
 
-##
+#%%
 import pandas as pd
 import gravyStumps
+df = pd.read_hdf('/media/gwdg-backup/BackUp/Paul_Funnel/resultDataFrame.h5',key='df')
+print(df)
 
 
+
+# %%
