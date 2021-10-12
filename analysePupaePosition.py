@@ -68,29 +68,29 @@ class analysePupaePosition():
     def pixel2FunnelPos_top(self,larvaePos):
         #1 from the top looking on the short end of the funnel
         #  steep slope is right 0° yaw , shallow slope is left 180° yaw
-        pass
+        raise NotImplementedError
+
     def pixel2FunnelPos_slope(self,larvaePos):
         #2 looking on the shallow slope of the funnel
         #  top is 90° yaw, middle is 180° yaw, down is 270° yaw
-
-        # getting yaw
-
         bb_yaw = self.boundingBoxYawCoords['slope']
 
     def pixel2FunnelPos_ortho(self,larvaePos):
         #3 looking on the steep slope of the funnel
         #  top is 90° yaw, middle is 0°/360° yaw, down is 270° yaw
         bb_yaw = self.boundingBoxYawCoords['ortho']
+        
     def pixel2FunnelPos_left(self,larvaePos):
         #4 steep slope up shallow slope down
         #  top is 360° yaw, down is 180° yaw
         bb_yaw = self.boundingBoxYawCoords['left']
+
     def pixel2FunnelPos_right(self,larvaePos):
         #5 steep slope down shallow slope up
         #  top is 180° yaw, down is 0° yaw
         bb_yaw = self.boundingBoxYawCoords['right']
+
     def pixel2FunnelPos_bottom(self,larvaePos):
         #6 looking into the funnel from the large oppening
         #  steep slope is left 0° yaw , shallow slope is right 180° yaw
-        pass
-
+        raise NotImplementedError
