@@ -1,6 +1,7 @@
 
 import matplotlib.pyplot as plt     
 import numpy as np
+from scipy.linalg.decomp import eigvals_banded
 import scipy.optimize
 from tqdm import tqdm
 
@@ -68,6 +69,35 @@ class gravityFunnel():
         plt.legend(loc='best')
 
         plt.show()
+    
+    def pixelPos2FunnelPos(self,larvaePos,imgPosStr):
+        if 'top' == imgPosStr:
+            self.pixel2FunnelPos_top(larvaePos)
+        elif 'slope' == imgPosStr:
+            self.pixel2FunnelPos_slope(larvaePos)
+        elif 'ortho' == imgPosStr:
+            self.pixel2FunnelPos_ortho(larvaePos)
+        elif 'left' == imgPosStr:
+            self.pixel2FunnelPos_left(larvaePos)
+        elif 'right' == imgPosStr:
+            self.pixel2FunnelPos_right(larvaePos)
+        elif 'bottom' == imgPosStr:
+            self.pixel2FunnelPos_bottom(larvaePos)
+        else:
+            raise ValueError(f'gravityFunnel:pixelPos2FunnelPos: imgPosStr illdefined: {imgPosStr}')    
+
+    def pixel2FunnelPos_top(self,larvaePos):
+        pass
+    def pixel2FunnelPos_slope(self,larvaePos):
+        pass
+    def pixel2FunnelPos_ortho(self,larvaePos):
+        pass
+    def pixel2FunnelPos_left(self,larvaePos):
+        pass
+    def pixel2FunnelPos_right(self,larvaePos):
+        pass
+    def pixel2FunnelPos_bottom(self,larvaePos):
+        pass
 
 if __name__ == '__main__':
     x = graviStumps('large')
