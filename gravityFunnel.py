@@ -21,7 +21,9 @@ class gravityFunnel():
 
         self.funcPitch  = self.fit_yawAngleBased(self.yawAngle,self.pitchAngle,'cos')
         self.funcLength = self.fit_yawAngleBased(self.yawAngle,self.lengthMM,'sin')
-    
+
+
+
     def fit_yawAngleBased(self,tt, yy,type='sin'):
         '''Fit sin to the input time sequence, and return fitting parameters "amp", "omega", "phase", "offset", "freq", "period" and "fitfunc"'''
         tt = np.array(tt)
@@ -70,46 +72,6 @@ class gravityFunnel():
 
         plt.show()
     
-    def pixelPos2FunnelPos(self,larvaePos,imgPosStr):
-        if 'top' == imgPosStr:
-            self.pixel2FunnelPos_top(larvaePos)
-        elif 'slope' == imgPosStr:
-            self.pixel2FunnelPos_slope(larvaePos)
-        elif 'ortho' == imgPosStr:
-            self.pixel2FunnelPos_ortho(larvaePos)
-        elif 'left' == imgPosStr:
-            self.pixel2FunnelPos_left(larvaePos)
-        elif 'right' == imgPosStr:
-            self.pixel2FunnelPos_right(larvaePos)
-        elif 'bottom' == imgPosStr:
-            self.pixel2FunnelPos_bottom(larvaePos)
-        else:
-            raise ValueError(f'gravityFunnel:pixelPos2FunnelPos: imgPosStr illdefined: {imgPosStr}')    
-
-    def pixel2FunnelPos_top(self,larvaePos):
-        #1 from the top looking on the short end of the funnel
-        #  steep slope is right 0° yaw , shallow slope is left 180° yaw
-        pass
-    def pixel2FunnelPos_slope(self,larvaePos):
-        #2 looking on the shallow slope of the funnel
-        #  top is 90° yaw, middle is 180° yaw, down is 270° yaw
-        pass
-    def pixel2FunnelPos_ortho(self,larvaePos):
-        #3 looking on the steep slope of the funnel
-        #  top is 90° yaw, middle is 0°/360° yaw, down is 270° yaw
-        pass
-    def pixel2FunnelPos_left(self,larvaePos):
-        #4 steep slope up shallow slope down
-        #  top is 360° yaw, down is 180° yaw
-        pass
-    def pixel2FunnelPos_right(self,larvaePos):
-        #5 steep slope down shallow slope up
-        #  top is 180° yaw, down is 0° yaw
-        pass
-    def pixel2FunnelPos_bottom(self,larvaePos):
-        #6 looking into the funnel from the large oppening
-        #  steep slope is left 0° yaw , shallow slope is right 180° yaw
-        pass
 
 if __name__ == '__main__':
     x = gravityFunnel('large')
