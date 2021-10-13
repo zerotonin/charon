@@ -26,9 +26,9 @@ class larvaePosAna():
         larvaeDF = anaSets[0].copy(deep =True)
         funnelDF = anaSets[1]
         for col in ['y_min', 'y_max']:
-            larvaeDF[col] = larvaeDF[col]-funnelDF.iloc[0]['y_min']
+            larvaeDF[col] = (larvaeDF[col]-funnelDF.iloc[0]['y_min'])/funnelDF.iloc[0]['y_max']
         for col in ['x_min', 'x_max']:
-            larvaeDF[col] = larvaeDF[col]-funnelDF.iloc[0]['x_min']
+            larvaeDF[col] = (larvaeDF[col]-funnelDF.iloc[0]['x_min'])/funnelDF.iloc[0]['x_max']
         return larvaeDF
     
     def larvaPosAna(self,dateStr,hourInt,strainStr,viewStr):
@@ -42,6 +42,10 @@ class larvaePosAna():
             for index, row in larvaeResult.iterrows():
                 self.pupos = analysePupaePosition.analysePupaePosition(row) 
                 yaw_deg, pitch_deg, crawlLen_mm, height_mm = self.pupos.pixelPos2FunnelPos()
+                # the angle of inner larva is inverse to outter larva
+                if row['label'] == 'inner_larva':
+                    pitch_deg+= -180.0
+
                 yawList.append(yaw_deg)
                 pitchList.append(pitch_deg)
                 crawlList.append(crawlLen_mm)
