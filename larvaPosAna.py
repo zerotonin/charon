@@ -55,6 +55,15 @@ class larvaePosAna():
         for  viewStr in ['left','right','slope','ortho']:
             dfList.append(self.larvaPosAna(dateStr,hourInt,strainStr,viewStr))
         return pd.concat(dfList)
+    
+    def analyse(self):
+        self.makeSingleExpID()
+    
+    def makeSingleExpID(self):
+        expID = list()
+        for row in self.df.iterrows():
+            expID.append(f'{row[1]["date"]}__{row[1]["hour"]}_{row[1]["genType"]}_{row[1]["light"]}')
+        self.df['expID'] = expID
 
 if __name__ ==  '__main__':
        
@@ -62,5 +71,4 @@ if __name__ ==  '__main__':
     hourInt = 16
     strain  = 'pzlok' 
     anaObj = larvaePosAna('/media/gwdg-backup/BackUp/Paul_Funnel/resultDataFrame.h5')
-    result = anaObj.analyseExperiment(dateStr,hourInt,strain)
-    print(result)
+    anaObj.analyse()
