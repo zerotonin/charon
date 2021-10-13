@@ -1,5 +1,6 @@
 import pandas as pd
 import analysePupaePosition
+from tqdm import tqdm
 
 class larvaePosAna():
     def __init__(self,dfPos):
@@ -58,11 +59,18 @@ class larvaePosAna():
     
     def analyse(self):
         self.makeSingleExpID()
+        resultList = list()
+        for expID in tqdm(self.df['expID'].unique()):
+            dateStr,hourStr,strainStr = expID.split('|')
+            resultList.append(self.analyseExperiment(dateStr,int(hourStr),strainStr))
+
+        self.result = pd.concat(resultList)
+
     
     def makeSingleExpID(self):
         expID = list()
         for row in self.df.iterrows():
-            expID.append(f'{row[1]["date"]}__{row[1]["hour"]}_{row[1]["genType"]}_{row[1]["light"]}')
+            expID.append(f'{row[1]["date"]}|{row[1]["hour"]}|{row[1]["genType"]}')
         self.df['expID'] = expID
 
 if __name__ ==  '__main__':
