@@ -27,7 +27,7 @@ def getMetaDataFromFilePosition(filePos):
         light = 'dark'
     return date,hour,genType,light,imgPosStr,imgPosInt
 
-
+#%% analysis
 x = charon.charon("funnelFinder")
 srcDir = '/media/gwdg-backup/BackUp/Paul_Funnel'
 fileList =recurFileFinder(srcDir,'JPG')
@@ -50,11 +50,8 @@ columns    = ['date', 'hour', 'genType', 'light', 'imgPosStr', 'imgPosInt', 'lab
 df = pd.DataFrame(rawData,columns = columns)
 df.to_hdf('/media/gwdg-backup/BackUp/Paul_Funnel/resultDataFrame.h5',key='df')
 
-#%%
-import pandas as pd
-import gravyStumps
-df = pd.read_hdf('/media/gwdg-backup/BackUp/Paul_Funnel/resultDataFrame.h5',key='df')
-print(df)
+#%% get larval position
+os.system(f'/home/bgeurten/anaconda3/envs/charon/bin/python /home/bgeurten/PyProjects/charon/larvaPosAna')
 
 
 

@@ -18,7 +18,7 @@ class larvaePosAna():
     def getAnalysisSets(self,dateStr,hourInt,strainStr,viewStr):
         funnelSet = self.getFunnelSet(dateStr,hourInt,strainStr)
         viewSet   = self.getViewSet(funnelSet,viewStr)
-        larvaeSet = viewSet.loc[(viewSet['label'] == 'inner_larva')|(viewSet['label'] == 'outter_larva')]
+        larvaeSet = viewSet.loc[(viewSet['label'] == 'inner_larva')|(viewSet['label'] == 'outer_larva')]
         funnel    = viewSet[viewSet['label'] == 'funnel']
         return (larvaeSet,funnel)
 
@@ -44,7 +44,7 @@ class larvaePosAna():
                 yaw_deg, pitch_deg, crawlLen_mm, height_mm = self.pupos.pixelPos2FunnelPos()
                 # the angle of inner larva is inverse to outter larva
                 if row['label'] == 'inner_larva':
-                    pitch_deg+= -180.0
+                    pitch_deg= (90.0-pitch_deg)+90.0
 
                 yawList.append(yaw_deg)
                 pitchList.append(pitch_deg)
@@ -74,6 +74,7 @@ class larvaePosAna():
             resultList.append(self.analyseExperiment(dateStr,int(hourStr),strainStr))
 
         self.result = pd.concat(resultList)
+        self.result = self.result.drop_duplicates()
 
     
     def makeSingleExpID(self):
