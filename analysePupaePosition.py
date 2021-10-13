@@ -70,7 +70,7 @@ class analysePupaePosition():
         else:
             raise ValueError(f'gravityFunnel:pixelPos2FunnelPos: imgPosStr illdefined: {imgPosStr}')    
 
-        return self.pupaeData
+        return (self.pupaeData['yaw_deg'], self.pupaeData['pitch_deg'], self.pupaeData['crawlLen_mm'], self.pupaeData['height_mm'])
     def pixel2FunnelPos_top(self):
         #1 from the top looking on the short end of the funnel
         #  steep slope is right 0° yaw , shallow slope is left 180° yaw

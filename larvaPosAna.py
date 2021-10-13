@@ -32,21 +32,35 @@ class larvaePosAna():
     
     def larvaPosAna(self,dateStr,hourInt,strainStr,viewStr):
         anaSets = self.getAnalysisSets(dateStr,hourInt,strainStr,viewStr)
-        larvaeFunnelNorm = self.larvaeInFunnelNorm(anaSets)
-        print(larvaeFunnelNorm)
-        df = pd.DataFrame()
-        for index, row in larvaeFunnelNorm.iterrows():
+        larvaeResult = self.larvaeInFunnelNorm(anaSets)
+        yawList = list()
+        pitchList = list()
+        crawlList = list()
+        heightList = list()
+        for index, row in larvaeResult.iterrows():
             self.pupos = analysePupaePosition.analysePupaePosition(row) 
-            row= self.pupos.pixelPos2FunnelPos()
-            df.loc[index] = row
-            print(self.pupos.pupaeData,row)
-        print(dfl)
+            yaw_deg, pitch_deg, crawlLen_mm, height_mm = self.pupos.pixelPos2FunnelPos()
+            yawList.append(yaw_deg)
+            pitchList.append(pitch_deg)
+            crawlList.append(crawlLen_mm)
+            heightList.append(height_mm)
+        larvaeResult['yaw_deg'] = yawList
+        larvaeResult['pitch_deg'] = pitchList
+        larvaeResult['crawlLen_mm'] = crawlList
+        larvaeResult['height_mm'] = heightList
+        return larvaeResult
+    
+    def analyseExperiment(self,dateStr,hourInt,strainStr):
+        dfList = list()
+        for  viewStr in ['left','right','slope','ortho']:
+            dfList.append(self.larvaPosAna(dateStr,hourInt,strainStr,viewStr))
+        return pd.concat(dfList)
 
 if __name__ ==  '__main__':
        
     dateStr = '2020_06_23'
     hourInt = 16
     strain  = 'pzlok' 
-    viewStr = 'left'
-    x = larvaePosAna('/media/gwdg-backup/BackUp/Paul_Funnel/resultDataFrame.h5')
-    x.larvaPosAna(dateStr,hourInt,strain,viewStr)
+    anaObj = larvaePosAna('/media/gwdg-backup/BackUp/Paul_Funnel/resultDataFrame.h5')
+    result = anaObj.analyseExperiment(dateStr,hourInt,strain)
+    print(result)
