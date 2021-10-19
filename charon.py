@@ -14,7 +14,7 @@
 @author: bgeurten
 """
 
-import os,glob,cv2,sys
+import os,glob,cv2,sys,contrastStretcher_8bit
 import pandas as pd
 import numpy as np
 import tensorflow as tf
@@ -75,6 +75,7 @@ class charon:
         self.WORK_DIR = WORK_DIR
         self.sess = None
         self.imageCounter = 0
+        self.imageStretcher = contrastStretcher_8bit.contrastStretcher_8bit([],mode='auto')
 
     def setCellTypeAI(self,cellType):
 
@@ -547,6 +548,8 @@ class charon:
             png = tif[0:-3]+'png'
             try:
                 im = Image.open(tif)
+                self.imageStretcher.img = im
+                im = self.imageStretcher.main()
                 im.save(png)
                 os.remove(tif)
             except:
