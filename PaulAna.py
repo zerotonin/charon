@@ -47,7 +47,7 @@ indices = [[x[0] for x in data ],[x[1] for x in data ]]
 rawData = [(x[5][0],x[5][1],x[5][2],x[5][3],x[5][4],x[5][5],x[4],x[3],x[2][0],x[2][1],x[2][2],x[2][3]) for x in data]
 columns    = ['date', 'hour', 'genType', 'light', 'imgPosStr', 'imgPosInt', 'label','quality','y_min','x_min','y_max','x_max']
 # index 
-df = pd.DataFrame(rawData,columns = columns)
+df = pd.DataFrame(rawData,columns = columns)ö
 df.to_hdf('/media/gwdg-backup/BackUp/Paul_Funnel/resultDataFrame.h5',key='df')
 
 #%% get larval position
