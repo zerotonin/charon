@@ -146,6 +146,15 @@ class charon:
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/autoBenzer4x',#OUTPUT_DIR      
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/autoBenzer4x',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
+        elif cellType == 'flyFinder24hBorderless':
+                self.initModel(14, #NUM_CLASSES     
+                          'flyFinder_manuBenzer',#MODEL_NAME      
+                          0.75,#DETECTION_THRESH
+                          '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/flyFinder24hBorderless', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/autoBenzer4x',#OUTPUT_DIR      
+                          '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/autoBenzer4x',#ZIP_DIR         
+                          '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
         elif cellType == 'funnelFinder':
             self.initModel(13, #NUM_CLASSES     
                           'funnelFinder',#MODEL_NAME      
@@ -226,6 +235,9 @@ class charon:
         txtPos = os.path.join(self.OUTPUT_DIR,subfolder)
         txtPos = os.path.join(txtPos,fileName)
         self.writer = open(txtPos,"w")
+    
+    def setUP_trajectoryWriter(self,txtPos):
+        self.writer = open(txtPos,"w")
 
     def dataOut2STR(self,dataOut,frameNo):
         '''
@@ -286,12 +298,12 @@ class charon:
 
 
 
-    def analyseMovie(self,moviePos,pathOut,xlsFilename,writeDetectionMov=True):
+    def analyseMovie(self,moviePos,movieOut,txtTraOut,writeDetectionMov=True):
         # Load the Tensorflow model into memory if this was not done before in self.runExperiment().
         if self.sess == None:
             self.setUp_tensorFlow()
-        #set up xlsx writer
-        self.setUp_TXTwriter(os.path.dirname(xlsFilename),os.path.basename(xlsFilename))
+        #set up trajectoryx writer
+        self.setUP_trajectoryWriter(txtTraOut)
 
         # video reader enabled
         cap = cv2.VideoCapture(moviePos)
@@ -302,7 +314,7 @@ class charon:
         height, width, layers = image.shape
         im_size = (width,height)
         if writeDetectionMov == True:
-            out = cv2.VideoWriter(pathOut,cv2.VideoWriter_fourcc(*'DIVX'), fps, im_size)
+            out = cv2.VideoWriter(movieOut,cv2.VideoWriter_fourcc(*'DIVX'), fps, im_size)
         c = 0
         while ret == True:
             boxes,scores,classes,num = self.detect(image)
