@@ -148,7 +148,7 @@ class charon:
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 
         elif cellType == 'flyFinder24hBorderless':
                 self.initModel(14, #NUM_CLASSES     
-                          'flyFinder_manuBenzer',#MODEL_NAME      
+                          'flyFinder24hBorderless',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
                           '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/flyFinder24hBorderless', #INFERENCE_GRAPH_DIR
