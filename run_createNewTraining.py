@@ -4,8 +4,8 @@ import charon, time,  training_utils, imageMultiplier, imageScaler
 
 
 reload(training_utils)
-path2labeledData = '/home/bgeurten/ownCloud/ScienceProjects/Quantification/traindata'
-nameOfTheNN = 'tribNeuronTracer'
+path2labeledData = '/media/dataSSD/labeldDataLena'
+nameOfTheNN = 'flyFinder24hBorderless'
 imgExt = 'png'
 
 ##################################

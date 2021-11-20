@@ -1,5 +1,7 @@
 from importlib import reload
-import charon, time,  training_utils
+import charon, time, os
+from tqdm import tqdm
+
 
 #Neuron zipped experiment
 reload(charon)
@@ -43,7 +45,7 @@ for file in fList:
 
 #analyse movie
 reload(charon)
-x = charon.charon('flyFinder')
+x = charon.charon('flyFinder24hBorderless')
 x.DETECTION_THRESH =0.75  
 start = time.time()
 
@@ -51,25 +53,10 @@ start = time.time()
 #'/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__16_20_02_yellowRut7_yellowgreen_Light.avi'
 
 x.DETECTION_THRESH =0.5  
-x.analyseMovie('/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__15_47_00_yellowRut7_yellowgreen_IR.avi', #moviePos
+x.analyseMovie('/media/gwdg-backup/BackUp/Lennart/2021-10-03_10-19-27.mp4', #moviePos
             "/home/bgeurten/Videos/test_IR_05.avi", #anaPath out
             "/home/bgeurten/Videos/test_IR_05.tra", writeDetectionMov=True) # trace file
-x.DETECTION_THRESH =0.25  
-x.analyseMovie('/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__15_47_00_yellowRut7_yellowgreen_IR.avi', #moviePos
-            "/home/bgeurten/Videos/test_IR_025.avi", #anaPath out
-            "/home/bgeurten/Videos/test_IR_025.tra", writeDetectionMov=True) # trace file
-x.DETECTION_THRESH =0.75  
-x.analyseMovie('/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__16_20_02_yellowRut7_yellowgreen_Light.avi', #moviePos
-            "/home/bgeurten/Videos/test_VL_075.avi", #anaPath out
-            "/home/bgeurten/Videos/test_VL_075.tra", writeDetectionMov=True) # trace file
-x.DETECTION_THRESH =0.5  
-x.analyseMovie('/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__16_20_02_yellowRut7_yellowgreen_Light.avi', #moviePos
-            "/home/bgeurten/Videos/test_VL_05.avi", #anaPath out
-            "/home/bgeurten/Videos/test_VL_05.tra", writeDetectionMov=True) # trace file
-x.DETECTION_THRESH =0.25  
-x.analyseMovie('/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__16_20_02_yellowRut7_yellowgreen_Light.avi', #moviePos
-            "/home/bgeurten/Videos/test_VL_025.avi", #anaPath out
-            "/home/bgeurten/Videos/test_VL_025.tra", writeDetectionMov=True) # trace file
+
 end = time.time()
 print(end - start)
 # Diego Test 1
@@ -82,9 +69,18 @@ reload(charon)
 x = charon.charon('triboliumTracer4x')
 x.DETECTION_THRESH =0.8
 
-fList = x.getImagePos_search('/media/gwdg-backup/BackUp/Yegi','avi')
+aviList = x.getImagePos_search('/media/gwdg-backup/BackUp/Yegi','avi')
+traList = x.getImagePos_search('/media/gwdg-backup/BackUp/Yegi','tra')
+traList = [os.path.basename(x)[:-4] for x in traList]
+delList = list()
+for aviFile in tqdm(aviList):
+    if os.path.basename(aviFile)[:-4] in traList:
+        print(aviFile)
+        aviList.remove(aviFile)
+
+
 #fList = fList+ x.getImagePos_search('/home/bgeurten/Videos/testVideos/manuBenzer','mp4')
-for file in fList:
+for file in tqdm(aviList):
     try:
         x.analyseMovie(file, #moviePos
             file[0:-4]+'_ana.avi', #anaPath out
