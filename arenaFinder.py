@@ -1,4 +1,3 @@
-#%%
 from functools import cmp_to_key
 import cv2 as cv
 import numpy as np
@@ -45,6 +44,9 @@ class frameAverager:
         self.numOfKeyFrames = numOfKeyFrames
         self.vidcap = cv.VideoCapture(self.filePos)
         self.totalFrames = self.vidcap.get(cv.CAP_PROP_FRAME_COUNT)
+        self.frameWidth = self.vidcap.get(cv.CAP_PROP_FRAME_WIDTH)
+        self.frameHeight = self.vidcap.get(cv.CAP_PROP_FRAME_HEIGHT)
+        self.fps = self.vidcap.get(cv.CAP_PROP_FPS)
 
     def getKeyFrames(self):
         self.keyFrameIndex = np.linspace(0,self.totalFrames-1,self.numOfKeyFrames,dtype=int)
@@ -134,7 +136,7 @@ class  contourGrabber:
             # then draw the contours and the name of the shape on the image
             contour = contour.astype("float")
             contour = np.squeeze(contour)
-            contour *= ratio
+            contour *= self.ratio
             contour = contour.astype("int")
             # get the arclength of the countour
             arcLen = cv.arcLength(contour, True)
@@ -174,7 +176,7 @@ class arenaFinder:
     def cleanResults(self):
         arcLength   = np.array([x[2] for x in self.rawResults]) 
         falsePosInd = self.getFalseArenas(arcLength)
-        self.results = self.rawResults.copy(deep=True)
+        self.results = self.rawResults.copy()
         del self.results[falsePosInd]
 
     def makeCalcShortHands(self):
@@ -193,15 +195,61 @@ class arenaFinder:
         self.avgImgEnh = lCE.run()
         cG = contourGrabber(self.avgImgEnh,self.threshold)
         self.rawResults = cG.run()
-        self.cleanResults
+        self.cleanResults()
         self.centerList,self.bbList, self.arcLenList = self.makeCalcShortHands()
-        self.calculateMeanArena()
+        self.calculateMeanBoundingBoxes()
+        self.drawFoundArenas()
+        return self.avg_boundingBox
     
     def calculateMeanArena(self):
         self.avg_arena_width = int(np.round(np.mean(self.bbList[:,2]-self.bbList[:,0])))
+        if self.avg_arena_width%2 ==1: self.avg_arena_width+=1
         self.avg_arena_height = int(np.round(np.mean(self.bbList[:,3]-self.bbList[:,1]))) 
+        if self.avg_arena_height%2 ==1: self.avg_arena_height+=1
 
+    def calculateMeanCenters(self):
 
-aF = arenaFinder('/media/gwdg-backup/BackUp/Lennart/2021_09_11_CS_green_yellow.avi')
-aF.run()
-print(aF.avg_arena_height,aF.avg_arena_width)
+        self.centerList = self.centerList[self.centerList[:, 0].argsort()]  # sort by day
+        xPattern = np.zeros(shape=(6,)) 
+        for i in range(6):
+            xPattern[i] = int(np.round(np.mean(self.centerList[i*9:(i+1)*9,0])))
+
+        self.centerList = self.centerList[self.centerList[:, 1].argsort()]  # sort by day
+        yPattern = np.zeros(shape=(9,)) 
+        for i in range(9):
+            yPattern[i] = int(np.round(np.mean(self.centerList[i*6:(i+1)*6,1])))
+
+        avg_centers=list()
+        for x in xPattern:
+            for y in yPattern:
+                avg_centers.append([x,y])    
+        self.avg_centers = np.array(avg_centers,dtype=int)
+        self.avg_centers = self.avg_centers[self.avg_centers[:, 1 ].argsort(kind='mergesort')]
+        self.avg_centers = np.array(np.column_stack((self.avg_centers,np.linspace(1,54,54))),dtype=int)
+
+    def calculateMeanBoundingBoxes(self,offsetX=15,offsetY=15, mode='contourCenter'):
+        self.calculateMeanArena()
+        self.calculateMeanCenters()
+        avg_bb = list()
+        for i in range(54):
+            if mode=='average':
+                avg_bb.append([self.avg_centers[i,0]-(self.avg_arena_width/2+offsetX),self.avg_centers[i,1]-(self.avg_arena_height/2++offsetY),
+                           self.avg_centers[i,0]+(self.avg_arena_width/2+offsetX),self.avg_centers[i,1]+(self.avg_arena_height/2++offsetY),self.avg_centers[i,2]])
+            elif mode == 'contourCenter':
+                avg_bb.append([self.centerList[i,0]-(self.avg_arena_width/2+offsetX),self.centerList[i,1]-(self.avg_arena_height/2++offsetY),
+                           self.centerList[i,0]+(self.avg_arena_width/2+offsetX),self.centerList[i,1]+(self.avg_arena_height/2++offsetY),i])
+
+            else:
+                raise ValueError(f'arenaFinder:calculateMeanBoundingBoxes: mode has unknown value {mode}')
+        self.avg_boundingBox = np.array(avg_bb,dtype=int)
+        self.avg_boundingBox[self.avg_boundingBox < 0] = 0
+        self.avg_boundingBox[self.avg_boundingBox[:,3]>self.fA.frameHeight,3] = self.fA.frameHeight
+        self.avg_boundingBox[self.avg_boundingBox[:,2]>self.fA.frameWidth,2]  = self.fA.frameWidth
+
+    def drawFoundArenas(self):
+        image = self.avgImg.copy()
+        for i in range(54):
+            cv.putText(image, str(self.avg_centers[i,2]), (self.avg_centers[i,0], self.avg_centers[i,1]), cv.FONT_HERSHEY_SIMPLEX,0.5, (255, 255, 255), 2)
+            image = cv.rectangle(image, tuple(self.avg_boundingBox[i,0:2]), tuple(self.avg_boundingBox[i,2:4]), (255,0,0), 2)
+        cv.imshow('These are the 54 split movies',image)
+    
