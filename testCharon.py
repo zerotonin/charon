@@ -108,9 +108,9 @@ x.analyseMovie(file, #moviePos
 
 # analyse single movie  
 reload(charon)
-x = charon.charon('flyFinder_manuBenzer')
-x.DETECTION_THRESH =0.25  
-file='/media/gwdg-backup/AutoBenzerSwap/2020-06-06__17_46_43.avi'
+x = charon.charon('flyFinder24hBorderless')
+x.DETECTION_THRESH =0.99 
+file='/media/gwdg-backup/BackUp/Lennart/2021-10-03_10-19-27/2021-10-03_10-19-27__arena_01.mp4'
 x.analyseMovie(file, #moviePos
             file[0:-4]+'_ana.avi', #anaPath out
             file[0:-3]+'tra', writeDetectionMov=True) # xlsx file
