@@ -184,7 +184,7 @@ class imgaug4charon:
         #   pass the array of bounding boxes coordinates to the imgaug library
         return BoundingBoxesOnImage.from_xyxy_array(bb_array, shape=image.shape)
 
-    def augmentation_createAugBBs(self,group_df,image_aug,image_prefix,bbs_aug,augVersion):
+    def augmentation_createAugBBs(self,group_df,image_aug,image_suffix,bbs_aug,augVersion):
         # create a data frame with augmented values of image width and height
         info_df = group_df.drop(['xmin', 'ymin', 'xmax', 'ymax'], axis=1)        
         for index, _ in info_df.iterrows():
@@ -192,7 +192,7 @@ class imgaug4charon:
             info_df.at[index, 'height'] = image_aug.shape[0]
 
         # rename filenames by adding the predifined prefix
-        info_df['filename'] = info_df['filename'].apply(lambda x: image_prefix+x[0:-4]+'_'+str(augVersion)+x[-4::])
+        info_df['filename'] = info_df['filename'].apply(lambda x: self.renameFile(x,image_suffix,augVersion))
         # create a data frame with augmented bounding boxes coordinates using the function we created earlier
         bbs_df = self.bbs_obj_to_df(bbs_aug)
         # concat all new augmented info into new data frame
@@ -227,8 +227,11 @@ class imgaug4charon:
             bbs_aug = self.augmentation_groupDF2bbArray(group_df,image)
         return image_aug, bbs_aug
 
+    def renameFile(self,filename,tag,version):
+        filename,extension = filename.rsplit('.',1)
+        return f'{filename}_{tag}_{version}.{extension}'
 
-    def mainAugmentation(self,augSeeds=5,fixSize = 0,tag ='aug_'):
+    def mainAugmentation(self,augSeeds=5,fixSize = 0,tag ='aug'):
         # create data frame which we're going to populate with augmented image info
         output_BBS_DF = pd.DataFrame(columns=
                                 ['filename','width','height','class', 'xmin', 'ymin', 'xmax', 'ymax']
@@ -245,8 +248,8 @@ class imgaug4charon:
 
             if fixSize > 0:
                 image,bbs = self.resize_imgaug(group_df,image,bbs,fixSize)
-                imageio.imwrite(os.path.join(self.targetDir,f'orig_{filename}'), image)  
-                resize_df = self.augmentation_createAugBBs(group_df,image,'orig_',bbs,0)
+                imageio.imwrite(os.path.join(self.targetDir,self.renameFile(filename,'orig',0)), image)  
+                resize_df = self.augmentation_createAugBBs(group_df,image,'orig',bbs,0)
                 # append rows to output_BBS_DF data frame
                 output_BBS_DF = pd.concat([output_BBS_DF, resize_df])
             
@@ -258,7 +261,7 @@ class imgaug4charon:
                 # append rows to output_BBS_DF data frame
                 output_BBS_DF = pd.concat([output_BBS_DF, aug_df])
 
-                imageio.imwrite(os.path.join(self.targetDir,f'{tag}{filename[0:-4]}_{augVersion}{filename[-4::]}'), image_aug)  
+                imageio.imwrite(os.path.join(self.targetDir,self.renameFile(filename,tag,augVersion)), image_aug)  
             c+=1
         # return dataframe with updated images and bounding boxes annotations 
         output_BBS_DF = output_BBS_DF.reset_index()
