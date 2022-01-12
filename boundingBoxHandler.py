@@ -33,7 +33,7 @@ class boundingBoxHandler:
     def imageDF_to_bboxArray(self,group_df):#augmentation_groupDF2bbArray
         bb_array_np = group_df.drop(['filename', 'width', 'height', 'class'], axis=1).values
         # pass the array of bounding boxes coordinates to the imgaug library
-        bb_array_ia = BoundingBoxesOnImage.from_xyxy_array(bb_array_np, shape=(group_df.at[0,'width'],group_df.at[0,'height']))
+        bb_array_ia = BoundingBoxesOnImage.from_xyxy_array(bb_array_np, shape=(group_df.at[0,'height'],group_df.at[0,'width']))
         
         for c,row in group_df.iterrows():
             bb_array_ia[c].label = row['class']
