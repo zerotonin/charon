@@ -1,5 +1,5 @@
 from io import BufferedIOBase
-import re,os,glob,shutil,cv2,imageio
+import os,imageio
 import imgaug as ia
 from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
 from imgaug import augmenters as iaa
