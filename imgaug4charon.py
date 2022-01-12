@@ -5,7 +5,7 @@ from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
 from imgaug import augmenters as iaa
 from charonListManager import charonListManager 
 from tqdm import tqdm
-from dataframe2labelImgXML import dataframe2labelImgXML
+from xmlHandler import xmlHandler
 import pandas as pd
 import numpy as np
 
@@ -90,7 +90,7 @@ class imgaug4charon:
             ],
             random_order=True
         )
-        self.xmlHandler = dataframe2labelImgXML()
+        self.xmlManager = xmlHandler()
         if not os.path.exists(self.targetDir):
             os.makedirs(self.targetDir)
 
@@ -98,7 +98,7 @@ class imgaug4charon:
         allXML=list()
 
         for file in self.xmlFileList:
-            allXML += self.xmlHandler.readXML(file)
+            allXML += self.xmlManager.readXML(file)
         
         column_name = ['filename', 'width', 'height', 'class', 'xmin', 'ymin', 'xmax', 'ymax']
         return pd.DataFrame(allXML, columns=column_name) 
@@ -228,7 +228,7 @@ class imgaug4charon:
         for i,row in aug_df.iterrows():
             objectList.append((row['class'],[row['xmin'],row['ymin'],row['xmax'],row['ymax']]))
         imageSize = [row['width'],row['height'],3]
-        self.xmlHandler.create_xml(os.path.join(self.targetDir,row['filename']),imageSize,objectList,self.targetDir)
+        self.xmlManager.create_xml(os.path.join(self.targetDir,row['filename']),imageSize,objectList,self.targetDir)
 
 
     def main(self, augSeeds=5, fixSize=0):
