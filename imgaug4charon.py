@@ -263,10 +263,3 @@ class imgaug4charon:
         self.augDF_fName = self.augDF.groupby('filename')
 
 
-parentDir = '/media/dataSSD/labledData/trainData_penguin'
-targetDir = '/media/dataSSD/labledData/trainData_penguinAug'
-
-ia4c = imgaug4charon(parentDir,'png','xml',targetDir)
-ia4c.main(10,1000)
-#ia4c.showSourceLabels(7)
-ia4c.augDF_fName = ia4c.augDF.groupby('filename')
