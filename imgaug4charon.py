@@ -5,6 +5,7 @@ from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
 from imgaug import augmenters as iaa
 from charonListManager import charonListManager 
 from tqdm import tqdm
+from dataframe2labelImgXML import create_xml
 import pandas as pd
 import numpy as np
 import xml.etree.ElementTree as ET
@@ -128,6 +129,11 @@ class imgaug4charon:
     def getSourceFilePos(self,fileName):
         return os.path.join(self.sourceDir,fileName)
     
+    def renameFile(self,filename,tag,version):
+        filename,extension = filename.rsplit('.',1)
+        return f'{filename}_{tag}_{version}.{extension}'
+
+    
     def showSourceLabels(self,image,group_df):
         classes = group_df['class'].values
         bb_array = group_df.drop(['filename', 'width', 'height', 'class'], axis=1).values
@@ -195,10 +201,6 @@ class imgaug4charon:
             bbs_aug = self.augmentation_groupDF2bbArray(group_df,image)
         return image_aug, bbs_aug
 
-    def renameFile(self,filename,tag,version):
-        filename,extension = filename.rsplit('.',1)
-        return f'{filename}_{tag}_{version}.{extension}'
-
     def mainAugmentation(self,augSeeds=5,fixSize = 0,tag ='aug'):
         # create data frame which we're going to populate with augmented image info
         output_BBS_DF = pd.DataFrame(columns=
@@ -226,9 +228,11 @@ class imgaug4charon:
                 image_aug, bbs_aug =self.mainAugmentorSeq(image=image, bounding_boxes=bbs)
 
                 aug_df = self.augmentation_createAugBBs(group_df,image_aug,tag,bbs_aug,augVersion)
+            
                 # append rows to output_BBS_DF data frame
                 output_BBS_DF = pd.concat([output_BBS_DF, aug_df])
-
+            
+                # write augmented image
                 imageio.imwrite(os.path.join(self.targetDir,self.renameFile(filename,tag,augVersion)), image_aug)  
             c+=1
         # return dataframe with updated images and bounding boxes annotations 
@@ -242,8 +246,9 @@ class imgaug4charon:
         self.imgFileList, self.xmlFileList = self.listManager.get_xml_img_filepairs()
         self.labelDF       = self.getAllDetInDir()
         self.labelDF_fName = self.labelDF.groupby('filename')
-        augDF = self.mainAugmentation(augSeeds,fixSize)
-        print(augDF)
+        self.augDF = self.mainAugmentation(augSeeds,fixSize)
+        self.augDF_fName = self.augDF.groupby('filename')
+
 
 parentDir = '/media/dataSSD/labledData/trainData_penguin'
 targetDir = '/media/dataSSD/labledData/trainData_penguinAug'
@@ -251,4 +256,4 @@ targetDir = '/media/dataSSD/labledData/trainData_penguinAug'
 ia4c = imgaug4charon(parentDir,'png','xml',targetDir)
 ia4c.main(4,800)
 #ia4c.showSourceLabels(7)
-
+ia4c.augDF_fName = ia4c.augDF.groupby('filename')
