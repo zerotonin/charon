@@ -1,6 +1,7 @@
 import os
 import numpy as np
 from lxml import etree as et
+import xml.etree.ElementTree as ET
 
 class dataframe2labelImgXML:
     def __init__(self):
@@ -11,6 +12,23 @@ class dataframe2labelImgXML:
             return '0'
         else:
             return str(int(np.round(num)))
+
+    def readXML(self,xml_file):
+        xml_list = list()
+        tree = ET.parse(xml_file)
+        root = tree.getroot()
+        for member in root.findall('object'):
+            value = (root.find('filename').text,
+                        int(root.find('size')[0].text),
+                        int(root.find('size')[1].text),
+                        member[0].text,
+                        int(member[4][0].text),
+                        int(member[4][1].text),
+                        int(member[4][2].text),
+                        int(member[4][3].text)
+                        )
+            xml_list.append(value)
+        return xml_list
     def create_xml(self,imgfilepath, imageSize, object_list, savedir,datasourceText= 'Unknown'):
         """
         params:

@@ -8,7 +8,6 @@ from tqdm import tqdm
 from dataframe2labelImgXML import dataframe2labelImgXML
 import pandas as pd
 import numpy as np
-import xml.etree.ElementTree as ET
 
 class imgaug4charon:
 
@@ -91,32 +90,15 @@ class imgaug4charon:
             ],
             random_order=True
         )
-        self.xmlWriter = dataframe2labelImgXML()
+        self.xmlHandler = dataframe2labelImgXML()
         if not os.path.exists(self.targetDir):
             os.makedirs(self.targetDir)
-
-    def getXMLdata(self,xml_file):
-        xml_list = list()
-        tree = ET.parse(xml_file)
-        root = tree.getroot()
-        for member in root.findall('object'):
-            value = (root.find('filename').text,
-                        int(root.find('size')[0].text),
-                        int(root.find('size')[1].text),
-                        member[0].text,
-                        int(member[4][0].text),
-                        int(member[4][1].text),
-                        int(member[4][2].text),
-                        int(member[4][3].text)
-                        )
-            xml_list.append(value)
-        return xml_list
 
     def getAllDetInDir(self):
         allXML=list()
 
         for file in self.xmlFileList:
-            allXML += self.getXMLdata(file)
+            allXML += self.xmlHandler.readXML(file)
         
         column_name = ['filename', 'width', 'height', 'class', 'xmin', 'ymin', 'xmax', 'ymax']
         return pd.DataFrame(allXML, columns=column_name) 
@@ -246,7 +228,7 @@ class imgaug4charon:
         for i,row in aug_df.iterrows():
             objectList.append((row['class'],[row['xmin'],row['ymin'],row['xmax'],row['ymax']]))
         imageSize = [row['width'],row['height'],3]
-        self.xmlWriter.create_xml(os.path.join(self.targetDir,row['filename']),imageSize,objectList,self.targetDir)
+        self.xmlHandler.create_xml(os.path.join(self.targetDir,row['filename']),imageSize,objectList,self.targetDir)
 
 
     def main(self, augSeeds=5, fixSize=0):
