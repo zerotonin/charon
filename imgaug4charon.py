@@ -2,7 +2,8 @@ from io import BufferedIOBase
 import re,os,glob,shutil,cv2,imageio
 import imgaug as ia
 from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
-from imgaug import augmenters as iaa 
+from imgaug import augmenters as iaa
+from charonListManager import charonListManager 
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
@@ -92,36 +93,6 @@ class imgaug4charon:
         if not os.path.exists(self.targetDir):
             os.makedirs(self.targetDir)
 
-
-    def getFilesInDir(self,ext):
-        fileList = list()
-        for index, file in enumerate(glob.glob(f'{self.sourceDir}{os.sep}*.{ext}')):
-            fileList.append(file)
-        fileList.sort()
-        return fileList
-    
-    def cleanLists(self):
-        # clean lists of non existant files exists
-        self.xmlFileList = self.keepOnlyExistingFiles(self.xmlFileList)
-        self.imgFileList = self.keepOnlyExistingFiles(self.imgFileList)
-
-        # only keep those files that are  in both lists
-        # combine both lists without extensions        
-        combiList = [i.split('.')[0] for i in self.imgFileList] +[i.split('.')[0] for i in self.xmlFileList]
-        # get a list of the unique values
-        combiListUnique = list(set(combiList))
-        # now delte once each unique value of the combination list. 
-        # All single values will disappear and only those that occure twice will be kept
-        for entry in combiListUnique:
-            combiList.remove(entry)
-        # now we recreate both lists based on combilist
-        self.imgFileList = [x+'.'+self.imgExt for x in combiList]
-        self.xmlFileList = [x+'.xml' for x in combiList]
-
-    def keepOnlyExistingFiles(self,testList):
-        boolList       = [os.path.isfile(x) for x in testList]
-        return [i for (i, v) in zip(testList, boolList) if v]
-
     def getXMLdata(self,xml_file):
         xml_list = list()
         tree = ET.parse(xml_file)
@@ -156,9 +127,6 @@ class imgaug4charon:
 
     def getSourceFilePos(self,fileName):
         return os.path.join(self.sourceDir,fileName)
-
-
-
     
     def showSourceLabels(self,image,group_df):
         classes = group_df['class'].values
@@ -269,9 +237,9 @@ class imgaug4charon:
         return output_BBS_DF
     
     def main(self, augSeeds=5, fixSize=0):
-        self.imgFileList = self.getFilesInDir(self.imgExt)
-        self.xmlFileList = self.getFilesInDir('xml')
-        self.cleanLists()
+
+        self.listManager = charonListManager(self.sourceDir,self.imgExt,'xml')
+        self.imgFileList, self.xmlFileList = self.listManager.get_xml_img_filepairs()
         self.labelDF       = self.getAllDetInDir()
         self.labelDF_fName = self.labelDF.groupby('filename')
         augDF = self.mainAugmentation(augSeeds,fixSize)
