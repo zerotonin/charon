@@ -12,7 +12,7 @@ def create_xml(imgfilepath, object_list, savedir):
     
     root = et.Element('annotation')
     fn_elem = et.SubElement(root, 'filename')
-    bn = os.path.basename(imagefilepath)
+    bn = os.path.basename(imgfilepath)
     fn, _ = os.path.splitext(bn)
     img_bn = f"{fn}.png"
     fn_elem.text = img_bn
