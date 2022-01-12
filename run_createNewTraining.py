@@ -1,25 +1,20 @@
 from importlib import reload
-import charon, time,  training_utils, imageMultiplier, imageScaler
+
+import charon, time,  training_utils, imgaug4charon
 
 
 
 reload(training_utils)
-path2labeledData = '/media/dataSSD/labeldDataLena'
-nameOfTheNN = 'flyFinder24hBorderless'
+path2labeledData = '/media/dataSSD/labledData/trainData_autoBenzer'
+path2augmentedData = '/media/dataSSD/labledData/trainData_autoBenzerAug'
+nameOfTheNN = 'autoBenzerAug'
+maxImageSize = 1024
+numofAugClones = 10
 imgExt = 'png'
 
-##################################
-# scale your labeled if to large #
-##################################
 
-iS = imageScaler.imageScaler(path2labeledData,1024,sourceImgType =imgExt,overWriteMode=False)
-iS.scaleFolder()
-
-###############################
-# quadrupel your labeled data #
-###############################
-tm = imageMultiplier.imageMultiplier(path2labeledData,sourceImgType =imgExt,flipType='hvb')
-tm.flipFolder()
+ia4c = imgaug4charon.imgaug4charon(path2labeledData,'png','xml',path2augmentedData)
+ia4c.main(numofAugClones,maxImageSize)
 
 
 ########################
@@ -27,7 +22,7 @@ tm.flipFolder()
 ########################
 
 t = training_utils.trainDataCuration(nameOfTheNN,
-                                    path2labeledData,
+                                    path2augmentedData,
                                     sourceImgType =imgExt)
 t.chooseCandidateFiles()
 t.renameLabelsVerbose() #or set dictionary
