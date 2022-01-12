@@ -3,7 +3,7 @@ import numpy as np
 from lxml import etree as et
 import xml.etree.ElementTree as ET
 
-class dataframe2labelImgXML:
+class xmlHandler:
     def __init__(self):
         pass
 
