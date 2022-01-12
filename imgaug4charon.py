@@ -134,7 +134,11 @@ class imgaug4charon:
         filename,extension = filename.rsplit('.',1)
         return f'{filename}_{tag}_{version}.{extension}'
 
-    
+    def ensureRGB(self,image):
+        if len(image.shape) < 3:
+            return np.stack((image,)*3, axis=-1)
+        else:
+            return image
     def showSourceLabels(self,image,group_df):
         classes = group_df['class'].values
         bb_array = group_df.drop(['filename', 'width', 'height', 'class'], axis=1).values
@@ -210,6 +214,7 @@ class imgaug4charon:
         c = 0
         for filePos in tqdm(self.imgFileList,desc=f'augmentation'):
             image = imageio.imread(filePos)
+            image = self.ensureRGB(image)
             filename = os.path.basename(filePos)
             # Get separate data frame grouped by file name
             group_df = self.getGroup(filename)
