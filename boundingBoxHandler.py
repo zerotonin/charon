@@ -51,4 +51,5 @@ class boundingBoxHandler:
             bbs_df.at[index,'filename'] = newFileName
         # concat all new augmented info into new data frame
         cols = ['filename','width','height','class','xmin', 'ymin', 'xmax', 'ymax']
+        bbs_df = bbs_df[cols]
         return bbs_df
