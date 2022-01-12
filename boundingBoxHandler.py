@@ -9,10 +9,17 @@ class boundingBoxHandler:
 
     def renameFile(self,filename,tag,version):
         filename,extension = filename.rsplit('.',1)
-        if version:
-            return f'{filename}_{tag}_{version}.{extension}'
+        if tag:
+            if version:
+                return f'{filename}_{tag}_{version}.{extension}'
+            else:
+                return f'{filename}_{tag}.{extension}'
         else:
-            return f'{filename}_{tag}.{extension}'
+            if version:
+                return f'{filename}_{version}.{extension}'
+            else:
+                return f'{filename}.{extension}'
+
     
     def bboxArray_to_bboxDF(self, bbs_object): #bbs_obj_to_df
         # function to convert BoundingBoxesOnImage object into DataFrame
