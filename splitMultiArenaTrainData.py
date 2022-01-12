@@ -80,7 +80,7 @@ class splitLabelAutoBenzer:
 
             column_name = ['filename', 'width', 'height', 'class', 'xmin', 'ymin', 'xmax', 'ymax']
             file_df     = pd.DataFrame(xmlData, columns=column_name ) 
-            bbs = self.bbManager.imageDF_to_bboxArray(file_df,image)
+            bbs = self.bbManager.imageDF_to_bboxArray(file_df)
 
             image_aug,bbs_aug = self.augTopLeft(image=image, bounding_boxes=bbs)
             self.writeOut(bbs_aug,image_aug,'TL',fileI)

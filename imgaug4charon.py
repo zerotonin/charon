@@ -156,7 +156,7 @@ class imgaug4charon:
         
         # append image info without any changes if it's height and width are both less than 600px 
         else:
-            bbs_aug = self.bbManager.imageDF_to_bboxArray(group_df,image)
+            bbs_aug = self.bbManager.imageDF_to_bboxArray(group_df)
         return image_aug, bbs_aug
 
     def mainAugmentation(self,augSeeds=5,fixSize = 0,tag ='aug'):
@@ -169,7 +169,7 @@ class imgaug4charon:
             # Get separate data frame grouped by file name
             group_df = self.getGroup(filename)
             # Get the image and bounding box data
-            bbs = self.bbManager.imageDF_to_bboxArray(group_df,image)
+            bbs = self.bbManager.imageDF_to_bboxArray(group_df)
 
 
             if fixSize > 0:
