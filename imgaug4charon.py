@@ -5,7 +5,7 @@ from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
 from imgaug import augmenters as iaa
 from charonListManager import charonListManager 
 from tqdm import tqdm
-from dataframe2labelImgXML import create_xml
+from dataframe2labelImgXML import dataframe2labelImgXML
 import pandas as pd
 import numpy as np
 import xml.etree.ElementTree as ET
@@ -91,6 +91,7 @@ class imgaug4charon:
             ],
             random_order=True
         )
+        self.xmlWriter = dataframe2labelImgXML()
         if not os.path.exists(self.targetDir):
             os.makedirs(self.targetDir)
 
@@ -220,6 +221,7 @@ class imgaug4charon:
                 image,bbs = self.resize_imgaug(group_df,image,bbs,fixSize)
                 imageio.imwrite(os.path.join(self.targetDir,self.renameFile(filename,'orig',0)), image)  
                 resize_df = self.augmentation_createAugBBs(group_df,image,'orig',bbs,0)
+                self.writeXML(resize_df)
                 # append rows to output_BBS_DF data frame
                 output_BBS_DF = pd.concat([output_BBS_DF, resize_df])
             
@@ -231,8 +233,8 @@ class imgaug4charon:
             
                 # append rows to output_BBS_DF data frame
                 output_BBS_DF = pd.concat([output_BBS_DF, aug_df])
-            
-                # write augmented image
+                #write new xml-file
+                self.writeXML(aug_df)               # write augmented image
                 imageio.imwrite(os.path.join(self.targetDir,self.renameFile(filename,tag,augVersion)), image_aug)  
             c+=1
         # return dataframe with updated images and bounding boxes annotations 
@@ -240,6 +242,14 @@ class imgaug4charon:
         output_BBS_DF = output_BBS_DF.drop(['index'], axis=1)
         return output_BBS_DF
     
+    def writeXML(self,aug_df):
+        objectList =list()
+        for i,row in aug_df.iterrows():
+            objectList.append((row['class'],[row['xmin'],row['ymin'],row['xmax'],row['ymax']]))
+        imageSize = [row['width'],row['height'],3]
+        self.xmlWriter.create_xml(os.path.join(self.targetDir,row['filename']),imageSize,objectList,self.targetDir)
+
+
     def main(self, augSeeds=5, fixSize=0):
 
         self.listManager = charonListManager(self.sourceDir,self.imgExt,'xml')
