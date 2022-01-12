@@ -184,9 +184,10 @@ class imgaug4charon:
                 # main augmentation
                 image_aug, bbs_aug =self.mainAugmentorSeq(image=image, bounding_boxes=bbs)
                 bbs_aug = bbs_aug.remove_out_of_image(fully=True,partly=False)
-                aug_df = self.bbManager.create_augImageDF(bbs_aug,filePos,tag,augVersion)
-                aug_df = aug_df.dropna()
-                if aug_df.shape[0]>0:                    
+                bbs_aug = bbs_aug.clip_out_of_image()
+                if bbs_aug.empty == False: 
+                    aug_df = self.bbManager.create_augImageDF(bbs_aug,filePos,tag,augVersion)
+                    aug_df = aug_df.dropna()                   
                     #write new xml-file
                     self.writeXML(aug_df)               # write augmented image
                     imageio.imwrite(os.path.join(self.targetDir,self.bbManager.renameFile(filename,tag,augVersion)), image_aug) 
