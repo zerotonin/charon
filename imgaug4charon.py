@@ -4,6 +4,7 @@ import imgaug as ia
 from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
 from imgaug import augmenters as iaa
 from charonListManager import charonListManager 
+from boundingBoxHandler import boundingBoxHandler
 from tqdm import tqdm
 from xmlHandler import xmlHandler
 import pandas as pd
@@ -91,6 +92,7 @@ class imgaug4charon:
             random_order=True
         )
         self.xmlManager = xmlHandler()
+        self.bbManager = boundingBoxHandler()
         if not os.path.exists(self.targetDir):
             os.makedirs(self.targetDir)
 
@@ -111,10 +113,6 @@ class imgaug4charon:
 
     def getSourceFilePos(self,fileName):
         return os.path.join(self.sourceDir,fileName)
-    
-    def renameFile(self,filename,tag,version):
-        filename,extension = filename.rsplit('.',1)
-        return f'{filename}_{tag}_{version}.{extension}'
 
     def ensureRGB(self,image):
         if len(image.shape) < 3:
@@ -131,33 +129,7 @@ class imgaug4charon:
             c+=1
         ia.imshow(bbs.draw_on_image(image, size=2))
 
-    def bbs_obj_to_df(self, bbs_object):
-        # function to convert BoundingBoxesOnImage object into DataFrame
-        # convert BoundingBoxesOnImage object into array
-        bbs_array = bbs_object.to_xyxy_array()
-        # convert array into a DataFrame ['xmin', 'ymin', 'xmax', 'ymax'] columns
-        df_bbs = pd.DataFrame(bbs_array, columns=['xmin', 'ymin', 'xmax', 'ymax'])
-        return df_bbs
 
-    
-    def augmentation_groupDF2bbArray(self,group_df,image):
-        bb_array = group_df.drop(['filename', 'width', 'height', 'class'], axis=1).values
-        #   pass the array of bounding boxes coordinates to the imgaug library
-        return BoundingBoxesOnImage.from_xyxy_array(bb_array, shape=image.shape)
-
-    def augmentation_createAugBBs(self,group_df,image_aug,image_suffix,bbs_aug,augVersion):
-        # create a data frame with augmented values of image width and height
-        info_df = group_df.drop(['xmin', 'ymin', 'xmax', 'ymax'], axis=1)        
-        for index, _ in info_df.iterrows():
-            info_df.at[index, 'width'] = image_aug.shape[1]
-            info_df.at[index, 'height'] = image_aug.shape[0]
-
-        # rename filenames by adding the predifined prefix
-        info_df['filename'] = info_df['filename'].apply(lambda x: self.renameFile(x,image_suffix,augVersion))
-        # create a data frame with augmented bounding boxes coordinates using the function we created earlier
-        bbs_df = self.bbs_obj_to_df(bbs_aug)
-        # concat all new augmented info into new data frame
-        return pd.concat([info_df, bbs_df], axis=1)
     
     def augmentation_iniSizeAug(self,fixSize):
         # height augmentor
@@ -182,10 +154,9 @@ class imgaug4charon:
             #   apply augmentation on image and on the bounding boxes
             image_aug, bbs_aug = self.width_resize(image=image, bounding_boxes=bbs)
         
-
         # append image info without any changes if it's height and width are both less than 600px 
         else:
-            bbs_aug = self.augmentation_groupDF2bbArray(group_df,image)
+            bbs_aug = self.bbManager.imageDF_to_bboxArray(group_df,image)
         return image_aug, bbs_aug
 
     def mainAugmentation(self,augSeeds=5,fixSize = 0,tag ='aug'):
@@ -198,13 +169,13 @@ class imgaug4charon:
             # Get separate data frame grouped by file name
             group_df = self.getGroup(filename)
             # Get the image and bounding box data
-            bbs = self.augmentation_groupDF2bbArray(group_df,image)
+            bbs = self.bbManager.imageDF_to_bboxArray(group_df,image)
 
 
             if fixSize > 0:
                 image,bbs = self.resize_imgaug(group_df,image,bbs,fixSize)
-                imageio.imwrite(os.path.join(self.targetDir,self.renameFile(filename,'orig',0)), image)  
-                resize_df = self.augmentation_createAugBBs(group_df,image,'orig',bbs,0)
+                imageio.imwrite(os.path.join(self.targetDir,self.bbManager.renameFile(filename,'orig',0)), image)  
+                resize_df = self.bbManager.create_augImageDF(group_df,image,'orig',bbs,0)
                 self.writeXML(resize_df)
               
             
@@ -213,12 +184,12 @@ class imgaug4charon:
                 # main augmentation
                 image_aug, bbs_aug =self.mainAugmentorSeq(image=image, bounding_boxes=bbs)
                 bbs_aug = bbs_aug.remove_out_of_image(fully=True,partly=False)
-                aug_df = self.augmentation_createAugBBs(group_df,image_aug,tag,bbs_aug,augVersion)
+                aug_df = self.bbManager.create_augImageDF(group_df,image_aug,tag,bbs_aug,augVersion)
                 aug_df = aug_df.dropna()
                 if aug_df.shape[0]>0:                    
                     #write new xml-file
                     self.writeXML(aug_df)               # write augmented image
-                    imageio.imwrite(os.path.join(self.targetDir,self.renameFile(filename,tag,augVersion)), image_aug) 
+                    imageio.imwrite(os.path.join(self.targetDir,self.bbManager.renameFile(filename,tag,augVersion)), image_aug) 
                     augVersion+=1 
             c+=1
     
