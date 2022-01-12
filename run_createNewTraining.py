@@ -5,9 +5,9 @@ import charon, time,  training_utils, imgaug4charon
 
 
 reload(training_utils)
-path2labeledData = '/media/dataSSD/labledData/trainData_autoBenzerSplit'
-path2augmentedData = '/media/dataSSD/labledData/trainData_autoBenzerAug'
-nameOfTheNN = 'autoBenzerAug'
+path2labeledData = '/media/dataSSD/labledData/trainData_penguin'
+path2augmentedData = '/media/dataSSD/labledData/trainData_penguinAug'
+nameOfTheNN = 'penguinAug'
 maxImageSize = 1024
 numofAugClones = 10
 imgExt = 'png'
@@ -27,7 +27,7 @@ t = training_utils.trainDataCuration(nameOfTheNN,
 t.chooseCandidateFiles()
 t.renameLabelsVerbose() #or set dictionary
 #t.labelChanger = {'TC.f W-': 'TC', 'Arena': 'arena', 'mark': 'marker', 'TC': 'TC', 'marker': 'marker', 'TC ': 'TC', 'TC.m W-': 'TC', 'TC.m W+': 'TC', 'TC.f W+': 'TC', 'arena': 'arena'}
-t.labelChanger = {'arena_TL_autoBenzer': 'arena_TL_autoBenzer', 'abdomen': '!deleteThisLabel!', 'arena_TR_autoBenzer': 'arena_TR_autoBenzer', 'arena_TS_autoBenzer': 'arena_TS_autoBenzer', 'arena_LR_autoBenzer': 'arena_LR_autoBenzer', 'head': '!deleteThisLabel!','arena_LS_autoBenzer': 'arena_LS_autoBenzer', 'arena_LL_autoBenzer': 'arena_LL_autoBenzer', 'arena_TL_autoBenzer ': 'arena_TL_autoBenzer', 'fly': 'fly', 'arena_BR_autoBenzer': 'arena_LR_autoBenzer', 'arena_BL_autoBenzer': 'arena_LL_autoBenzer', 'arena_TSw_autoBenzer': 'arena_TS_autoBenzer'}
+#t.labelChanger = {'arena_TL_autoBenzer': 'arena_TL_autoBenzer', 'abdomen': '!deleteThisLabel!', 'arena_TR_autoBenzer': 'arena_TR_autoBenzer', 'arena_TS_autoBenzer': 'arena_TS_autoBenzer', 'arena_LR_autoBenzer': 'arena_LR_autoBenzer', 'head': '!deleteThisLabel!','arena_LS_autoBenzer': 'arena_LS_autoBenzer', 'arena_LL_autoBenzer': 'arena_LL_autoBenzer', 'arena_TL_autoBenzer ': 'arena_TL_autoBenzer', 'fly': 'fly', 'arena_BR_autoBenzer': 'arena_LR_autoBenzer', 'arena_BL_autoBenzer': 'arena_LL_autoBenzer', 'arena_TSw_autoBenzer': 'arena_TS_autoBenzer'}
 
 
 t.makeTrainDirs()
