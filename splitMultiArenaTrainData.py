@@ -65,7 +65,7 @@ class splitLabelAutoBenzer:
         
     def writeOut(self,bbs_aug,image_aug,tag,fileI):
         bbs_aug = bbs_aug.remove_out_of_image(fully=True,partly=True)
-        split_df = self.bbManager.create_augImageDF(bbs_aug,self.imgFileList[fileI],image_aug.shape,tag,None)
+        split_df = self.bbManager.create_augImageDF(bbs_aug,self.imgFileList[fileI],tag,None)
         split_df = split_df.dropna()
      
         imageio.imwrite(os.path.join(self.targetDir,split_df.at[0,'filename']), image_aug) 

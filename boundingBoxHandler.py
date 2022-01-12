@@ -40,13 +40,13 @@ class boundingBoxHandler:
 
         return bb_array_ia
 
-    def create_augImageDF(self,bbs_aug,imagePos,imageSize,image_suffix,augVersion): #
+    def create_augImageDF(self,bbs_aug,imagePos,image_suffix,augVersion): #
         # create a data frame with augmented bounding boxes coordinates using the function we created earlier
         bbs_df = self.bboxArray_to_bboxDF(bbs_aug)
         newFileName = self.renameFile(os.path.basename(imagePos),image_suffix,augVersion)
         for index, _ in bbs_df.iterrows():
-            bbs_df.at[index, 'width'] = imageSize[1]
-            bbs_df.at[index, 'height'] = imageSize[0]
+            bbs_df.at[index, 'width'] = bbs_aug.shape[1]
+            bbs_df.at[index, 'height'] = bbs_aug.shape[0]
             bbs_df.at[index, 'class'] = bbs_aug[index].label
             bbs_df.at[index,'filename'] = newFileName
         # concat all new augmented info into new data frame

@@ -175,7 +175,7 @@ class imgaug4charon:
             if fixSize > 0:
                 image,bbs = self.resize_imgaug(group_df,image,bbs,fixSize)
                 imageio.imwrite(os.path.join(self.targetDir,self.bbManager.renameFile(filename,'orig',0)), image)  
-                resize_df = self.bbManager.create_augImageDF(bbs,filePos,image.shape,'orig',0)
+                resize_df = self.bbManager.create_augImageDF(bbs,filePos,'orig',0)
                 self.writeXML(resize_df)
               
             
@@ -184,7 +184,7 @@ class imgaug4charon:
                 # main augmentation
                 image_aug, bbs_aug =self.mainAugmentorSeq(image=image, bounding_boxes=bbs)
                 bbs_aug = bbs_aug.remove_out_of_image(fully=True,partly=False)
-                aug_df = self.bbManager.create_augImageDF(bbs_aug,filePos,image_aug.shape,tag,augVersion)
+                aug_df = self.bbManager.create_augImageDF(bbs_aug,filePos,tag,augVersion)
                 aug_df = aug_df.dropna()
                 if aug_df.shape[0]>0:                    
                     #write new xml-file
