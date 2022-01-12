@@ -207,10 +207,7 @@ class imgaug4charon:
         return image_aug, bbs_aug
 
     def mainAugmentation(self,augSeeds=5,fixSize = 0,tag ='aug'):
-        # create data frame which we're going to populate with augmented image info
-        output_BBS_DF = pd.DataFrame(columns=
-                                ['filename','width','height','class', 'xmin', 'ymin', 'xmax', 'ymax']
-                                )
+    
         c = 0
         for filePos in tqdm(self.imgFileList,desc=f'augmentation'):
             image = imageio.imread(filePos)
@@ -227,8 +224,7 @@ class imgaug4charon:
                 imageio.imwrite(os.path.join(self.targetDir,self.renameFile(filename,'orig',0)), image)  
                 resize_df = self.augmentation_createAugBBs(group_df,image,'orig',bbs,0)
                 self.writeXML(resize_df)
-                #append rows to output_BBS_DF data frame
-                output_BBS_DF = pd.concat([output_BBS_DF, resize_df])
+              
             
             augVersion = 0
             while augVersion < augSeeds:
@@ -237,18 +233,13 @@ class imgaug4charon:
                 bbs_aug = bbs_aug.remove_out_of_image(fully=True,partly=False)
                 aug_df = self.augmentation_createAugBBs(group_df,image_aug,tag,bbs_aug,augVersion)
                 aug_df = aug_df.dropna()
-                if aug_df.shape[0]>0:
-                    # append rows to output_BBS_DF data frame
-                    output_BBS_DF = pd.concat([output_BBS_DF, aug_df])
+                if aug_df.shape[0]>0:                    
                     #write new xml-file
                     self.writeXML(aug_df)               # write augmented image
                     imageio.imwrite(os.path.join(self.targetDir,self.renameFile(filename,tag,augVersion)), image_aug) 
                     augVersion+=1 
             c+=1
-        # return dataframe with updated images and bounding boxes annotations 
-        output_BBS_DF = output_BBS_DF.reset_index()
-        output_BBS_DF = output_BBS_DF.drop(['index'], axis=1)
-        return output_BBS_DF
+    
     
     def writeXML(self,aug_df):
         objectList =list()
@@ -264,7 +255,7 @@ class imgaug4charon:
         self.imgFileList, self.xmlFileList = self.listManager.get_xml_img_filepairs()
         self.labelDF       = self.getAllDetInDir()
         self.labelDF_fName = self.labelDF.groupby('filename')
-        self.augDF = self.mainAugmentation(augSeeds,fixSize)
-        self.augDF_fName = self.augDF.groupby('filename')
+        self.mainAugmentation(augSeeds,fixSize)
+       
 
 
