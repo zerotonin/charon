@@ -13,13 +13,13 @@ def recursiveFindFiles(sourceDir,fileExt):
 def sendMovDirToTSP4Charon(sourceDir,fileExt,AIstring,detThresh,writeMovFlag,pythonPos='/home/bgeurten/anaconda3/envs/charon/bin/python',charonDir = '/home/bgeurten/PyProjects/charon'):
     fileList = recursiveFindFiles(sourceDir,fileExt)
     for f in fileList:
-        os.system(f'tsp cd {charonDir}')
-        os.system(f'tsp {pythonPos} charonMovieToTSP.py -i {f} -a {AIstring} -d {detThresh} -o {writeMovFlag}')
+        scriptPos = os.path.join(charonDir,'charonMovieToTSP.py')
+        os.system(f'tsp {pythonPos} {scriptPos} -i {f} -a {AIstring} -d {detThresh} -o {writeMovFlag}')
 
 
 def sendMovieToTSP4Splitting(moviePos,pythonPos='/home/bgeurten/anaconda3/envs/mediaManager/bin/python',mmDir = '/home/bgeurten/PyProjects/mediamanager'):
-    os.system(f'tsp cd {mmDir}')
-    os.system(f'tsp {pythonPos} food54ArenaSplitter.py -i {moviePos}')
+    scriptPos = os.path.join(mmDir,'food54ArenaSplitter.py')
+    os.system(f'tsp {pythonPos} {scriptPos} -i {moviePos}')
 
 def getSplitDir(movPos):
     # make output objects
@@ -37,14 +37,16 @@ def getSplitDir(movPos):
 #sendDirToTSP(sourceDir,fileExt,AIstring,detThresh,writeMovFlag)
 
 # Yegi
-sourceDir    = r'/media/gwdg-backup/BackUp/Lennart/'
+sourceDir    = r'/media/dataSSD/LennartSplitMovies/'
 fileExt      = 'mp4'
 AIstring     = 'flyFinder24hBorderless'
 detThresh    = 0.95
 writeMovFlag = False
 
-
+sendMovDirToTSP4Charon(sourceDir,fileExt,AIstring,detThresh,writeMovFlag)
+'''
 movList = recursiveFindFiles(sourceDir,fileExt)
 for mov in movList:
-    sendMovieToTSP4Splitting(mov)
-    sendMovDirToTSP4Charon(getSplitDir(mov),fileExt,AIstring,detThresh,writeMovFlag)
+   sendMovieToTSP4Splitting(mov)
+   sendMovDirToTSP4Charon(getSplitDir(mov),fileExt,AIstring,detThresh,writeMovFlag)
+'''
