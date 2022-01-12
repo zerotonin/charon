@@ -124,7 +124,7 @@ class imgaug4charon:
     def showSourceLabels(self,image,group_df):
         classes = group_df['class'].values
         bb_array = group_df.drop(['filename', 'width', 'height', 'class'], axis=1).values
-        bbs = BoundingBoxesOnImage.from_xyxy_array(bb_array, shape=self.imageList[-1].shape,)
+        bbs = BoundingBoxesOnImage.from_xyxy_array(bb_array, shape=image.shape,)
         c = 0
         for bb in bbs:
             bb.label = classes[c]
