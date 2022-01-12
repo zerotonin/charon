@@ -42,7 +42,7 @@ class imgaug4charon:
                     shear=(-16, 16), # shear by -16 to +16 degrees
                     order=[0, 1], # use nearest neighbour or bilinear interpolation (fast)
                     cval=(0, 255), # if mode is constant, use a cval between 0 and 255
-                    mode=ia.ALL # use any of scikit-image's warping modes (see 2nd image from the top for examples)
+                    mode=ia.ALL#['constant','edge'] # use any of scikit-image's warping modes (see 2nd image from the top for examples)
                 )),
                 # execute 0 to 5 of the following (less important) augmenters per image
                 # don't execute all of them, as that would often be way too strong
