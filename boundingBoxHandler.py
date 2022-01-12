@@ -1,4 +1,4 @@
-
+import os
 import pandas as pd
 from imgaug.augmentables.bbs import BoundingBoxesOnImage
 
@@ -36,7 +36,7 @@ class boundingBoxHandler:
     def create_augImageDF(self,bbs_aug,imagePos,imageSize,image_suffix,augVersion): #
         # create a data frame with augmented bounding boxes coordinates using the function we created earlier
         bbs_df = self.bboxArray_to_bboxDF(bbs_aug)
-        newFileName = self.renameFile(imagePos,image_suffix,augVersion)
+        newFileName = self.renameFile(os.path.basename(imagePos),image_suffix,augVersion)
         for index, _ in bbs_df.iterrows():
             bbs_df.at[index, 'width'] = imageSize[1]
             bbs_df.at[index, 'height'] = imageSize[0]
