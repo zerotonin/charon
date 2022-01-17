@@ -46,7 +46,7 @@ for file in fList:
 #analyse movie
 reload(charon)
 x = charon.charon('penguinPicker')
-x.DETECTION_THRESH =0.99 
+x.DETECTION_THRESH =0.999
 start = time.time()
 
 #'/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__15_47_00_yellowRut7_yellowgreen_IR.avi'

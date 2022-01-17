@@ -48,8 +48,8 @@ g.run()
 ##########################
 
 reload(training_utils)
-t = training_utils.trainDataCuration('flyFinder_autoBenzer',
-                                    '/home/bgeurten/ownCloud/trainData',
+t = training_utils.trainDataCuration('penguinAug',
+                                    '/media/dataSSD/labledData/trainData_penguinAug',
                                     sourceImgType ='png')
 t.chooseCandidateFiles()
 t.renameLabelsVerbose() #or set dictionary
@@ -57,7 +57,7 @@ t.renameLabelsVerbose() #or set dictionary
 t.transfer_AdditionalTrainingsData()
 
 reload(training_utils)
-g = training_utils.augmentTrainingGenScripts(t,[])
+g = training_utils.augmentTrainingGenScripts(t)
 g.maxTrainSteps = 5000000
 g.run()
 
