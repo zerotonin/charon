@@ -471,7 +471,7 @@ class adaptTFconfigFile:
             file.writelines( self.config )
 
         trainCommandStr = f'{pythonStr} /home/bgeurten/models/research/object_detection/legacy/train.py --logtostderr --train_dir={self.trainDir} --pipeline_config_path={self.targetConfigFile}'
-        extractInfGraphCommandStr = f'{pythonStr} /home/bgeurten/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path {self.targetConfigFile} --trained_checkpoint_prefix {self.trainDir}/model.ckpt-{str(maxSteps)} --output_directory /media/dataSSD/ownCloudDrosoVis/inferenceGraphs{self.tag}/'
+        extractInfGraphCommandStr = f'{pythonStr} /home/bgeurten/models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path {self.targetConfigFile} --trained_checkpoint_prefix {self.trainDir}/model.ckpt-{str(maxSteps)} --output_directory /media/dataSSD/ownCloudDrosoVis/inferenceGraphs/{self.tag}/'
         
         Path(self.inferencePath).mkdir(parents=True, exist_ok=True)
         shutil.copyfile(self.pbTXTPos, os.path.join(self.inferencePath,'labelmap.pbtxt'))
