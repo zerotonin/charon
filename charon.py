@@ -169,7 +169,7 @@ class charon:
                           'penguinPicker',#MODEL_NAME      
                           0.75,#DETECTION_THRESH
                           '/home/bgeurten/models/research/object_detection',#OBJECT_DET_DIR  
-                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/penguinPicker4x', #INFERENCE_GRAPH_DIR
+                          '/media/dataSSD/ownCloudDrosoVis/inferenceGraphs/penguinAug', #INFERENCE_GRAPH_DIR
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/download/funnelFinder',#OUTPUT_DIR      
                           '/media/dataSSD/ownCloudDrosoVis/cellDetector_charon/upload/funnelFinder',#ZIP_DIR         
                           '/media/dataSSD/cellDetector/analysing')#WORK_DIR 

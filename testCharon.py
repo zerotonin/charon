@@ -45,17 +45,17 @@ for file in fList:
 
 #analyse movie
 reload(charon)
-x = charon.charon('flyFinder24hBorderless')
-x.DETECTION_THRESH =0.75  
+x = charon.charon('penguinPicker')
+x.DETECTION_THRESH =0.99 
 start = time.time()
 
 #'/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__15_47_00_yellowRut7_yellowgreen_IR.avi'
 #'/media/gwdg-backup/BackUp/KathyBrands/MasterVideos/2020-10-16__16_20_02_yellowRut7_yellowgreen_Light.avi'
 
-x.DETECTION_THRESH =0.5  
-x.analyseMovie('/media/gwdg-backup/BackUp/Lennart/2021-10-03_10-19-27.mp4', #moviePos
-            "/home/bgeurten/Videos/test_IR_05.avi", #anaPath out
-            "/home/bgeurten/Videos/test_IR_05.tra", writeDetectionMov=True) # trace file
+#x.DETECTION_THRESH =0.5  
+x.analyseMovie('/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_10-03-2021_afternoon.mp4', #moviePos
+            "/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_10-03-2021_afternoon.avi", #anaPath out
+            "/media/gwdg-backup/BackUp/penguins/Gentoo/Gentoo_10-03-2021_afternoon.tra", writeDetectionMov=True) # trace file
 
 end = time.time()
 print(end - start)
