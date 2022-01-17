@@ -221,7 +221,7 @@ class trainDataCuration:
         self.transfer_trainingData(testCounter=fileCounter[0],trainCounter=fileCounter[1])
 
 class augmentTrainingGenScripts():
-    def __init__(self,transferObj):
+    def __init__(self,transferObj,pythonPath = '/home/bgeurten/anaconda3/envs/charon/bin/python'):
         self.train_csv_file = transferObj.TRAIN_DIR+'_labels.csv'
         self.train_img_path = transferObj.TRAIN_DIR
         self.test_csv_file  = transferObj.TEST_DIR+'_labels.csv'
@@ -233,6 +233,7 @@ class augmentTrainingGenScripts():
         self.labelList      = list(set(transferObj.labelChanger.values())) # get all the labels from the labelchanger
         self.newLabelList   = list()
         self.labelFilePos   = os.path.join(self.output_path,'labelmap.pbtxt')
+        self.pythonPath      = pythonPath
     
     def run(self):
         #update the label dictionary and the label map file
@@ -247,7 +248,7 @@ class augmentTrainingGenScripts():
         generate_tfrecord.main(os.path.join(self.output_path , "test.record"),self.test_img_path,self.test_csv_file,self.labelDict)
         generate_tfrecord.main(os.path.join(self.output_path , "train.record"),self.train_img_path,self.train_csv_file,self.labelDict)
         self.cf = adaptTFconfigFile(self,self.tag)
-        self.cf.run()
+        self.cf.run(self.pythonPath,self.maxTrainSteps)
 
     def labelFile2LabelDict(self):
         lbMapFile = open(self.labelFilePos,'r') 
