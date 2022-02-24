@@ -5,9 +5,9 @@ import charon, time,  training_utils, imgaug4charon
 
 
 reload(training_utils)
-path2labeledData = '/media/dataSSD/labledData/trainData_penguin'
-path2augmentedData = '/media/dataSSD/labledData/trainData_penguinAug'
-nameOfTheNN = 'penguinAll'
+path2labeledData = '/media/dataSSD/labledData/DrosoCell_MultiAntiBody'
+path2augmentedData = '/media/dataSSD/labledData/DrosoCell_MultiAntiBody_Aug'
+nameOfTheNN = 'drosoCellMultiAntiBody'
 maxImageSize = 1024
 numofAugClones = 20
 imgExt = 'png'
@@ -48,8 +48,8 @@ g.run()
 ##########################
 
 reload(training_utils)
-t = training_utils.trainDataCuration('penguinAug',
-                                    '/media/dataSSD/labledData/trainData_penguinAug',
+t = training_utils.trainDataCuration('triboliumNeuron2',
+                                    '/media/dataSSD/labledData/tribolium_neuron2022Aug',
                                     sourceImgType ='png')
 t.chooseCandidateFiles()
 t.renameLabelsVerbose() #or set dictionary
@@ -58,6 +58,6 @@ t.transfer_AdditionalTrainingsData()
 
 reload(training_utils)
 g = training_utils.augmentTrainingGenScripts(t)
-g.maxTrainSteps = 5000000
+g.maxTrainSteps = 750000
 g.run()
 

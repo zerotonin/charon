@@ -27,11 +27,11 @@ def sendDirToTSP(sourceDir,fileExt,AIstring,detThresh,writeMovFlag,pythonPos='/h
 #sendDirToTSP(sourceDir,fileExt,AIstring,detThresh,writeMovFlag)
 
 # Yegi
-sourceDir    = '/media/gwdg-backup/BackUp/Lennart/2021-10-03_10-19-27'
+sourceDir    = '/media/gwdg-backup/BackUp/penguins'
 fileExt      = 'mp4'
-AIstring     = 'flyFinder24hBorderless'
-detThresh    = 0.95
-writeMovFlag = True
+AIstring     = 'penguinPicker'
+detThresh    = 0.9999
+writeMovFlag = False
 
 
 sendDirToTSP(sourceDir,fileExt,AIstring,detThresh,writeMovFlag)
