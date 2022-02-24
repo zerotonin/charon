@@ -24,7 +24,7 @@ class charonListManager:
 
         # only keep those files that are  in both lists
         # combine both lists without extensions        
-        combiList = [i.split('.')[0] for i in self.imgFileList] +[i.split('.')[0] for i in self.dataFileList]
+        combiList = [i.rsplit('.',1)[0] for i in self.imgFileList] +[i.rsplit('.',1)[0] for i in self.dataFileList]
         # get a list of the unique values
         combiListUnique = list(set(combiList))
         # now delte once each unique value of the combination list. 
