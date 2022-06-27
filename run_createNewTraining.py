@@ -32,14 +32,13 @@ t.labelChanger = {'gentoo': 'penguin', 'king': 'penguin', 'rockhopper': 'penguin
 
 t.makeTrainDirs()
 t.transfer_trainingData()
-t.labelChanger = {'gentoo': 'penguin', 'king': 'penguin', 'rockhopper': 'penguin', 'rock': '!deleteThisLabel!'}
 
 ###################
 # Run gen scripts #
 # #################
 reload(training_utils)
 g = training_utils.runTrainingGenScripts(t,pythonPos='/home/bgeurten/anaconda3/envs/charon/bin/')
-g.maxTrainSteps = 500000
+g.maxTrainSteps = 750000
 g.run()
 
 

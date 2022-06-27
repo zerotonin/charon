@@ -27,10 +27,10 @@ def sendDirToTSP(sourceDir,fileExt,AIstring,detThresh,writeMovFlag,pythonPos='/h
 #sendDirToTSP(sourceDir,fileExt,AIstring,detThresh,writeMovFlag)
 
 # Yegi
-sourceDir    = '/media/gwdg-backup/BackUp/penguins'
+sourceDir    = '/media/bgeurten/UnionSine/McMeniman_lab_data'
 fileExt      = 'mp4'
-AIstring     = 'penguinPicker'
-detThresh    = 0.9999
+AIstring     = 'mosquitoDetector'
+detThresh    = 0.8
 writeMovFlag = False
 
 
