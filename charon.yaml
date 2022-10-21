@@ -21,6 +21,8 @@ dependencies:
   - protobuf
   - xlsxwriter
   - lxml
+  - imageio
+  - imgaug
   - pip:
       - pillow
       - lxml
