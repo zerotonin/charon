@@ -5,7 +5,7 @@ import matplotlib.cm as cm
 import matplotlib.patches as patches
 from tqdm import tqdm
 
-class ivTrace_to_training():
+class ivTrace_to_labelImg():
 
     def __init__(self,trace_position,movie_position, result_folder, image_prefix, detection_label, max_frames = 10000):
         self.trace_position  = trace_position
@@ -154,14 +154,8 @@ if __name__ == '__main__':
     if os.path.isfile(movie_position) == False:
         raise ValueError(f'-i is not an existing file: {movie_position} ')
 
-    iTT =ivTrace_to_training(trace_position, movie_position,result_folder,image_prefix,detection_label,max_frames)
-    iTT.create_training_data()
+    iTli =ivTrace_to_labelImg(trace_position, movie_position,result_folder,image_prefix,detection_label,max_frames)
+    iTli.create_training_data()
 
-# /home/bgeurten/anaconda3/envs/charon/bin/python /home/bgeurten/PyProjects/charon/read_ivTrace/ivTrace_to_training.py -t /home/bgeurten/PyProjects/charon/read_ivTrace/full.txt -m /home/bgeurten/OneDrive/AI_SWAP/JohnHopkins_Otago/2-human/03-05-2020/human1_pos7/full.mp4 -r /home/bgeurten/test/ -p 03-05-2020_human1_pos7 -l mosquito -f 20000
+# /home/bgeurten/anaconda3/envs/charon/bin/python /home/bgeurten/PyProjects/charon/read_ivTrace/ivTrace_to_labelImg.py -t /home/bgeurten/PyProjects/charon/read_ivTrace/full.txt -m /home/bgeurten/OneDrive/AI_SWAP/JohnHopkins_Otago/2-human/03-05-2020/human1_pos7/full.mp4 -r /home/bgeurten/test/ -p 03-05-2020_human1_pos7 -l mosquito -f 20000
 
-#iTT =ivTrace_to_training('/home/bgeurten/PyProjects/charon/read_ivTrace/full.txt',
-#                         '/home/bgeurten/OneDrive/AI_SWAP/JohnHopkins_Otago/2-human/03-05-2020/human1_pos7/full.mp4',
-#                         '/home/bgeurten/test/',
-#                         '03-05-2020_human1_pos7',
-#                         'mosquito')
-#iTT.create_training_data()
