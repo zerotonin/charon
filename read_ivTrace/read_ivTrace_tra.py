@@ -4,7 +4,7 @@ import re
 
 class read_ivTrace_tra():
 
-    def __init__(self, mode = '2D', filepos = False) -> None:
+    def __init__(self, filepos = False, mode = '2D') -> None:
         """
         This class reads the ivTrace trajectory format files. Currently it only works for the 2D trajectory files. 
         The trajectory files are expected in the 2011 format (see below).
