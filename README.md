@@ -78,7 +78,7 @@ function that allows to add more files and prolong training
     model. By using this notebook and directly jumping to the cell with imports! If you run the full
     label IT WILL START IN models/research/object_detection/colab_tutorials/ and therefore it CANNOT load the data. Hence you need to add a os.chdir('/path/to/model') to load example data and import pathlib.  Or you run the third cell!
   ```
-    jupyter notebook models/research/object_detection/colab_tutorials/object_detection_tutorial.ipynb 
+    jupyter notebook models/research/object_detection_tutorial.ipynb 
   ```
 
 
