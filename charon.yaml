@@ -15,7 +15,7 @@ dependencies:
   - ipython
   - pandas
   - opencv
-  - numpy
+  - numpy=1.18.5
   - scipy
   - tqdm
   - protobuf
