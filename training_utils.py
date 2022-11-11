@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 
 class trainDataCuration:
-    def __init__(self,tag,IMG_DIR,WORK_DIR='/home/bgeurten/AI_trainingData/',sourceImgType ='tif'):
+    def __init__(self,tag,IMG_DIR,WORK_DIR='~/AI_trainingData/',sourceImgType ='tif'):
 
         self.IMG_DIR       = IMG_DIR # where the original image data is
         self.WORK_DIR      = os.path.join(WORK_DIR,tag) # where you usually train path/to/where/you/train/yourTAG/
@@ -221,7 +221,7 @@ class trainDataCuration:
         self.transfer_trainingData(testCounter=fileCounter[0],trainCounter=fileCounter[1])
 
 class augmentTrainingGenScripts():
-    def __init__(self,transferObj,pythonPath = '/home/bgeurten/anaconda3/envs/charon/bin/python'):
+    def __init__(self,transferObj,pythonPath = '~/anaconda3/envs/charon/bin/python'):
         self.train_csv_file = transferObj.TRAIN_DIR+'_labels.csv'
         self.train_img_path = transferObj.TRAIN_DIR
         self.test_csv_file  = transferObj.TEST_DIR+'_labels.csv'
@@ -312,7 +312,7 @@ class runTrainingGenScripts:
         labelList           = set(list(transferObj.labelChanger.values())) 
         self.labelDict      = dict(zip(labelList,range(1,len(labelList)+1))) 
         self.tag            = transferObj.tag
-        self.inferencePath  = os.path.join("/home/bgeurten/inferenceGraphs/",self.tag )
+        self.inferencePath  = os.path.join("~/AI_inferenceGraphs/",self.tag )
         self.maxTrainSteps  = 200000
         self.pythonPos      = pythonPos
     
@@ -411,8 +411,8 @@ class makelabelMapFile:
 
 class adaptTFconfigFile:
     def __init__(self,scriptObj,tag):
-        self.originalConfigFile = '/home/bgeurten/AI_models/research/object_detection/samples/configs/faster_rcnn_inception_v2_pets.config'
-        self.path2model         = '/home/bgeurten/AI_models/research/object_detection/faster_rcnn_inception_v2_coco_2018_01_28'
+        self.originalConfigFile = '~/AI_models/research/object_detection/samples/configs/faster_rcnn_inception_v2_pets.config'
+        self.path2model         = '~/AI_models/research/object_detection/faster_rcnn_inception_v2_coco_2018_01_28'
         self.targetConfigFile   = scriptObj.output_path + '/faster_rcnn_inception_v2_' + tag + '.config'
         self.testRecord         = os.path.join(scriptObj.output_path, 'test.record')
         self.trainRecord        = os.path.join(scriptObj.output_path, 'train.record')
@@ -471,8 +471,8 @@ class adaptTFconfigFile:
         with open(self.targetConfigFile, 'w') as file:
             file.writelines( self.config )
 
-        trainCommandStr = f'{pythonStr} /home/bgeurten/AI_models/research/object_detection/legacy/train.py --logtostderr --train_dir={self.trainDir} --pipeline_config_path={self.targetConfigFile}'
-        extractInfGraphCommandStr = f'{pythonStr} /home/bgeurten/AI_models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path {self.targetConfigFile} --trained_checkpoint_prefix {self.trainDir}/model.ckpt-{str(maxSteps)} --output_directory /media/dataSSD/ownCloudDrosoVis/inferenceGraphs/{self.tag}/'
+        trainCommandStr = f'{pythonStr} ~/AI_models/research/object_detection/legacy/train.py --logtostderr --train_dir={self.trainDir} --pipeline_config_path={self.targetConfigFile}'
+        extractInfGraphCommandStr = f'{pythonStr} ~/AI_models/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path {self.targetConfigFile} --trained_checkpoint_prefix {self.trainDir}/model.ckpt-{str(maxSteps)} --output_directory /media/dataSSD/ownCloudDrosoVis/inferenceGraphs/{self.tag}/'
         
         Path(self.inferencePath).mkdir(parents=True, exist_ok=True)
         shutil.copyfile(self.pbTXTPos, os.path.join(self.inferencePath,'labelmap.pbtxt'))
