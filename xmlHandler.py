@@ -4,16 +4,40 @@ from lxml import etree as et
 import xml.etree.ElementTree as ET
 
 class xmlHandler:
+    """Handles XML file operations for labelImg annotations.
+
+    This class provides methods for reading and writing XML files that are compatible 
+    with labelImg, a graphical image annotation tool written in Python and using Qt 
+    for its graphical interface.
+    """
+    
     def __init__(self):
+        """Initializes the xmlHandler class."""
         pass
 
-    def inputNum2labelImgFormat(self,num):
-        if num <0:
+    def inputNum2labelImgFormat(self, num):
+        """Converts a numerical value to a string format compatible with labelImg.
+
+        Args:
+            num (float or int): The number to be converted.
+
+        Returns:
+            str: A string representation of the number, rounded to the nearest integer.
+        """
+        if num < 0:
             return '0'
         else:
             return str(int(np.round(num)))
 
-    def readXML(self,xml_file):
+    def readXML(self, xml_file):
+        """Reads object annotations from an XML file.
+
+        Args:
+            xml_file (str): Path to the XML file to read.
+
+        Returns:
+            list: A list of tuples containing annotation information for each object in the XML file.
+        """
         xml_list = list()
         tree = ET.parse(xml_file)
         root = tree.getroot()
@@ -29,14 +53,22 @@ class xmlHandler:
                         )
             xml_list.append(value)
         return xml_list
-        
-    def create_xml(self,imgfilepath, imageSize, object_list, savedir,datasourceText= 'Unknown'):
+
+    def create_xml(self, imgfilepath, imageSize, object_list, savedir, datasourceText='Unknown'):
+        """Creates an XML annotation file for an image.
+
+        Args:
+            imgfilepath (str): Path to the image file.
+            imageSize (tuple): Tuple containing the dimensions of the image (width, height, depth).
+            object_list (list): List of objects to annotate. Each object is represented as a tuple (classname, [x1, y1, x2, y2]).
+            savedir (str): Directory where the XML file will be saved.
+            datasourceText (str, optional): Text describing the data source. Defaults to 'Unknown'.
+
+        Returns:
+            None: Writes the XML file to disk.
         """
-        params:
-        - imgfilepath: path of corresponding img file. only the basename will be actually used.
-        - object_list: python list of objects. the format of each element is up to the user, but for this example, each element will be a tuple of (classname, [x1,y1,x2,y2])
-        - savedir: output directory to save generated xml file
-        """
+        # ... (existing code for creating and saving XML)
+
         filename   = os.path.basename(imgfilepath)
         folderPos = os.path.dirname(imgfilepath)
         folderName = os.path.basename(folderPos)
